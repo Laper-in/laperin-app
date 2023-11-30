@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import com.capstone.laperinapp.R
-import com.capstone.laperinapp.costumView.ButtonRegister
+import com.capstone.laperinapp.ui.customView.ButtonRegister
 import com.capstone.laperinapp.databinding.ActivityRegisterBinding
 import java.util.Calendar
 

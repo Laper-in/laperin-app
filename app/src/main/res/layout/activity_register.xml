@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="@+id/ed_nama_lengkap"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_nama_lengkap"
         style="@style/medium"
         android:layout_width="0dp"
@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_daftar" />
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_email_register"
         style="@style/medium"
         android:layout_width="0dp"
@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="@+id/ed_nama_lengkap"
         app:layout_constraintTop_toBottomOf="@+id/ed_nama_lengkap" />
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_masukkan_password_register"
         style="@style/medium"
         android:layout_width="0dp"
@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="@+id/ed_email_register"
         app:layout_constraintTop_toBottomOf="@+id/ed_email_register" />
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_ulang_password_register"
         style="@style/medium"
         android:layout_width="0dp"
@@ -78,7 +78,7 @@
         app:layout_constraintStart_toStartOf="@+id/ed_masukkan_password_register"
         app:layout_constraintTop_toBottomOf="@+id/ed_masukkan_password_register" />
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_alamat_lengkap"
         style="@style/medium"
         android:layout_width="0dp"
@@ -92,7 +92,7 @@
         app:layout_constraintStart_toStartOf="@+id/ed_ulang_password_register"
         app:layout_constraintTop_toBottomOf="@+id/ed_ulang_password_register" />
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_ttl"
         style="@style/medium"
         android:layout_width="0dp"
@@ -108,7 +108,7 @@
         app:layout_constraintStart_toStartOf="@+id/ed_alamat_lengkap"
         app:layout_constraintTop_toBottomOf="@+id/ed_alamat_lengkap" />
 
-    <com.capstone.laperinapp.costumView.ButtonRegister
+    <com.capstone.laperinapp.ui.customView.ButtonRegister
         android:id="@+id/bt_daftar_register"
         android:layout_width="0dp"
         android:layout_height="52dp"
@@ -120,7 +120,7 @@
         app:layout_constraintStart_toStartOf="@+id/ed_ttl"
         app:layout_constraintTop_toBottomOf="@+id/ed_ttl" />
 
-    <com.capstone.laperinapp.costumView.ButtonActivity
+    <com.capstone.laperinapp.ui.customView.ButtonActivity
         android:id="@+id/bt_masuk_register"
         android:layout_width="0dp"
         android:layout_height="52dp"

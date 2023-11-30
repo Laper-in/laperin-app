@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.costumView
+package com.capstone.laperinapp.ui.customView
 
 import android.content.Context
 import android.graphics.Canvas

@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.16" />
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_email_login"
         style="@style/medium"
         android:layout_width="309dp"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_animation"
         app:layout_constraintVertical_bias="0.123" />
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_password_login"
         style="@style/medium"
         android:layout_width="309dp"
@@ -83,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ed_password_login"
         app:layout_constraintVertical_bias="0.1" />
 
-    <com.capstone.laperinapp.costumView.ButtonLogin
+    <com.capstone.laperinapp.ui.customView.ButtonLogin
         android:id="@+id/bt_masuk_login"
         style="@style/bold"
         android:layout_width="309dp"
@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ed_password_login"
         app:layout_constraintVertical_bias="0.404" />
 
-    <com.capstone.laperinapp.costumView.ButtonActivity
+    <com.capstone.laperinapp.ui.customView.ButtonActivity
         android:id="@+id/bt_daftar_login"
         style="@style/bold"
         android:layout_width="309dp"
