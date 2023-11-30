@@ -9,8 +9,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.capstone.laperinapp.R
 
-class ButtonRegister
-    : AppCompatButton {
+class ProgressButton : AppCompatButton {
 
     private lateinit var enabledBackground: Drawable
     private lateinit var disabledBackground: Drawable
@@ -35,7 +34,7 @@ class ButtonRegister
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if(isEnabled) "Daftar Akun" else "Isi Dulu"
+        text = if(isEnabled) "Masuk" else "Isi Dulu"
     }
 
     private fun init() {
