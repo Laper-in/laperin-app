@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.register.RegisterActivity">
+
+    <TextView
+        android:id="@+id/tv_daftar"
+        style="@style/bold"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/daftar"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.121"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.063" />
+
+    <com.capstone.laperinapp.costumView.EditText
+        android:id="@+id/ed_nama_lengkap"
+        style="@style/medium"
+        android:layout_width="302dp"
+        android:layout_height="52dp"
+        android:hint="@string/nama_lengkap"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_daftar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.178" />
+
+    <com.capstone.laperinapp.costumView.EditText
+        android:id="@+id/ed_email_register"
+        style="@style/medium"
+        android:layout_width="302dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/masukkan_email"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/ed_nama_lengkap"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ed_nama_lengkap"
+        app:layout_constraintTop_toBottomOf="@+id/ed_nama_lengkap" />
+
+    <com.capstone.laperinapp.costumView.EditText
+        android:id="@+id/ed_masukkan_password_register"
+        style="@style/medium"
+        android:layout_width="302dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/Masukkan_password"
+        android:inputType="textPassword"
+        android:drawableEnd="@drawable/ic_password"
+        android:padding="10dp"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/ed_email_register"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ed_email_register"
+        app:layout_constraintTop_toBottomOf="@+id/ed_email_register" />
+
+    <com.capstone.laperinapp.costumView.EditText
+        android:id="@+id/ed_ulang_password_register"
+        style="@style/medium"
+        android:layout_width="302dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/masukkan_ulang_password"
+        android:inputType="textPassword"
+        android:drawableEnd="@drawable/ic_password"
+        android:padding="10dp"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/ed_masukkan_password_register"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ed_masukkan_password_register"
+        app:layout_constraintTop_toBottomOf="@+id/ed_masukkan_password_register" />
+
+    <com.capstone.laperinapp.costumView.EditText
+        android:id="@+id/ed_alamat_lengkap"
+        style="@style/medium"
+        android:layout_width="302dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:padding="10dp"
+        android:textSize="13sp"
+        android:inputType="text"
+        android:hint="@string/masukkan_alamat_lengkap"
+        app:layout_constraintEnd_toEndOf="@+id/ed_ulang_password_register"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ed_ulang_password_register"
+        app:layout_constraintTop_toBottomOf="@+id/ed_ulang_password_register" />
+
+    <com.capstone.laperinapp.costumView.EditText
+        android:id="@+id/ed_ttl"
+        style="@style/medium"
+        android:layout_width="302dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/ttl"
+        android:padding="10dp"
+        android:textSize="13sp"
+        android:focusable="false"
+        android:clickable="true"
+        android:onClick="showDatePickerDialog"
+        app:layout_constraintEnd_toEndOf="@+id/ed_alamat_lengkap"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ed_alamat_lengkap"
+        app:layout_constraintTop_toBottomOf="@+id/ed_alamat_lengkap" />
+
+    <com.capstone.laperinapp.costumView.ButtonRegister
+        android:id="@+id/bt_daftar_register"
+        android:layout_width="302dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="68dp"
+        android:background="@color/primary"
+        android:textColor="@color/white"
+        android:enabled="false"
+        app:layout_constraintEnd_toEndOf="@+id/ed_ttl"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ed_ttl"
+        app:layout_constraintTop_toBottomOf="@+id/ed_ttl" />
+
+    <com.capstone.laperinapp.costumView.ButtonActivity
+        android:id="@+id/bt_masuk_register"
+        android:layout_width="302dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/masuk"
+        android:textColor="@color/primary"
+        app:layout_constraintEnd_toEndOf="@+id/bt_daftar_register"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/bt_daftar_register"
+        app:layout_constraintTop_toBottomOf="@+id/bt_daftar_register"
+        app:layout_constraintVertical_bias="0.125" />
+</androidx.constraintlayout.widget.ConstraintLayout>

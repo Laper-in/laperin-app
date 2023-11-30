@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.capstone.laperinapp.R
 
-class ProgressButton : AppCompatButton {
+class ButtonLogin : AppCompatButton {
 
     private lateinit var enabledBackground: Drawable
     private lateinit var disabledBackground: Drawable
