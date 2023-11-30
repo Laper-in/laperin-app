@@ -6,4 +6,7 @@
     <string name="daftar_akun">Daftar Akun</string>
     <string name="lupa_sandi">Lupa kata sandi?</string>
     <string name="password_minimum_character">Kata sandi harus minimal 8 karakter</string>
+    <string name="selanjutnya">Selanjutnya</string>
+    <string name="lewati">Lewati</string>
+    <string name="start">Mulai</string>
 </resources>
