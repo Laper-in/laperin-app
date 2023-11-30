@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.login.LoginActivity">
+
+    <TextView
+        android:id="@+id/tv_masuk"
+        style="@style/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/masuk"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.124"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.057" />
+
+    <ImageView
+        android:id="@+id/iv_animation"
+        android:layout_width="338dp"
+        android:layout_height="224dp"
+        android:src="@drawable/contohfoto"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
+
+    <com.capstone.laperinapp.costumView.EditText
+        android:id="@+id/ed_email_login"
+        style="@style/medium"
+        android:layout_width="309dp"
+        android:layout_height="53dp"
+        android:background="@drawable/rounded"
+        android:drawableStart="@drawable/ic_message"
+        android:drawablePadding="@dimen/spacing_8"
+        android:hint="@string/masukkan_email"
+        android:padding="10dp"
+        android:inputType="textEmailAddress"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_animation"
+        app:layout_constraintVertical_bias="0.123" />
+
+    <com.capstone.laperinapp.costumView.EditText
+        android:id="@+id/ed_password_login"
+        style="@style/medium"
+        android:layout_width="309dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawableEnd="@drawable/ic_password"
+        android:drawablePadding="@dimen/spacing_8"
+        android:hint="@string/Masukkan_password"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textSize="13dp"
+        app:layout_constraintEnd_toEndOf="@+id/ed_email_login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ed_email_login"
+        app:layout_constraintTop_toBottomOf="@+id/ed_email_login" />
+
+    <TextView
+        android:id="@+id/tv_lupasandi"
+        style="@style/medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lupa_sandi"
+        android:textColor="@color/primary"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ed_password_login"
+        app:layout_constraintHorizontal_bias="0.996"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_password_login"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <com.capstone.laperinapp.costumView.ProgressButton
+        android:id="@+id/bt_masuk_login"
+        style="@style/bold"
+        android:layout_width="309dp"
+        android:layout_height="53dp"
+        android:text="@string/masuk"
+        android:background="@color/primary"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_password_login"
+        app:layout_constraintVertical_bias="0.404" />
+
+    <com.capstone.laperinapp.costumView.ButtonRegister
+        android:id="@+id/bt_daftar_login"
+        style="@style/bold"
+        android:layout_width="309dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/daftar_akun"
+        android:background="@drawable/rounded_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bt_masuk_login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/bt_masuk_login"
+        app:layout_constraintTop_toBottomOf="@+id/bt_masuk_login"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
+    //id("com.google.devtools.ksp")
     id("kotlin-parcelize")
 }
 
@@ -64,7 +64,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.0")
     implementation("androidx.room:room-runtime:2.6.0")
     testImplementation("junit:junit:4.13.2")
-    ksp("androidx.room:room-compiler:2.6.0")
+    //ksp("androidx.room:room-compiler:2.6.0")
 
     //UI
     implementation("androidx.core:core-ktx:1.12.0")

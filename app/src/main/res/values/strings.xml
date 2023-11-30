@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">LaperinApp</string>
+    <string name="masuk">Masuk</string>
+    <string name="masukkan_email">Masukkan Email</string>
+    <string name="Masukkan_password">Masukkan Password</string>
+    <string name="daftar_akun">Daftar Akun</string>
+    <string name="lupa_sandi">Lupa kata sandi?</string>
+    <string name="password_minimum_character">Kata sandi harus minimal 8 karakter</string>
 </resources>
