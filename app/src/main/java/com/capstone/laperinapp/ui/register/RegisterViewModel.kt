@@ -14,12 +14,8 @@ class RegisterViewModel(private val repository: Repository) : ViewModel() {
     fun registerUser(
         username: String,
         email: String,
-        fullname: String,
         password: String,
-        picture: String,
-        alamat: String,
-        telephone: Int,
 
-    ) = repository.registerUser(username, email, fullname, password, picture, alamat, telephone)
+    ) = repository.registerUser(username, email, password)
 
 }

@@ -8,6 +8,7 @@ import com.capstone.laperinapp.di.Injection
 import com.capstone.laperinapp.ui.login.LoginViewModel
 import com.capstone.laperinapp.ui.register.RegisterViewModel
 import com.capstone.laperinapp.ui.splashScreen.SplashViewModel
+import com.capstone.laperinapp.ui.welcome.WelcomeViewModel
 
 class ViewModelFactory private constructor(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -22,6 +23,9 @@ class ViewModelFactory private constructor(private val repository: Repository) :
             }
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
                 SplashViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(WelcomeViewModel::class.java) -> {
+                WelcomeViewModel(repository) as T
             }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

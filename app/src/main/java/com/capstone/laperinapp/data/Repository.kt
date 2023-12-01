@@ -34,16 +34,12 @@ class Repository private constructor(
     fun registerUser(
         username: String,
         email: String,
-        fullname: String,
-        password: String,
-        picture: String,
-        alamat: String,
-        telephone: Int,
+        password: String
 
     ) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.register(username, email, fullname, password, picture, alamat, telephone)
+            val response = apiService.register(username, email, password)
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()!!))
             } else {
