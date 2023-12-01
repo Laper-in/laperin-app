@@ -11,6 +11,7 @@ import com.capstone.laperinapp.data.response.RegisterResponse
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.Flow
 
 
 class Repository private constructor(
@@ -18,11 +19,16 @@ class Repository private constructor(
     private val userPreference: UserPreference,
 ){
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading : LiveData<Boolean> = _isLoading
-
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
+    }
+
+    fun getSession(): Flow<UserModel> {
+        return userPreference.getSession()
+    }
+
+    suspend fun logout() {
+        userPreference.logout()
     }
 
     fun registerUser(
