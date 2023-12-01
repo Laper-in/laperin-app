@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/masuk"
+        android:textStyle=""
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,18 +32,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.16" />
 
-    <com.capstone.laperinapp.costumView.EditText
-        android:id="@+id/ed_email_login"
+    <com.capstone.laperinapp.ui.customView.EditText
+        android:id="@+id/edEmail_login"
         style="@style/medium"
         android:layout_width="309dp"
         android:layout_height="53dp"
         android:background="@drawable/rounded"
-        android:drawableStart="@drawable/ic_message"
         android:drawablePadding="@dimen/spacing_8"
         android:hint="@string/masukkan_email"
         android:padding="10dp"
         android:inputType="textEmailAddress"
-        android:textSize="13dp"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
@@ -50,24 +50,23 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_animation"
         app:layout_constraintVertical_bias="0.123" />
 
-    <com.capstone.laperinapp.costumView.EditText
+    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_password_login"
         style="@style/medium"
         android:layout_width="309dp"
         android:layout_height="53dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded"
-        android:drawableStart="@drawable/ic_lock"
         android:drawableEnd="@drawable/ic_password"
         android:drawablePadding="@dimen/spacing_8"
         android:hint="@string/Masukkan_password"
         android:inputType="textPassword"
         android:padding="10dp"
-        android:textSize="13dp"
-        app:layout_constraintEnd_toEndOf="@+id/ed_email_login"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/edEmail_login"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/ed_email_login"
-        app:layout_constraintTop_toBottomOf="@+id/ed_email_login" />
+        app:layout_constraintStart_toStartOf="@+id/edEmail_login"
+        app:layout_constraintTop_toBottomOf="@+id/edEmail_login" />
 
     <TextView
         android:id="@+id/tv_lupasandi"
@@ -84,28 +83,28 @@
         app:layout_constraintTop_toBottomOf="@+id/ed_password_login"
         app:layout_constraintVertical_bias="0.1" />
 
-    <com.capstone.laperinapp.costumView.ProgressButton
+    <com.capstone.laperinapp.ui.customView.ButtonLogin
         android:id="@+id/bt_masuk_login"
         style="@style/bold"
         android:layout_width="309dp"
         android:layout_height="53dp"
-        android:text="@string/masuk"
         android:background="@color/primary"
         android:textColor="@color/white"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ed_password_login"
         app:layout_constraintVertical_bias="0.404" />
 
-    <com.capstone.laperinapp.costumView.ButtonRegister
+    <com.capstone.laperinapp.ui.customView.ButtonActivity
         android:id="@+id/bt_daftar_login"
         style="@style/bold"
         android:layout_width="309dp"
         android:layout_height="53dp"
         android:layout_marginTop="20dp"
-        android:text="@string/daftar_akun"
         android:background="@drawable/rounded_button"
+        android:text="@string/daftar_akun"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/bt_masuk_login"
         app:layout_constraintHorizontal_bias="0.0"
@@ -113,4 +112,13 @@
         app:layout_constraintTop_toBottomOf="@+id/bt_masuk_login"
         app:layout_constraintVertical_bias="0.0" />
 
+    <ProgressBar
+        android:id="@+id/porgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.costumView
+package com.capstone.laperinapp.ui.customView
 
 import android.content.Context
 import android.graphics.Canvas
@@ -9,7 +9,8 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.capstone.laperinapp.R
 
-class ProgressButton : AppCompatButton {
+class ButtonRegister
+    : AppCompatButton {
 
     private lateinit var enabledBackground: Drawable
     private lateinit var disabledBackground: Drawable
@@ -34,7 +35,7 @@ class ProgressButton : AppCompatButton {
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if(isEnabled) "Masuk" else "Isi Dulu"
+        text = if(isEnabled) "Daftar Akun" else "Isi Dulu"
     }
 
     private fun init() {

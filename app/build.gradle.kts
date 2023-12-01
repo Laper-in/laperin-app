@@ -27,6 +27,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://spring-ship-404312.et.r.appspot.com/\"")
+
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
