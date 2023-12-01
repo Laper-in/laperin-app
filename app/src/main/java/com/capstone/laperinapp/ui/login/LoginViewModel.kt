@@ -13,15 +13,8 @@ import com.capstone.laperinapp.helper.Result
 class LoginViewModel(
     private val repository: Repository
 ) : ViewModel() {
-    private val _loginResult = MutableLiveData<Result<LoginResponse>>()
-    val loginResult: LiveData<Result<LoginResponse>> get() = _loginResult
-    val isLoading: LiveData<Boolean> = repository.isLoading
 
-    fun setLogin(email : String, password : String){
-        viewModelScope.launch {
-            repository.setLogin(email, password)
-        }
-    }
+    fun setLogin(email : String, password : String) = repository.setLogin(email, password)
 
     fun saveSession(user: UserModel) {
         viewModelScope.launch {

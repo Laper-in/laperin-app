@@ -40,37 +40,41 @@ class RegisterActivity : AppCompatActivity() {
             edAlamatLengkap.addTextChangedListener(textWatcher)
         }
 
-        binding.btRegister.setOnClickListener {
-            val username = binding.edUsername.text.toString()
-            val email = binding.edNamaLengkap.text.toString()
-            val fullname = binding.edEmailRegister.text.toString()
-            val password = binding.edPasswordRegister.text.toString()
-            val alamat = binding.edAlamatLengkap.text.toString()
-            val telephone = binding.edTtl.text.toString().toIntOrNull() ?: 0
-
-            viewModel.registerUser(username, email, fullname, password, "", alamat, telephone)
-        }
-        observeRegistrationResult()
+        binding.btRegister.setOnClickListener { onClickRegister() }
     }
-    private fun observeRegistrationResult() {
-        viewModel.registrationResult.observe(this, { result ->
+
+    private fun onClickRegister() {
+        val username = binding.edUsername.text.toString()
+        val email = binding.edNamaLengkap.text.toString()
+        val fullname = binding.edEmailRegister.text.toString()
+        val password = binding.edPasswordRegister.text.toString()
+        val alamat = binding.edAlamatLengkap.text.toString()
+        val telephone = binding.edTtl.text.toString().toInt()
+
+        Toast.makeText(this, "clicked : $username", Toast.LENGTH_SHORT).show()
+
+        observeRegistrationResult(username, email, fullname, password, "", alamat, telephone)
+    }
+
+    private fun observeRegistrationResult(uername: String, email: String, fullname: String, password: String, picture: String, alamat: String, telephone: Int) {
+        viewModel.registerUser(uername, email, fullname, password, picture, alamat, telephone).observe(this) { result ->
             when (result) {
+                is Result.Loading -> {
+                    showLoading(true)
+                }
                 is Result.Success -> {
-                    Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
+                    showLoading(false)
+                    Toast.makeText(this, "Registrasi Berhasil", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 }
                 is Result.Error -> {
+                    showLoading(false)
                     Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
-                is Result.Loading -> {
-                    viewModel.isLoading.observe(this) { isLoading ->
-                        showLoading(isLoading)
-                    }
-                }
             }
-        })
+        }
+
     }
 
 

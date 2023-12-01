@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -29,9 +30,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btDaftarLogin.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
+        binding.btDaftarLogin.setOnClickListener { onClickRegister() }
 
         binding.apply {
             buttonLogin = btMasukLogin
@@ -41,38 +40,45 @@ class LoginActivity : AppCompatActivity() {
             edPasswordLogin.addTextChangedListener(textWatcher)
         }
 
-        binding.btMasukLogin.setOnClickListener {
-            val email = binding.edEmailLogin.text.toString()
-            val password = binding.edPasswordLogin.text.toString()
+        binding.btMasukLogin.setOnClickListener { onClickLogin() }
 
-            viewModel.setLogin(email,password)
-        }
-
-        observeLoginResult()
     }
 
-    private fun observeLoginResult() {
-        viewModel.loginResult.observe(this, { result ->
+    private fun onClickLogin() {
+        val email = binding.edEmailLogin.text.toString()
+        val password = binding.edPasswordLogin.text.toString()
+
+        observeLoginResult(email, password)
+    }
+
+    private fun onClickRegister() {
+        startActivity(Intent(this, RegisterActivity::class.java))
+        finish()
+    }
+
+    private fun observeLoginResult(email: String, password: String) {
+        viewModel.setLogin(email, password).observe(this) { result ->
             when (result) {
                 is Result.Success -> {
-                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    showLoading(false)
+                    val token = result.data.token
+                    val user = UserModel(email, token, true)
+                    viewModel.saveSession(user)
+                    ViewModelFactory.clearInstance()
+                    startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
+
                 is Result.Error -> {
+                    showLoading(false)
                     Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
+
                 is Result.Loading -> {
-                    viewModel.isLoading.observe(this) { isLoading ->
-                        showLoading(isLoading)
-                    }
+                    showLoading(true)
                 }
             }
-        })
-    }
-    private fun saveSession(user: UserModel) {
-        viewModel.saveSession(user)
+        }
     }
 
     private val textWatcher = object : TextWatcher {
@@ -97,6 +103,7 @@ class LoginActivity : AppCompatActivity() {
             buttonLogin.isEnabled = email.isNotEmpty() && password.isNotEmpty()
         }
     }
+
     private fun showLoading(isLoading: Boolean) {
         runOnUiThread {
             if (isLoading) {
