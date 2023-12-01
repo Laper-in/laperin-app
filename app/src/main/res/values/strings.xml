@@ -8,7 +8,9 @@
     <string name="lupa_sandi">Lupa kata sandi?</string>
     <string name="password_minimum_character">Kata sandi harus minimal 8 karakter</string>
     <string name="nama_lengkap"> Nama Lengkap</string>
+    <string name="username">Username</string>
     <string name="masukkan_ulang_password">Masukkan Ulang Password</string>
     <string name="masukkan_alamat_lengkap">Masukkan Alamat Lengkap</string>
     <string name="ttl">TTL</string>
+    <string name="input_invalid">Input Invalid</string>
 </resources>

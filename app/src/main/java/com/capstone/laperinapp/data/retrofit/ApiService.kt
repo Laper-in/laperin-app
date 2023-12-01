@@ -4,6 +4,7 @@ import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.LoginResponse
 import com.capstone.laperinapp.data.response.RegisterResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -13,19 +14,26 @@ import retrofit2.http.POST
 interface ApiService {
 
     @FormUrlEncoded
-    @POST("login")
+    @POST("users/signin")
     fun login(
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<LoginResponse>
+    ): Response<LoginResponse>
 
     @FormUrlEncoded
-    @POST("register")
-    fun register(
-        @Field("name") name: String,
+    @POST("users")
+    suspend fun register(
+        @Field("username") username: String,
         @Field("email") email: String,
-        @Field("password") password: String
-    ): Call<RegisterResponse>
+        @Field("fullname") fullname: String,
+        @Field("password") password: String,
+        @Field("picture") picture: String,
+        @Field("alamat") alamat: String,
+        @Field("telephone") telephone: Int,
+
+    ): Response<RegisterResponse>
+
+
 
     @GET("users/{id}")
     fun getDetailUser(

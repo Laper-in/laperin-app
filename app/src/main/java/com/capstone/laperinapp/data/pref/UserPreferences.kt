@@ -10,6 +10,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
 class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
@@ -18,7 +19,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         dataStore.edit { preferences ->
             preferences[EMAIL_KEY] = user.email
             preferences[TOKEN_KEY] = user.token
-            preferences[IS_LOGIN_KEY] = true
+            preferences[IS_LOGIN_KEY] = user.isLogin
         }
     }
 
