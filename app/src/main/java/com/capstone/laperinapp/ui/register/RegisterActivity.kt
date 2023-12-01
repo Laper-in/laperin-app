@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.capstone.laperinapp.helper.Result
@@ -13,6 +14,7 @@ import com.capstone.laperinapp.ui.customView.ButtonRegister
 import com.capstone.laperinapp.databinding.ActivityRegisterBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.login.LoginActivity
+import com.capstone.laperinapp.ui.welcome.WelcomeActivity
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -33,11 +35,8 @@ class RegisterActivity : AppCompatActivity() {
             buttonRegister.isEnabled = false
             edUsername.addTextChangedListener(textWatcher)
             edEmailRegister.addTextChangedListener(textWatcher)
-            edNamaLengkap.addTextChangedListener(textWatcher)
             edPasswordRegister.addTextChangedListener(textWatcher)
             edUlangPassword.addTextChangedListener(textWatcher)
-            edTtl.addTextChangedListener(textWatcher)
-            edAlamatLengkap.addTextChangedListener(textWatcher)
         }
 
         binding.btRegister.setOnClickListener { onClickRegister() }
@@ -45,19 +44,14 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun onClickRegister() {
         val username = binding.edUsername.text.toString()
-        val email = binding.edNamaLengkap.text.toString()
-        val fullname = binding.edEmailRegister.text.toString()
+        val email = binding.edEmailRegister.text.toString()
         val password = binding.edPasswordRegister.text.toString()
-        val alamat = binding.edAlamatLengkap.text.toString()
-        val telephone = binding.edTtl.text.toString().toInt()
 
-        Toast.makeText(this, "clicked : $username", Toast.LENGTH_SHORT).show()
-
-        observeRegistrationResult(username, email, fullname, password, "", alamat, telephone)
+        observeRegistrationResult(username, email, password)
     }
 
-    private fun observeRegistrationResult(uername: String, email: String, fullname: String, password: String, picture: String, alamat: String, telephone: Int) {
-        viewModel.registerUser(uername, email, fullname, password, picture, alamat, telephone).observe(this) { result ->
+    private fun observeRegistrationResult(username: String, email: String, password: String) {
+        viewModel.registerUser(username, email, password).observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading(true)
@@ -65,12 +59,16 @@ class RegisterActivity : AppCompatActivity() {
                 is Result.Success -> {
                     showLoading(false)
                     Toast.makeText(this, "Registrasi Berhasil", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    val intent = Intent(this, WelcomeActivity::class.java)
+                    intent.putExtra(WelcomeActivity.EXTRA_EMAIL, email)
+                    intent.putExtra(WelcomeActivity.EXTRA_PASSWORD, password)
+                    startActivity(intent)
                     finish()
                 }
                 is Result.Error -> {
                     showLoading(false)
                     Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                    Log.i("Regis", "observeRegistrationResult: ${result.error}")
                 }
             }
         }
@@ -96,17 +94,14 @@ class RegisterActivity : AppCompatActivity() {
         binding.apply {
             val username = edUsername.text.toString()
             val email = edEmailRegister.text.toString()
-            val namaLengkap = edNamaLengkap.text.toString()
             val password = edPasswordRegister.text.toString()
             val ulangPassword = edUlangPassword.text.toString()
-            val ttl = edTtl.text.toString()
-            val alamatLengkap = edAlamatLengkap.text.toString()
 
             val isUsernameValid = username.length >= 5
 
             buttonRegister.isEnabled =
-                isUsernameValid && email.isNotEmpty() && namaLengkap.isNotEmpty() &&
-                        password.isNotEmpty() && ulangPassword.isNotEmpty() && ttl.isNotEmpty() && alamatLengkap.isNotEmpty()
+                isUsernameValid && email.isNotEmpty() &&
+                        password.isNotEmpty() && ulangPassword.isNotEmpty()
         }
     }
 

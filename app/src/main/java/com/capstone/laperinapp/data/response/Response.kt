@@ -30,45 +30,15 @@ data class RegisterResponse(
 @Parcelize
 data class Data(
 
-	@field:SerializedName("updatedBy")
-	val updatedBy: Int,
-
-	@field:SerializedName("telephone")
-	val telephone: Int,
-
-	@field:SerializedName("picture")
-	val picture: String,
-
-	@field:SerializedName("alamat")
-	val alamat: String,
-
-	@field:SerializedName("createdAt")
-	val createdAt: String,
-
 	@field:SerializedName("password")
 	val password: String,
-
-	@field:SerializedName("isDeleted")
-	val isDeleted: Boolean,
-
-	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("fullname")
-	val fullname: String,
 
 	@field:SerializedName("email")
 	val email: String,
 
-	@field:SerializedName("isPro")
-	val isPro: Boolean,
-
-
 	@field:SerializedName("username")
 	val username: String,
 
-	@field:SerializedName("updatedAt")
-	val updatedAt: String
 ) : Parcelable
 
 @Parcelize

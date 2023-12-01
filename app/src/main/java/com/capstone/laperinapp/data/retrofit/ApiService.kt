@@ -21,15 +21,11 @@ interface ApiService {
     ): Response<LoginResponse>
 
     @FormUrlEncoded
-    @POST("users")
+    @POST("users/signup")
     suspend fun register(
         @Field("username") username: String,
         @Field("email") email: String,
-        @Field("fullname") fullname: String,
         @Field("password") password: String,
-        @Field("picture") picture: String,
-        @Field("alamat") alamat: String,
-        @Field("telephone") telephone: Int,
 
     ): Response<RegisterResponse>
 

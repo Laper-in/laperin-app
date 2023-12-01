@@ -5,14 +5,24 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide.init
 import com.capstone.laperinapp.MainActivity
 import com.capstone.laperinapp.R
+import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.databinding.ActivityWelcomeBinding
+import com.capstone.laperinapp.helper.Result
+import com.capstone.laperinapp.helper.ViewModelFactory
 
 class WelcomeActivity : AppCompatActivity() {
+
+    private val viewModel by viewModels<WelcomeViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     private lateinit var binding: ActivityWelcomeBinding
     private lateinit var adapter: WelcomeAdapter
@@ -27,11 +37,46 @@ class WelcomeActivity : AppCompatActivity() {
         binding.btnNext.setOnClickListener { onClickNext() }
         binding.btnSkip.setOnClickListener { onClickSkip() }
 
+        setupLayout()
+        setupViewPager()
+        setupLogin()
+
+    }
+
+    private fun setupLogin() {
+        val email = intent.getStringExtra(EXTRA_EMAIL)
+        val password = intent.getStringExtra(EXTRA_PASSWORD)
+
+        if (email != null && password != null){
+            viewModel.login(email, password).observe(this){ result ->
+                when(result){
+                    is Result.Loading -> {
+                        Log.d(TAG, "setupLogin: Loading")
+                    }
+                    is Result.Success -> {
+                        Log.d(TAG, "setupLogin: Success")
+                        val token = result.data.token
+                        val user = UserModel(email, token, true)
+                        viewModel.saveSession(user)
+                        ViewModelFactory.clearInstance()
+                    }
+                    is Result.Error -> {
+                        Log.d(TAG, "setupLogin: Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupLayout() {
         layouts = intArrayOf(
             R.layout.slide_1,
             R.layout.slide_2,
             R.layout.slide_3
         )
+    }
+
+    private fun setupViewPager() {
         adapter = WelcomeAdapter(layouts, this)
         binding.viewPager.adapter = adapter
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
@@ -59,7 +104,6 @@ class WelcomeActivity : AppCompatActivity() {
 
         })
         setDots(0)
-
     }
 
     private fun onClickSkip() {
@@ -94,6 +138,12 @@ class WelcomeActivity : AppCompatActivity() {
         if (dots.isNotEmpty()){
             dots[page]?.setTextColor(getColor(R.color.primary))
         }
+    }
+
+    companion object{
+        const val TAG = "WelcomeActivity"
+        const val EXTRA_EMAIL = "extra_email"
+        const val EXTRA_PASSWORD = "extra_password"
     }
 
 }

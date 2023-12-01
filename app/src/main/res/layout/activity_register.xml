@@ -15,7 +15,8 @@
         android:text="@string/daftar"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/edNama_lengkap"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.capstone.laperinapp.ui.customView.EditText
@@ -28,13 +29,14 @@
         android:inputType="text"
         android:padding="10dp"
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/edNama_lengkap"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvDaftar"
         app:layout_constraintTop_toBottomOf="@+id/tvDaftar" />
 
     <com.capstone.laperinapp.ui.customView.EditText
-        android:id="@+id/edNama_lengkap"
+        android:id="@+id/edEmailRegister"
         style="@style/medium"
         android:layout_width="0dp"
         android:layout_height="52dp"
@@ -51,20 +53,6 @@
         app:layout_constraintTop_toBottomOf="@+id/edUsername" />
 
     <com.capstone.laperinapp.ui.customView.EditText
-        android:id="@+id/edEmail_register"
-        style="@style/medium"
-        android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/nama_lengkap"
-        android:padding="10dp"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/edNama_lengkap"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edNama_lengkap"
-        app:layout_constraintTop_toBottomOf="@+id/edNama_lengkap" />
-
-    <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edPassword_register"
         style="@style/medium"
         android:layout_width="0dp"
@@ -75,10 +63,10 @@
         android:inputType="textPassword"
         android:padding="10dp"
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/edEmail_register"
+        app:layout_constraintEnd_toEndOf="@+id/edEmailRegister"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edEmail_register"
-        app:layout_constraintTop_toBottomOf="@+id/edEmail_register" />
+        app:layout_constraintStart_toStartOf="@+id/edEmailRegister"
+        app:layout_constraintTop_toBottomOf="@+id/edEmailRegister" />
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edUlang_password"
@@ -96,47 +84,18 @@
         app:layout_constraintStart_toStartOf="@+id/edPassword_register"
         app:layout_constraintTop_toBottomOf="@+id/edPassword_register" />
 
-    <com.capstone.laperinapp.ui.customView.EditText
-        android:id="@+id/edAlamat_lengkap"
-        style="@style/medium"
-        android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="12dp"
-        android:hint="@string/masukkan_alamat_lengkap"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/edUlang_password"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edUlang_password"
-        app:layout_constraintTop_toBottomOf="@+id/edUlang_password" />
-
-    <com.capstone.laperinapp.ui.customView.EditText
-        android:id="@+id/edTtl"
-        style="@style/medium"
-        android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="12dp"
-        android:hint="@string/ttl"
-        android:padding="10dp"
-        android:textSize="13sp"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="@+id/edAlamat_lengkap"
-        app:layout_constraintStart_toStartOf="@+id/edAlamat_lengkap"
-        app:layout_constraintTop_toBottomOf="@+id/edAlamat_lengkap" />
-
     <com.capstone.laperinapp.ui.customView.ButtonRegister
         android:id="@+id/btRegister"
         android:layout_width="0dp"
         android:layout_height="52dp"
-        android:layout_marginTop="72dp"
         android:background="@color/primary"
         android:enabled="false"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/edTtl"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bt_masuk_register"
+        app:layout_constraintEnd_toEndOf="@+id/edUlang_password"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edTtl"
-        app:layout_constraintTop_toBottomOf="@+id/edTtl" />
+        app:layout_constraintStart_toStartOf="@+id/edUlang_password" />
 
     <com.capstone.laperinapp.ui.customView.ButtonActivity
         android:id="@+id/bt_masuk_register"
@@ -146,11 +105,11 @@
         android:background="@drawable/rounded_button"
         android:text="@string/masuk"
         android:textColor="@color/primary"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btRegister"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/btRegister"
-        app:layout_constraintTop_toBottomOf="@+id/btRegister"
         app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
