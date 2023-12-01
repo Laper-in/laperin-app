@@ -6,17 +6,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.capstone.laperinapp.data.Repository
 import com.capstone.laperinapp.di.Injection
 import com.capstone.laperinapp.ui.login.LoginViewModel
+import com.capstone.laperinapp.ui.register.RegisterViewModel
 
 class ViewModelFactory private constructor(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(repository) as T
+        return when {
+            modelClass.isAssignableFrom(LoginViewModel::class.java) ->{
+                LoginViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
+                RegisterViewModel(repository) as T
+            }
+             else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
-        throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
-
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null

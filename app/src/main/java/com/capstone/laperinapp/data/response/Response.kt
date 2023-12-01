@@ -63,6 +63,7 @@ data class Data(
 	@field:SerializedName("isPro")
 	val isPro: Boolean,
 
+
 	@field:SerializedName("username")
 	val username: String,
 
@@ -120,6 +121,15 @@ data class DetailUserResponse(
 
 	@field:SerializedName("updatedAt")
 	val updatedAt: String
+
+) : Parcelable
+
+@Parcelize
+data class ErrorResponse (
+	@field:SerializedName("error")
+	val error: Boolean? = null,
+	@field:SerializedName("message")
+	val message: String? = null
 ) : Parcelable
 
 

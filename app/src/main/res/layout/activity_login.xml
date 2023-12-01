@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.16" />
 
     <com.capstone.laperinapp.ui.customView.EditText
-        android:id="@+id/ed_email_login"
+        android:id="@+id/edEmail_login"
         style="@style/medium"
         android:layout_width="309dp"
         android:layout_height="53dp"
@@ -63,10 +63,10 @@
         android:inputType="textPassword"
         android:padding="10dp"
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/ed_email_login"
+        app:layout_constraintEnd_toEndOf="@+id/edEmail_login"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/ed_email_login"
-        app:layout_constraintTop_toBottomOf="@+id/ed_email_login" />
+        app:layout_constraintStart_toStartOf="@+id/edEmail_login"
+        app:layout_constraintTop_toBottomOf="@+id/edEmail_login" />
 
     <TextView
         android:id="@+id/tv_lupasandi"
@@ -112,4 +112,13 @@
         app:layout_constraintTop_toBottomOf="@+id/bt_masuk_login"
         app:layout_constraintVertical_bias="0.0" />
 
+    <ProgressBar
+        android:id="@+id/porgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
