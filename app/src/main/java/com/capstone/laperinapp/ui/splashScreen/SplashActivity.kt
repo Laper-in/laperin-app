@@ -9,7 +9,7 @@ import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
-import com.capstone.laperinapp.MainActivity
+import com.capstone.laperinapp.ui.MainActivity
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.login.LoginActivity

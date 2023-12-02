@@ -16,4 +16,26 @@
     <string name="masukkan_alamat_lengkap">Masukkan Alamat Lengkap</string>
     <string name="ttl">TTL</string>
     <string name="input_invalid">Input Invalid</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profil</string>
+
+    <string-array name="category_name">
+        <item>Popular</item>
+        <item>Popular</item>
+        <item>Popular</item>
+        <item>Popular</item>
+        <item>Popular</item>
+    </string-array>
+
+    <integer-array name="category_icon">
+        <item>@drawable/baseline_local_fire_department_24</item>
+        <item>@drawable/baseline_local_fire_department_24</item>
+        <item>@drawable/baseline_local_fire_department_24</item>
+        <item>@drawable/baseline_local_fire_department_24</item>
+        <item>@drawable/baseline_local_fire_department_24</item>
+    </integer-array>
+
 </resources>

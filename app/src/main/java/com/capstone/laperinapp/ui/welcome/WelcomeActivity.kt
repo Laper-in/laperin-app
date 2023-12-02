@@ -1,7 +1,6 @@
 package com.capstone.laperinapp.ui.welcome
 
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -10,8 +9,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.Glide.init
-import com.capstone.laperinapp.MainActivity
+import com.capstone.laperinapp.ui.MainActivity
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.databinding.ActivityWelcomeBinding

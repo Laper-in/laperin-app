@@ -2,6 +2,7 @@ package com.capstone.laperinapp.data.retrofit
 
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.LoginResponse
+import com.capstone.laperinapp.data.response.RecipesResponses
 import com.capstone.laperinapp.data.response.RegisterResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -26,10 +27,7 @@ interface ApiService {
         @Field("username") username: String,
         @Field("email") email: String,
         @Field("password") password: String,
-
     ): Response<RegisterResponse>
-
-
 
     @GET("users/{id}")
     fun getDetailUser(
@@ -44,5 +42,8 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): Call<DetailUserResponse>
+
+    @GET("recipes")
+    suspend fun getAllRecipes(): Response<RecipesResponses>
 
 }
