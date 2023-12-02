@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.CategoryAdapter
 import com.capstone.laperinapp.adapter.MarginItemDecoration
@@ -63,11 +64,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getData()
+        setupData()
         setupRVRekomendasi()
         setupRVPopular()
         setupRVCategory()
-        setupData()
-        getData()
     }
 
     private fun getData() {
@@ -115,7 +116,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRVPopular(){
-        val layoutManagerPopular = GridLayoutManager(requireActivity(), 2)
+        val layoutManagerPopular = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.rvPopular.layoutManager = layoutManagerPopular
 
         binding.apply {
@@ -130,7 +131,7 @@ class HomeFragment : Fragment() {
         listCategory.addAll(showDataCategory())
         val categoryAdapter = CategoryAdapter(listCategory)
 
-        val layoutManagerCategory = GridLayoutManager(requireActivity(), 4)
+        val layoutManagerCategory = GridLayoutManager(requireActivity(), 5)
 
         binding.apply {
             rvCategory.layoutManager = layoutManagerCategory
@@ -147,19 +148,23 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupSlider(layoutManagerRekomendasi: LinearLayoutManager) {
+        val bindingRef = _binding
+
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(binding.rvRekomendasi)
 
         timer = Timer()
-        timer?.schedule(object : java.util.TimerTask() {
+        timer?.scheduleAtFixedRate(object : java.util.TimerTask() {
             override fun run() {
-                val bindingRef = _binding
-                if (bindingRef?.rvRekomendasi != null){
-                    if (layoutManagerRekomendasi.findLastCompletelyVisibleItemPosition() < (rekomendasiAdapter.itemCount - 1)) {
+                if (bindingRef?.rvRekomendasi != null) {
+                    val currentPosition = layoutManagerRekomendasi.findLastCompletelyVisibleItemPosition()
+                    Log.d(TAG, "posisi sekarang: $currentPosition , jumlah data: ${rekomendasiAdapter.itemCount}")
+
+                    if (currentPosition < (rekomendasiAdapter.itemCount - 1)) {
                         layoutManagerRekomendasi.smoothScrollToPosition(
                             binding.rvRekomendasi,
                             RecyclerView.State(),
-                            layoutManagerRekomendasi.findLastCompletelyVisibleItemPosition() + 1
+                            currentPosition + 1
                         )
                     } else {
                         layoutManagerRekomendasi.smoothScrollToPosition(
@@ -172,6 +177,7 @@ class HomeFragment : Fragment() {
             }
         }, 0, 3000)
     }
+
 
     private fun showDataPopular(data: List<DataRecipes>) {
         popularAdapter.submitList(data)
@@ -232,6 +238,7 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         timer?.cancel()
+        timer = null
     }
 
     companion object {
