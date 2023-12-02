@@ -1,7 +1,10 @@
 package com.capstone.laperinapp.ui.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +22,16 @@ import com.capstone.laperinapp.adapter.MarginItemDecoration
 import com.capstone.laperinapp.adapter.PopularRecipesAdapter
 import com.capstone.laperinapp.adapter.RekomendasiRecipesAdapter
 import com.capstone.laperinapp.data.model.Category
+import com.capstone.laperinapp.data.pref.UserPreference
+import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.DataRecipes
 import com.capstone.laperinapp.databinding.FragmentHomeBinding
+import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.detail.DetailActivity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import java.lang.ref.WeakReference
 import java.util.Timer
 import kotlin.properties.ReadWriteProperty
@@ -39,6 +48,7 @@ class HomeFragment : Fragment() {
 
     private val popularAdapter = PopularRecipesAdapter()
     private val rekomendasiAdapter = RekomendasiRecipesAdapter()
+    private var timer: Timer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,48 +63,65 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
+        setupRVRekomendasi()
+        setupRVPopular()
+        setupRVCategory()
         setupData()
+        getData()
+    }
+
+    private fun getData() {
+        val pref = UserPreference.getInstance(requireActivity().dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val token = user.token
+        binding.tvUsername.text = JWTUtils.getUsername(token)
     }
 
     private fun setupData() {
-        viewModel.getAllRecipes().observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Result.Success -> {
-                    showLoading(false)
-                    showDataPopular(result.data)
-                    showDataRekomendasi(result.data)
-                }
+        if (isAdded) {
+            viewModel.getAllRecipes().observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Result.Success -> {
+                        showLoading(false)
+                        showDataPopular(result.data)
+                        showDataRekomendasi(result.data)
+                    }
 
-                is Result.Error -> {
-                    showLoading(false)
-                    Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
-                    Log.e(TAG, "errorGetData: ${result.error}")
-                }
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
+                        Log.e(TAG, "errorGetData: ${result.error}")
+                    }
 
-                is Result.Loading -> {
-                    showLoading(true)
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
                 }
             }
         }
     }
 
-    private fun setupRecyclerView() {
-        val layoutManagerPopular = GridLayoutManager(requireActivity(), 2)
-        binding.rvPopular.layoutManager = layoutManagerPopular
-
+    private fun setupRVRekomendasi() {
         val layoutManagerRekomendasi =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         val itemDecoration = MarginItemDecoration(50, 50)
 
+        binding.apply {
+            rvRekomendasi.layoutManager = layoutManagerRekomendasi
+            rvRekomendasi.addItemDecoration(itemDecoration)
+        }
+
         setupSlider(layoutManagerRekomendasi)
-        setupRVCategory()
+    }
+
+    private fun setupRVPopular(){
+        val layoutManagerPopular = GridLayoutManager(requireActivity(), 2)
+        binding.rvPopular.layoutManager = layoutManagerPopular
 
         binding.apply {
             rvPopular.layoutManager = layoutManagerPopular
             rvPopular.setHasFixedSize(true)
-            rvRekomendasi.layoutManager = layoutManagerRekomendasi
-            rvRekomendasi.addItemDecoration(itemDecoration)
+            rvPopular.isNestedScrollingEnabled = false
         }
     }
 
@@ -123,8 +150,8 @@ class HomeFragment : Fragment() {
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(binding.rvRekomendasi)
 
-        val timer = Timer()
-        timer.schedule(object : java.util.TimerTask() {
+        timer = Timer()
+        timer?.schedule(object : java.util.TimerTask() {
             override fun run() {
                 val bindingRef = _binding
                 if (bindingRef?.rvRekomendasi != null){
@@ -143,7 +170,7 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-        }, 2000, 6000)
+        }, 0, 3000)
     }
 
     private fun showDataPopular(data: List<DataRecipes>) {
@@ -185,20 +212,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
+        val binding = _binding
+        if (binding != null) {
+            if (isLoading) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
         }
     }
 
     private fun showSelectedItem(data: DataRecipes) {
-        Toast.makeText(requireContext(), data.name, Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireActivity(), DetailActivity::class.java)
+        intent.putExtra(DetailActivity.EXTRA_DATA, data.id)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        timer?.cancel()
     }
 
     companion object {

@@ -40,6 +40,9 @@ class RekomendasiRecipesAdapter() :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
+        holder.itemView.setOnClickListener{
+            onItemClickCallback.onItemClicked(item)
+        }
     }
 
     interface OnItemClickCallback{

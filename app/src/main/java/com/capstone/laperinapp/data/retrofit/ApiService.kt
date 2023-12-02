@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.data.retrofit
 
+import com.capstone.laperinapp.data.response.DetailRecipesResponses
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.LoginResponse
 import com.capstone.laperinapp.data.response.RecipesResponses
@@ -11,6 +12,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -46,4 +48,8 @@ interface ApiService {
     @GET("recipes")
     suspend fun getAllRecipes(): Response<RecipesResponses>
 
+    @GET("recipes/{id}")
+    suspend fun getDetailRecipes(
+        @Path("id") id: String
+    ): Response<DetailRecipesResponses>
 }
