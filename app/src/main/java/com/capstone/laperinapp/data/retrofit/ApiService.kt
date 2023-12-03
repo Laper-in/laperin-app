@@ -1,7 +1,9 @@
 package com.capstone.laperinapp.data.retrofit
 
+import com.capstone.laperinapp.data.response.DetailRecipesResponses
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.LoginResponse
+import com.capstone.laperinapp.data.response.RecipesResponses
 import com.capstone.laperinapp.data.response.RegisterResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -10,6 +12,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -26,10 +29,7 @@ interface ApiService {
         @Field("username") username: String,
         @Field("email") email: String,
         @Field("password") password: String,
-
     ): Response<RegisterResponse>
-
-
 
     @GET("users/{id}")
     fun getDetailUser(
@@ -45,4 +45,11 @@ interface ApiService {
         @Field("password") password: String
     ): Call<DetailUserResponse>
 
+    @GET("recipes")
+    suspend fun getAllRecipes(): Response<RecipesResponses>
+
+    @GET("recipes/{id}")
+    suspend fun getDetailRecipes(
+        @Path("id") id: String
+    ): Response<DetailRecipesResponses>
 }

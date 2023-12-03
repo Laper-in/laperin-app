@@ -65,6 +65,36 @@ class Repository private constructor(
         }
     }
 
+    fun getAllRecipes() = liveData{
+        emit(Result.Loading)
+        try {
+            val response = apiService.getAllRecipes()
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()?.data!!))
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun getDetailRecipes(id: String) = liveData{
+        emit(Result.Loading)
+        try {
+            val response = apiService.getDetailRecipes(id)
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()?.data!!))
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
     companion object{
         @Volatile
         private var instance: Repository? = null

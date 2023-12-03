@@ -102,5 +102,73 @@ data class ErrorResponse (
 	val message: String? = null
 ) : Parcelable
 
+@Parcelize
+data class RecipesResponses(
 
+	@field:SerializedName("data")
+	val data: List<DataRecipes>,
+
+	@field:SerializedName("message")
+	val message: String
+) : Parcelable
+
+@Parcelize
+data class DataRecipes(
+
+	@field:SerializedName("image")
+	val image: String,
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("ingredient")
+	val ingredient: String,
+
+	@field:SerializedName("name")
+	val name: String,
+
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("category")
+	val category: String,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+) : Parcelable
+
+@Parcelize
+data class DetailRecipesResponses(
+
+	@field:SerializedName("data")
+	val data: DataDetailRecipes,
+
+	@field:SerializedName("message")
+	val message: String
+) : Parcelable
+
+@Parcelize
+data class DataDetailRecipes(
+
+	@field:SerializedName("image")
+	val image: String,
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("ingredient")
+	val ingredient: String,
+
+	@field:SerializedName("name")
+	val name: String,
+
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("category")
+	val category: String,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+) : Parcelable
 

@@ -5,11 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.capstone.laperinapp.MainActivity
+import com.capstone.laperinapp.ui.MainActivity
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.databinding.ActivityLoginBinding
