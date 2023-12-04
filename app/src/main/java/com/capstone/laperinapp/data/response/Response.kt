@@ -75,7 +75,7 @@ data class DetailUserResponse(
 	val isDeleted: Boolean,
 
 	@field:SerializedName("id")
-	val id: Int,
+	val id: String,
 
 	@field:SerializedName("fullname")
 	val fullname: String,

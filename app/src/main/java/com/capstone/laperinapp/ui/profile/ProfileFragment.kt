@@ -1,6 +1,7 @@
 package com.capstone.laperinapp.ui.profile
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,7 @@ class ProfileFragment : Fragment() {
         val user = runBlocking { pref.getSession().first() }
         val token = user.token
         val id = JWTUtils.getId(token)
+        Log.i(TAG, "id: $id")
         setupDataUser(id)
     }
     private  fun setupDataUser(id :String?)  {
@@ -54,11 +56,13 @@ class ProfileFragment : Fragment() {
                     is Result.Success -> {
                         showLoading(false)
                         dataUser(result.data)
+                        Log.i(TAG, "setupDataUser: ${result.data}")
                     }
 
                     is Result.Error -> {
                         showLoading(false)
                         Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
+                        Log.e(TAG, "setupDataUser: ${result.error}", )
                     }
 
                     is Result.Loading -> {
@@ -70,7 +74,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun dataUser(data :DetailUserResponse) {
-        binding.tvUsernameProfil.text =data.username
+        binding.tvUsernameProfil.text = data.username
         binding.tvEmail.text = data.email
     }
 
@@ -88,6 +92,10 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "ProfileFragment"
     }
 
 }
