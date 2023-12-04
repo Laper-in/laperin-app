@@ -1,13 +1,10 @@
 package com.capstone.laperinapp.data
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
+import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.ErrorResponse
-import com.capstone.laperinapp.data.response.RegisterResponse
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
 import com.google.gson.Gson
@@ -65,6 +62,7 @@ class Repository private constructor(
         }
     }
 
+
     fun getAllRecipes() = liveData{
         emit(Result.Loading)
         try {
@@ -94,6 +92,21 @@ class Repository private constructor(
             emit(Result.Error(e.message.toString()))
         }
     }
+
+       fun getDetailUser(id :String) = liveData {
+         emit(Result.Loading)
+         try {
+             val response =apiService.getDetailUser(id)
+             if (response.isSuccessful) {
+                 emit(Result.Success(response.body()!!))
+             } else {
+                 val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                 emit(Result.Error(errorResponse.message.toString()))
+             }
+         }catch (e:Exception) {
+             emit(Result.Error(e.message.toString()))
+         }
+     }
 
     companion object{
         @Volatile

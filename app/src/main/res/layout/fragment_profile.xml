@@ -1,13 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary"
     tools:context=".ui.profile.ProfileFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/puan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_profile"
+        style="@style/medium.white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profil"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <ImageButton
+        android:id="@+id/bt_setting_profil"
+        android:layout_width="37dp"
+        android:layout_height="31dp"
+        android:background="@drawable/bg_setting"
+        android:src="@drawable/baseline_settings_24"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toEndOf="@+id/tv_profile"
+        app:layout_constraintTop_toTopOf="@+id/tv_profile"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <TextView
+        android:id="@+id/tv_username_profil"
+        style="@style/medium.light"
+        android:layout_width="95dp"
+        android:layout_height="17dp"
+        android:text="@string/username"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintStart_toEndOf="@+id/iv_profile"
+        app:layout_constraintTop_toTopOf="@+id/iv_profile"
+        app:layout_constraintVertical_bias="0.208" />
+
+    <TextView
+        android:id="@+id/tv_langganan"
+        style="@style/medium.white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_username_profil"
+        app:layout_constraintStart_toEndOf="@+id/tv_username_profil"
+        app:layout_constraintTop_toTopOf="@+id/tv_username_profil"
+        app:layout_constraintVertical_bias="0.285" />
+
+    <TextView
+        android:id="@+id/tv_email"
+        style="@style/medium.light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="email_user"
+        app:layout_constraintEnd_toEndOf="@+id/tv_username_profil"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_username_profil"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username_profil" />
+
+    <TextView
+        android:id="@+id/tv_koleksi"
+        style="@style/medium.light.bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:text="Koleksi"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_profile"
+        app:layout_constraintStart_toStartOf="@+id/tv_profile"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile"
+        app:layout_constraintVertical_bias="0.183" />
+
+    <View
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="581dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_welcome"
+        app:layout_constraintTop_toBottomOf="@+id/iv_profile"
+        tools:layout_editor_absoluteX="-1dp">
+
+    </View>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_koleksi"
+        android:layout_width="360dp"
+        android:layout_height="480dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_koleksi" />
+
+    <ProgressBar
+        android:id="@+id/progresBar_Profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
