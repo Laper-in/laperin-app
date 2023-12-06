@@ -12,6 +12,9 @@
         android:title="Donasi" />
 
     <item
+        android:title="Scan" />
+
+    <item
         android:id="@+id/navigation_history"
         android:icon="@drawable/ic_history_24"
         android:title="History" />
