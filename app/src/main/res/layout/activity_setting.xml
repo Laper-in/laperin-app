@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.setting.SettingActivity">
+
+    <ImageButton
+        android:id="@+id/ibBack_setting"
+        android:layout_width="33dp"
+        android:layout_height="30dp"
+        android:background="@color/material_on_primary_disabled"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_akun"
+        app:layout_constraintEnd_toStartOf="@+id/tv_akun"
+        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_akun"
+        app:layout_constraintVertical_bias="0.333" />
+
+    <TextView
+        android:id="@+id/tv_akun"
+        style="@style/bold.black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Akun"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <ImageButton
+        android:id="@+id/ib_edit_akun"
+        android:layout_width="33dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="80dp"
+        android:background="@color/material_on_primary_disabled"
+        android:src="@drawable/baseline_edit_24"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_akun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.764"
+        app:layout_constraintStart_toEndOf="@+id/tv_akun"
+        app:layout_constraintTop_toTopOf="@+id/tv_akun"
+        app:layout_constraintVertical_bias="0.333" />
+
+        <TextView
+            android:id="@+id/tv_informasi_akun"
+            style="@style/medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Informasi Pengguna"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            app:layout_constraintHorizontal_bias="0.029"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.891" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="344dp"
+        android:layout_height="214dp"
+        android:background="@drawable/bg_detail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.249" />
+
+    <TextView
+        android:id="@+id/tv_title_username"
+        style="@style/bold.black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <TextView
+            android:id="@+id/tv_detail_username"
+            style="@style/medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_title_username"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            app:layout_constraintHorizontal_bias="0.961"
+            app:layout_constraintStart_toEndOf="@+id/tv_title_username"
+            app:layout_constraintTop_toTopOf="@+id/tv_title_username"
+            app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tv_title_email"
+        style="@style/bold.black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Email"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title_username"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_title_username"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_username" />
+
+    <TextView
+        android:id="@+id/tv_detail_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title_email"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.958"
+        app:layout_constraintStart_toEndOf="@+id/tv_title_email"
+        app:layout_constraintTop_toTopOf="@+id/tv_title_email"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_title_fullname"
+        style="@style/bold.black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Fullname"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title_email"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_title_email"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_email" />
+
+    <TextView
+        android:id="@+id/tv_detail_fullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title_fullname"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintStart_toEndOf="@+id/tv_title_fullname"
+        app:layout_constraintTop_toTopOf="@+id/tv_title_fullname"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_title_alamat"
+        style="@style/bold.black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Alamat"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title_fullname"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_title_fullname"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_fullname" />
+
+    <TextView
+        android:id="@+id/tv_detail_alamat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title_alamat"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.972"
+        app:layout_constraintStart_toEndOf="@+id/tv_title_alamat"
+        app:layout_constraintTop_toTopOf="@+id/tv_title_alamat"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_title_telephone"
+        android:layout_width="wrap_content"
+        style="@style/bold.black"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Telephone"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title_alamat"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="@+id/tv_title_alamat"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_alamat" />
+
+    <TextView
+        android:id="@+id/tv_detail_telephone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title_telephone"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toEndOf="@+id/tv_title_telephone"
+        app:layout_constraintTop_toTopOf="@+id/tv_title_telephone"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_title_password"
+        style="@style/bold.black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Password"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title_telephone"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="@+id/tv_title_telephone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_telephone" />
+
+    <ImageView
+        android:id="@+id/tv_detail_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/password"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title_password"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.972"
+        app:layout_constraintStart_toEndOf="@+id/tv_title_password"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_telephone"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tv_akun_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Akun"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/view_logout"
+        app:layout_constraintEnd_toEndOf="@+id/view_logout"
+        app:layout_constraintHorizontal_bias="0.019"
+        app:layout_constraintStart_toStartOf="@+id/view_logout"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view_logout"
+        android:layout_width="344dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_detail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.576" />
+
+    <TextView
+        android:id="@+id/tv_logout"
+        style="@style/bold.black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red_200"
+        android:text="Keluar"
+        app:layout_constraintBottom_toBottomOf="@+id/view_logout"
+        app:layout_constraintEnd_toEndOf="@+id/view_logout"
+        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintStart_toStartOf="@+id/view_logout"
+        app:layout_constraintTop_toTopOf="@+id/view_logout"
+        app:layout_constraintVertical_bias="0.421" />
+
+    <ImageView
+        android:id="@+id/iv_logout"
+        android:layout_width="30dp"
+        android:layout_height="29dp"
+        android:src="@drawable/ic_next"
+        app:layout_constraintBottom_toBottomOf="@+id/view_logout"
+        app:layout_constraintEnd_toEndOf="@+id/view_logout"
+        app:layout_constraintTop_toTopOf="@+id/view_logout" />
+
+    <ProgressBar
+        android:id="@+id/progresbar_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

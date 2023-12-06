@@ -38,12 +38,12 @@ interface ApiService {
 
     @FormUrlEncoded
     @PATCH("users/{id}")
-    fun updateDetailUser(
-        @Field("id") id: String,
+    suspend fun updateDetailUser(
+        @Path("id") id: String,
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<DetailUserResponse>
+    ): Response<DetailUserResponse>
 
     @GET("recipes")
     suspend fun getAllRecipes(): Response<RecipesResponses>

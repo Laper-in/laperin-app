@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.databinding.FragmentProfileBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.setting.SettingActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -40,6 +42,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getData()
+        onClickSetting()
     }
     private fun getData() {
         val pref = UserPreference.getInstance(requireActivity().dataStore)
@@ -70,6 +73,13 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun onClickSetting() {
+        binding.btSettingProfil.setOnClickListener {
+            val intent = Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
         }
     }
 
