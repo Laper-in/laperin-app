@@ -28,7 +28,7 @@ android {
             )
         }
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://spring-ship-404312.et.r.appspot.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://backend-dot-spring-ship-404312.et.r.appspot.com/\"")
 
         }
     }

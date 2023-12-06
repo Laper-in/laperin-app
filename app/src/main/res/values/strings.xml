@@ -23,19 +23,19 @@
     <string name="title_profile">Profil</string>
 
     <string-array name="category_name">
-        <item>Popular</item>
-        <item>Popular</item>
-        <item>Popular</item>
-        <item>Popular</item>
-        <item>Popular</item>
+        <item>Surabaya</item>
+        <item>Medan</item>
+        <item>Malang</item>
+        <item>Denpasar</item>
+        <item>Jogja</item>
     </string-array>
 
     <integer-array name="category_icon">
-        <item>@drawable/baseline_local_fire_department_24</item>
-        <item>@drawable/baseline_local_fire_department_24</item>
-        <item>@drawable/baseline_local_fire_department_24</item>
-        <item>@drawable/baseline_local_fire_department_24</item>
-        <item>@drawable/baseline_local_fire_department_24</item>
+        <item>@drawable/ic_rice_bowl_24</item>
+        <item>@drawable/ic_rice_bowl_24</item>
+        <item>@drawable/ic_rice_bowl_24</item>
+        <item>@drawable/ic_rice_bowl_24</item>
+        <item>@drawable/ic_rice_bowl_24</item>
     </integer-array>
 
 </resources>

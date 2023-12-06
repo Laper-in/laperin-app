@@ -138,6 +138,50 @@ data class DataRecipes(
 ) : Parcelable
 
 @Parcelize
+data class RecipeResponses(
+
+	@field:SerializedName("total_count")
+	val totalCount: Int,
+
+	@field:SerializedName("recipe")
+	val recipe: List<RecipeItem>,
+
+	@field:SerializedName("total_pages")
+	val totalPages: Int
+) : Parcelable
+
+@Parcelize
+data class RecipeItem(
+
+	@field:SerializedName("image")
+	val image: String,
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("ingredient")
+	val ingredient: String,
+
+	@field:SerializedName("urlVideo")
+	val urlVideo: String,
+
+	@field:SerializedName("name")
+	val name: String,
+
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("category")
+	val category: String,
+
+	@field:SerializedName("guide")
+	val guide: String,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+) : Parcelable
+
+@Parcelize
 data class DetailRecipesResponses(
 
 	@field:SerializedName("data")

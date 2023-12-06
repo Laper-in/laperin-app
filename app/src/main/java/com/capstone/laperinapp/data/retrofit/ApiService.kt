@@ -1,8 +1,10 @@
 package com.capstone.laperinapp.data.retrofit
 
+import com.capstone.laperinapp.data.response.DataRecipes
 import com.capstone.laperinapp.data.response.DetailRecipesResponses
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.LoginResponse
+import com.capstone.laperinapp.data.response.RecipeResponses
 import com.capstone.laperinapp.data.response.RecipesResponses
 import com.capstone.laperinapp.data.response.RegisterResponse
 import retrofit2.Call
@@ -13,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -46,7 +49,10 @@ interface ApiService {
     ): Call<DetailUserResponse>
 
     @GET("recipes")
-    suspend fun getAllRecipes(): Response<RecipesResponses>
+    suspend fun getAllRecipes(
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): RecipeResponses
 
     @GET("recipes/{id}")
     suspend fun getDetailRecipes(
