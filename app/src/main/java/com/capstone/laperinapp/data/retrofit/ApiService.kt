@@ -35,9 +35,9 @@ interface ApiService {
     ): Response<RegisterResponse>
 
     @GET("users/{id}")
-    fun getDetailUser(
-        @Field("id") id: String
-    ): Call<DetailUserResponse>
+    suspend fun getDetailUser(
+        @Path("id") id: String
+    ): Response<DetailUserResponse>
 
     @FormUrlEncoded
     @PATCH("users/{id}")

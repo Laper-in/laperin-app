@@ -8,6 +8,7 @@ import com.capstone.laperinapp.di.Injection
 import com.capstone.laperinapp.ui.detail.DetailViewModel
 import com.capstone.laperinapp.ui.home.HomeViewModel
 import com.capstone.laperinapp.ui.login.LoginViewModel
+import com.capstone.laperinapp.ui.profile.ProfileViewModel
 import com.capstone.laperinapp.ui.register.RegisterViewModel
 import com.capstone.laperinapp.ui.splashScreen.SplashViewModel
 import com.capstone.laperinapp.ui.welcome.WelcomeViewModel
@@ -34,6 +35,9 @@ class ViewModelFactory private constructor(private val repository: Repository) :
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(repository) as T
             }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

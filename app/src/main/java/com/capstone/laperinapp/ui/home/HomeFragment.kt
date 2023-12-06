@@ -30,7 +30,6 @@ import com.capstone.laperinapp.data.response.DataRecipes
 import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.databinding.FragmentHomeBinding
 import com.capstone.laperinapp.helper.JWTUtils
-import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.detail.DetailActivity
 import kotlinx.coroutines.flow.first
