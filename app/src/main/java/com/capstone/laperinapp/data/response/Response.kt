@@ -116,7 +116,7 @@ data class RecipesResponses(
 data class DataRecipes(
 
 	@field:SerializedName("image")
-	val image: String,
+	val image: String, //tomat, wortel, bla bla
 
 	@field:SerializedName("createdAt")
 	val createdAt: String,
