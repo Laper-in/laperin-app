@@ -34,17 +34,17 @@
         app:navGraph="@navigation/mobile_navigation" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_camera_24"
-        app:backgroundTint="@color/primary"
-        app:layout_constraintBottom_toTopOf="@id/nav_view"
+        android:id="@+id/fab_scan"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:fabCustomSize="70dp"
+        android:backgroundTint="@color/primary"
+        android:src="@drawable/ic_scan_24"
+        android:scaleType="centerInside"
+        app:maxImageSize="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/nav_view"
         app:layout_constraintTop_toTopOf="@+id/nav_view"
         app:tint="@color/white" />
 
