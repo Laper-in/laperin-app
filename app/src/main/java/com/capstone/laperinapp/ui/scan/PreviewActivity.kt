@@ -13,7 +13,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.capstone.laperinapp.databinding.ActivityPreviewBinding
-import com.capstone.laperinapp.ml.Resnet50Coba2
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
@@ -60,34 +59,34 @@ class PreviewActivity : AppCompatActivity() {
 
     private fun predictionImage() {
 
-        var tensorImage = TensorImage(DataType.FLOAT32)
-        tensorImage.load(bitmap)
-
-        tensorImage = imageProcessor.process(tensorImage)
-
-        val model = Resnet50Coba2.newInstance(this)
-
-        val inputFeature0 =
-            TensorBuffer.createFixedSize(intArrayOf(1, 640, 640, 3), DataType.FLOAT32)
-        inputFeature0.loadBuffer(tensorImage.buffer)
-
-        val outputs = model.process(inputFeature0)
-        val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
-        val outputFeature1 = outputs.outputFeature1AsTensorBuffer.floatArray
-        val outputFeature2 = outputs.outputFeature2AsTensorBuffer.floatArray
-        val outputFeature3 = outputs.outputFeature3AsTensorBuffer.floatArray
-
-        var maxIdxFeature0 = 0
-        outputFeature0.forEachIndexed { index, fl ->
-            if (outputFeature0[maxIdxFeature0] < fl) {
-                maxIdxFeature0 = index
-            }
-        }
-
-        Log.i(TAG, "predictionImage: ${labels[maxIdxFeature0]}")
-        Toast.makeText(this, labels[maxIdxFeature0], Toast.LENGTH_SHORT).show()
-
-        model.close()
+//        var tensorImage = TensorImage(DataType.FLOAT32)
+//        tensorImage.load(bitmap)
+//
+//        tensorImage = imageProcessor.process(tensorImage)
+//
+//        val model = Resnet50Coba2.newInstance(this)
+//
+//        val inputFeature0 =
+//            TensorBuffer.createFixedSize(intArrayOf(1, 640, 640, 3), DataType.FLOAT32)
+//        inputFeature0.loadBuffer(tensorImage.buffer)
+//
+//        val outputs = model.process(inputFeature0)
+//        val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
+//        val outputFeature1 = outputs.outputFeature1AsTensorBuffer.floatArray
+//        val outputFeature2 = outputs.outputFeature2AsTensorBuffer.floatArray
+//        val outputFeature3 = outputs.outputFeature3AsTensorBuffer.floatArray
+//
+//        var maxIdxFeature0 = 0
+//        outputFeature0.forEachIndexed { index, fl ->
+//            if (outputFeature0[maxIdxFeature0] < fl) {
+//                maxIdxFeature0 = index
+//            }
+//        }
+//
+//        Log.i(TAG, "predictionImage: ${labels[maxIdxFeature0]}")
+//        Toast.makeText(this, labels[maxIdxFeature0], Toast.LENGTH_SHORT).show()
+//
+//        model.close()
     }
 
     @Suppress("DEPRECATION")
