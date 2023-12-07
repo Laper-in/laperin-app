@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.capstone.laperinapp.data.Repository
 import com.capstone.laperinapp.di.Injection
 import com.capstone.laperinapp.ui.detail.DetailViewModel
+import com.capstone.laperinapp.ui.editProfile.EditViewModel
 import com.capstone.laperinapp.ui.home.HomeViewModel
 import com.capstone.laperinapp.ui.login.LoginViewModel
 import com.capstone.laperinapp.ui.profile.ProfileViewModel
@@ -38,6 +39,9 @@ class ViewModelFactory private constructor(private val repository: Repository) :
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(EditViewModel::class.java) -> {
+                EditViewModel(repository) as T
             }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

@@ -41,12 +41,15 @@ interface ApiService {
 
     @FormUrlEncoded
     @PATCH("users/{id}")
-    fun updateDetailUser(
-        @Field("id") id: String,
-        @Field("name") name: String,
+    suspend fun updateDetailUser(
+        @Path("id") id: String,
+        @Field("password") password: String,
         @Field("email") email: String,
-        @Field("password") password: String
-    ): Call<DetailUserResponse>
+        @Field("fullname") fullname: String,
+        @Field("picture") picture: String,
+        @Field("alamat") alamat: String,
+        @Field("telephone") telephone: Int
+    ):  Response<DetailUserResponse>
 
     @GET("recipes")
     suspend fun getAllRecipes(

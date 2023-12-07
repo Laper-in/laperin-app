@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.capstone.laperinapp.helper.Result
 import androidx.fragment.app.viewModels
 import com.capstone.laperinapp.data.pref.UserPreference
@@ -15,6 +17,8 @@ import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.databinding.FragmentProfileBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.editProfile.EditProfilActivity
+import com.capstone.laperinapp.ui.login.LoginActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -38,7 +42,34 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.ibSetting.setOnClickListener { onClickSetting() }
+        binding.ivLogout.setOnClickListener{
+            onClickLogout()
+        }
         getData()
+    }
+
+    private fun onClickSetting() {
+        val intent = Intent(requireContext(), EditProfilActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun onClickLogout() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle("Konfirmasi Keluar")
+        alertDialogBuilder.setMessage("Anda yakin ingin keluar?")
+        alertDialogBuilder.setPositiveButton("Ya") { _, _ ->
+            viewModel.logout()
+
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            requireActivity().finish()
+        }
+        alertDialogBuilder.setNegativeButton("Tidak") { dialog, _ ->
+            dialog.dismiss()
+        }
+        alertDialogBuilder.create().show()
     }
 
     private fun getData() {
@@ -94,6 +125,7 @@ class ProfileFragment : Fragment() {
     }
     companion object {
         private const val TAG = "ProfileFragment"
+        const val EXTRA_EMAIL = "extra_email"
     }
 
 }

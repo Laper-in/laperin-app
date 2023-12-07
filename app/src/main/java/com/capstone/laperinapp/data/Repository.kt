@@ -94,20 +94,36 @@ class Repository private constructor(
         }
     }
 
-    fun getDetailUser(id: String) = liveData {
+    fun getDetailUser(id :String) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getDetailUser(id)
+            val response =apiService.getDetailUser(id)
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()!!))
             } else {
                 val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 emit(Result.Error(errorResponse.message.toString()))
             }
-        } catch (e: Exception) {
+        }catch (e:Exception) {
             emit(Result.Error(e.message.toString()))
         }
     }
+
+    fun updateDataUser(id:String,password: String,email: String,fullname :String ,picture :String,alamat :String,telephone :Int) =
+        liveData {
+            emit(Result.Loading)
+            try {
+                val response = apiService.updateDetailUser(id, password, email, fullname, picture, alamat, telephone)
+                if (response.isSuccessful) {
+                    emit(Result.Success(response.body()!!))
+                } else {
+                    val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                    emit(Result.Error(errorResponse.message.toString()))
+                }
+            } catch (e:Exception) {
+                emit(Result.Error(e.message.toString()))
+            }
+        }
 
     companion object{
         @Volatile
