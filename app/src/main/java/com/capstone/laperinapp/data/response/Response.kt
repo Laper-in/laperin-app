@@ -216,3 +216,120 @@ data class DataDetailRecipes(
 	val updatedAt: String
 ) : Parcelable
 
+@Parcelize
+data class ClosestDonationsResponses(
+
+	@field:SerializedName("total_count")
+	val totalCount: Int,
+
+	@field:SerializedName("closestDonations")
+	val closestDonations: List<ClosestDonationsItem>,
+
+	@field:SerializedName("total_pages")
+	val totalPages: Int,
+
+	@field:SerializedName("current_page")
+	val currentPage: Int
+) : Parcelable
+
+@Parcelize
+data class ClosestDonationsItem(
+
+	@field:SerializedName("image")
+	val image: String,
+
+	@field:SerializedName("distance")
+	val distance: Int,
+
+	@field:SerializedName("description")
+	val description: String,
+
+	@field:SerializedName("lon")
+	val lon: Double,
+
+	@field:SerializedName("idDonation")
+	val idDonation: String,
+
+	@field:SerializedName("idUser")
+	val idUser: String,
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("total")
+	val total: Int,
+
+	@field:SerializedName("name")
+	val name: String,
+
+	@field:SerializedName("category")
+	val category: String,
+
+	@field:SerializedName("lat")
+	val lat: Double,
+
+	@field:SerializedName("username")
+	val username: String,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+) : Parcelable
+
+@Parcelize
+data class DonationsResponses(
+
+	@field:SerializedName("donations")
+	val donations: List<DonationsItem>,
+
+	@field:SerializedName("total_count")
+	val totalCount: Int,
+
+	@field:SerializedName("total_pages")
+	val totalPages: Int,
+
+	@field:SerializedName("current_page")
+	val currentPage: Int
+) : Parcelable
+
+@Parcelize
+data class DonationsItem(
+
+	@field:SerializedName("image")
+	val image: String,
+
+	@field:SerializedName("distance")
+	val distance: Double,
+
+	@field:SerializedName("description")
+	val description: String,
+
+	@field:SerializedName("lon")
+	val lon: Double,
+
+	@field:SerializedName("idDonation")
+	val idDonation: String,
+
+	@field:SerializedName("idUser")
+	val idUser: String,
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("total")
+	val total: Int,
+
+	@field:SerializedName("name")
+	val name: String,
+
+	@field:SerializedName("category")
+	val category: String,
+
+	@field:SerializedName("lat")
+	val lat: Double,
+
+	@field:SerializedName("username")
+	val username: String,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+) : Parcelable

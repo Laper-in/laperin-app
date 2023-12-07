@@ -6,9 +6,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
+import com.capstone.laperinapp.data.paging.DonationsPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
+import com.capstone.laperinapp.data.response.ClosestDonationsItem
+import com.capstone.laperinapp.data.response.DonationsItem
 import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.helper.Result
@@ -92,6 +96,28 @@ class Repository private constructor(
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
         }
+    }
+
+    fun getClosestDonation(longitude: Double, latitude: Double): LiveData<PagingData<ClosestDonationsItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                ClosestDonationsPagingSource(apiService, longitude, latitude)
+            }
+        ).liveData
+    }
+
+    fun getAllDonations(): LiveData<PagingData<DonationsItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                DonationsPagingSource(apiService)
+            }
+        ).liveData
     }
 
     companion object{

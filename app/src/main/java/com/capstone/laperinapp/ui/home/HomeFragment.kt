@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -100,8 +101,7 @@ class HomeFragment : Fragment() {
 
         binding.apply {
             rvPopular.layoutManager = layoutManagerPopular
-            rvPopular.setHasFixedSize(true)
-            rvPopular.isNestedScrollingEnabled = false
+//            rvPopular.isNestedScrollingEnabled = false
         }
     }
 
@@ -181,6 +181,7 @@ class HomeFragment : Fragment() {
                 rekomendasiAdapter.retry()
             }
         )
+
         viewModel.getAllRecipes().observe(viewLifecycleOwner) {
             rekomendasiAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
