@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.CategoryAdapter
+import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.adapter.MarginItemDecoration
 import com.capstone.laperinapp.adapter.PopularRecipesAdapter
 import com.capstone.laperinapp.adapter.RekomendasiRecipesAdapter
@@ -26,6 +28,7 @@ import com.capstone.laperinapp.data.model.Category
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.DataRecipes
+import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.databinding.FragmentHomeBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.Result
@@ -65,10 +68,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getData()
-        setupData()
         setupRVRekomendasi()
         setupRVPopular()
         setupRVCategory()
+        showDataPopular()
+        showDataRekomendasi()
     }
 
     private fun getData() {
@@ -76,30 +80,6 @@ class HomeFragment : Fragment() {
         val user = runBlocking { pref.getSession().first() }
         val token = user.token
         binding.tvUsername.text = JWTUtils.getUsername(token)
-    }
-
-    private fun setupData() {
-        if (isAdded) {
-            viewModel.getAllRecipes().observe(viewLifecycleOwner) { result ->
-                when (result) {
-                    is Result.Success -> {
-                        showLoading(false)
-                        showDataPopular(result.data)
-                        showDataRekomendasi(result.data)
-                    }
-
-                    is Result.Error -> {
-                        showLoading(false)
-                        Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
-                        Log.e(TAG, "errorGetData: ${result.error}")
-                    }
-
-                    is Result.Loading -> {
-                        showLoading(true)
-                    }
-                }
-            }
-        }
     }
 
     private fun setupRVRekomendasi() {
@@ -121,8 +101,7 @@ class HomeFragment : Fragment() {
 
         binding.apply {
             rvPopular.layoutManager = layoutManagerPopular
-            rvPopular.setHasFixedSize(true)
-            rvPopular.isNestedScrollingEnabled = false
+//            rvPopular.isNestedScrollingEnabled = false
         }
     }
 
@@ -131,7 +110,7 @@ class HomeFragment : Fragment() {
         listCategory.addAll(showDataCategory())
         val categoryAdapter = CategoryAdapter(listCategory)
 
-        val layoutManagerCategory = GridLayoutManager(requireActivity(), 5)
+        val layoutManagerCategory = GridLayoutManager(requireActivity(), listCategory.size)
 
         binding.apply {
             rvCategory.layoutManager = layoutManagerCategory
@@ -179,24 +158,37 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun showDataPopular(data: List<DataRecipes>) {
-        popularAdapter.submitList(data)
-        binding.rvPopular.adapter = popularAdapter
+    private fun showDataPopular() {
+        binding.rvPopular.adapter = popularAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                popularAdapter.retry()
+            }
+        )
+        viewModel.getAllRecipes().observe(viewLifecycleOwner) {
+            popularAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
 
         popularAdapter.setOnClickCallback(object : PopularRecipesAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: DataRecipes) {
+            override fun onItemClicked(data: RecipeItem) {
                 showSelectedItem(data)
             }
         })
     }
 
-    private fun showDataRekomendasi(data: List<DataRecipes>) {
-        rekomendasiAdapter.submitList(data)
-        binding.rvRekomendasi.adapter = rekomendasiAdapter
+    private fun showDataRekomendasi() {
+        binding.rvRekomendasi.adapter = rekomendasiAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                rekomendasiAdapter.retry()
+            }
+        )
+
+        viewModel.getAllRecipes().observe(viewLifecycleOwner) {
+            rekomendasiAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
 
         rekomendasiAdapter.setOnClickCallback(object :
             RekomendasiRecipesAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: DataRecipes) {
+            override fun onItemClicked(data: RecipeItem) {
                 showSelectedItem(data)
             }
         })
@@ -228,7 +220,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun showSelectedItem(data: DataRecipes) {
+    private fun showSelectedItem(data: RecipeItem) {
         val intent = Intent(requireActivity(), DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_DATA, data.id)
         startActivity(intent)

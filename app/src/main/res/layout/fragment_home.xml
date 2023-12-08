@@ -18,7 +18,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/linearLayout"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            app:srcCompat="@drawable/avatar" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

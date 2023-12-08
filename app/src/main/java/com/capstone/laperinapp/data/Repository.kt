@@ -1,10 +1,21 @@
 package com.capstone.laperinapp.data
 
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
+import com.capstone.laperinapp.data.paging.DonationsPagingSource
+import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.ErrorResponse
+import com.capstone.laperinapp.data.response.ClosestDonationsItem
+import com.capstone.laperinapp.data.response.DonationsItem
+import com.capstone.laperinapp.data.response.ErrorResponse
+import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
 import com.google.gson.Gson
@@ -62,20 +73,15 @@ class Repository private constructor(
         }
     }
 
-
-    fun getAllRecipes() = liveData{
-        emit(Result.Loading)
-        try {
-            val response = apiService.getAllRecipes()
-            if (response.isSuccessful) {
-                emit(Result.Success(response.body()?.data!!))
-            } else {
-                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                emit(Result.Error(errorResponse.message.toString()))
+    fun getAllRecipes(): LiveData<PagingData<RecipeItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                RecipesPagingSource(apiService)
             }
-        } catch (e: Exception) {
-            emit(Result.Error(e.message.toString()))
-        }
+        ).liveData
     }
 
     fun getDetailRecipes(id: String) = liveData{
@@ -127,6 +133,27 @@ class Repository private constructor(
         }
     }
 
+    fun getClosestDonation(longitude: Double, latitude: Double): LiveData<PagingData<ClosestDonationsItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                ClosestDonationsPagingSource(apiService, longitude, latitude)
+            }
+        ).liveData
+    }
+
+    fun getAllDonations(): LiveData<PagingData<DonationsItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                DonationsPagingSource(apiService)
+            }
+        ).liveData
+    }
 
     companion object{
         @Volatile

@@ -28,7 +28,7 @@ android {
             )
         }
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://spring-ship-404312.et.r.appspot.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://backend-dot-spring-ship-404312.et.r.appspot.com/\"")
 
         }
     }
@@ -42,6 +42,7 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        mlModelBinding = true
     }
 }
 
@@ -64,14 +65,19 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.1")
 
     //Room
-    implementation("androidx.room:room-paging:2.6.0")
-    implementation("androidx.room:room-ktx:2.6.0")
-    implementation("androidx.room:room-runtime:2.6.0")
+    implementation("androidx.room:room-paging:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.1.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.3.0")
     testImplementation("junit:junit:4.13.2")
     //ksp("androidx.room:room-compiler:2.6.0")
+
+    //Tensorflow
 
     //UI
     implementation("androidx.core:core-ktx:1.12.0")
@@ -83,6 +89,15 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("androidx.exifinterface:exifinterface:1.3.6")
+
+    //Maps
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    //CameraX
+    val cameraxVersion = "1.3.0"
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
 
     //Maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")

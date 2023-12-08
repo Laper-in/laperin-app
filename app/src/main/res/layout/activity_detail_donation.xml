@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.detail.DetailActivity">
+    tools:context=".ui.donasi.detail.DetailDonationActivity">
 
     <ImageView
         android:id="@+id/img_detail"
@@ -74,11 +74,11 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <TextView
-            android:id="@+id/tv_ingredients_title"
+            android:id="@+id/tv_description_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Ingredients"
+            android:text="Description"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -87,39 +87,17 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_kategori" />
 
         <TextView
-            android:id="@+id/tv_ingredients"
+            android:id="@+id/tv_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
-            android:text="Ingredients"
+            android:text="Description"
             android:textColor="@color/white"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_ingredients_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_title" />
-
-        <TextView
-            android:id="@+id/tv_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Video Tutorial"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_ingredients" />
+            app:layout_constraintStart_toStartOf="@+id/tv_description_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_description_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
