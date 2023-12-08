@@ -89,6 +89,9 @@ dependencies {
 
     implementation("androidx.exifinterface:exifinterface:1.3.6")
 
+    //Maps
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
     //CameraX
     val cameraxVersion = "1.3.0"
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
