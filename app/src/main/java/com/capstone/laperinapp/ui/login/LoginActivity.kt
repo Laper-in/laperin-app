@@ -8,11 +8,11 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.capstone.laperinapp.ui.MainActivity
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.databinding.ActivityLoginBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.MainActivity
 import com.capstone.laperinapp.ui.customView.ButtonLogin
 import com.capstone.laperinapp.ui.register.RegisterActivity
 

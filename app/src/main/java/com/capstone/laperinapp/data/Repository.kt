@@ -1,6 +1,5 @@
 package com.capstone.laperinapp.data
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -11,6 +10,8 @@ import com.capstone.laperinapp.data.paging.DonationsPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
+import com.capstone.laperinapp.data.response.DetailUserResponse
+import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.data.response.DonationsItem
 import com.capstone.laperinapp.data.response.ErrorResponse
@@ -89,6 +90,40 @@ class Repository private constructor(
             val response = apiService.getDetailRecipes(id)
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()?.data!!))
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+       fun getDetailUser(id :String) = liveData {
+         emit(Result.Loading)
+         try {
+             val response =apiService.getDetailUser(id)
+             if (response.isSuccessful) {
+                 emit(Result.Success(response.body()!!))
+             } else {
+                 val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                 emit(Result.Error(errorResponse.message.toString()))
+             }
+         }catch (e:Exception) {
+             emit(Result.Error(e.message.toString()))
+         }
+     }
+
+    fun editProfile(id: String, name: String, email: String, password: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.updateDetailUser(id, name, email, password)
+            if (response.isSuccessful) {
+                // Jika perubahan profil berhasil, simpan perubahan ke data akun lokal
+                val updatedUser = response.body()!!
+                saveSession(UserModel(updatedUser.email, updatedUser.id, true))
+
+                emit(Result.Success(updatedUser))
             } else {
                 val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 emit(Result.Error(errorResponse.message.toString()))
