@@ -46,7 +46,8 @@ class ViewModelFactory private constructor(private val repository: Repository) :
                 SettingViewModel(repository) as T
             }
             modelClass.isAssignableFrom(EditViewModel::class.java) -> {
-                EditViewModel(repository)  as T
+                EditViewModel(repository) as T
+            }
             modelClass.isAssignableFrom(DonasiViewModel::class.java) -> {
                 DonasiViewModel(repository) as T
             }

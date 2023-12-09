@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.data
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -14,7 +15,6 @@ import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.data.response.DonationsItem
-import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
