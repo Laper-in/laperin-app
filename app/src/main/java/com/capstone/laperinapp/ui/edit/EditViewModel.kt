@@ -11,6 +11,7 @@ class EditViewModel (private var repository: Repository) :ViewModel(){
     fun editDataUser(id :String, fullname: String,picture :String, alamat :String, telephone :Int ) =
         repository.editProfile(id, fullname, picture, alamat, telephone)
 
+
 //    fun saveSession(user: UserModel) {
 //        viewModelScope.launch {
 //            repository.saveSession(user)

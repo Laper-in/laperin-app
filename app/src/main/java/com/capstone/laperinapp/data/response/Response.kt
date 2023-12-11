@@ -51,7 +51,7 @@ data class DetailUserResponse(
 	val updatedBy: Int,
 
 	@field:SerializedName("telephone")
-	val telephone: Int,
+	val telephone: Long,
 
 	@field:SerializedName("picture")
 	val picture: String,
@@ -93,6 +93,24 @@ data class DetailUserResponse(
 	val updatedAt: String
 
 ) : Parcelable
+
+data class EditProfileResponse(
+
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("fullname")
+	val fullname: String,
+
+	@field:SerializedName("picture")
+	val picture: String,
+
+	@field:SerializedName("alamat")
+	val alamat: String,
+
+	@field:SerializedName("telephone")
+	val telephone: Int,
+)
 
 @Parcelize
 data class ErrorResponse (

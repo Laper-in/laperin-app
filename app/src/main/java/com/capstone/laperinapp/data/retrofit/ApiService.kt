@@ -4,6 +4,7 @@ import com.capstone.laperinapp.data.response.ClosestDonationsResponses
 import com.capstone.laperinapp.data.response.DetailRecipesResponses
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.DonationsResponses
+import com.capstone.laperinapp.data.response.EditProfileResponse
 import com.capstone.laperinapp.data.response.LoginResponse
 import com.capstone.laperinapp.data.response.RecipeResponses
 import com.capstone.laperinapp.data.response.RegisterResponse

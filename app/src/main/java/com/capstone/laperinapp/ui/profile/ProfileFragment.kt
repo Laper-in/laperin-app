@@ -77,6 +77,7 @@ class ProfileFragment : Fragment() {
         val user = runBlocking { pref.getSession().first() }
         val token = user.token
         val id = JWTUtils.getId(token)
+        Log.i(TAG, "token: $token")
         Log.i(TAG, "id: $id")
         setupDataUser(id)
     }

@@ -69,19 +69,22 @@ class EditProfile : AppCompatActivity(), OnImageSelectedListener {
             val picture = selectedImageUri.toString()
             val alamat = binding.edEditAlamat.text.toString()
             val telephoneString = binding.edEditTelephone.text.toString()
-            val telephone = if (telephoneString.isNotBlank()) {
-                val formattedTelephone = if (telephoneString.startsWith("62")) {
-                    telephoneString
-                } else {
-                    "62$telephoneString"
-                }
-                formattedTelephone.toInt()
-            } else {
-                0
-            }
-            editDataUser(id, fullname, picture, alamat, telephone)
+            val telephone = validateTelephone(telephoneString)
+            editDataUser(id, fullname, picture, alamat, telephone.toInt())
+            Log.d(TAG, "fixEditUser: $telephone")
         } else {
             Toast.makeText(this, "Harap lengkapi semua data terlebih dahulu", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun validateTelephone(telephone: String): Long {
+        return if (telephone.isNotEmpty() && telephone.startsWith("62")) {
+            telephone.toLong()
+        } else if (telephone.isNotEmpty() && telephone.startsWith("0")) {
+            val formattedNumber = telephone.replaceFirst("0", "62")
+            formattedNumber.toLong()
+        } else {
+            0
         }
     }
 
@@ -162,6 +165,7 @@ class EditProfile : AppCompatActivity(), OnImageSelectedListener {
         }
     }
     companion object {
+        private const val TAG = "EditProfile"
         private const val REQUIRED_PERMISSIONS = Manifest.permission.CAMERA
         const val EXTRA_PROFILE = "EditProfile"
         private const val REQUEST_EDIT_PICTURE = 123

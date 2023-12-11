@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
@@ -152,6 +153,8 @@ class Repository private constructor(
     }
 
     companion object{
+        private const val TAG = "Repository"
+
         @Volatile
         private var instance: Repository? = null
         fun getInstance(
