@@ -54,8 +54,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
     //Datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")

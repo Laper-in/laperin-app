@@ -4,6 +4,7 @@ import com.capstone.laperinapp.data.response.ClosestDonationsResponses
 import com.capstone.laperinapp.data.response.DetailRecipesResponses
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.DonationsResponses
+import com.capstone.laperinapp.data.response.EditProfileResponse
 import com.capstone.laperinapp.data.response.LoginResponse
 import com.capstone.laperinapp.data.response.RecipeResponses
 import com.capstone.laperinapp.data.response.RegisterResponse
@@ -43,9 +44,10 @@ interface ApiService {
     @PATCH("users/{id}")
     suspend fun updateDetailUser(
         @Path("id") id: String,
-        @Field("name") name: String,
-        @Field("email") email: String,
-        @Field("password") password: String
+        @Field("fullname") fullname: String,
+        @Field("picture") picture: String,
+        @Field("alamat") alamat: String,
+        @Field("telephone") telephone: Int
     ): Response<DetailUserResponse>
 
     @GET("recipes")

@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
@@ -114,21 +115,17 @@ class Repository private constructor(
          }
      }
 
-    fun editProfile(id: String, name: String, email: String, password: String) = liveData {
+    fun editProfile(id:String, fullname: String,picture :String, alamat :String, telephone :Int ) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.updateDetailUser(id, name, email, password)
+            val response =apiService.updateDetailUser(id, fullname, picture, alamat, telephone)
             if (response.isSuccessful) {
-                // Jika perubahan profil berhasil, simpan perubahan ke data akun lokal
-                val updatedUser = response.body()!!
-                saveSession(UserModel(updatedUser.email, updatedUser.id, true))
-
-                emit(Result.Success(updatedUser))
+                emit(Result.Success(response.body()!!))
             } else {
                 val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 emit(Result.Error(errorResponse.message.toString()))
             }
-        } catch (e: Exception) {
+        }catch (e:Exception) {
             emit(Result.Error(e.message.toString()))
         }
     }
@@ -156,6 +153,8 @@ class Repository private constructor(
     }
 
     companion object{
+        private const val TAG = "Repository"
+
         @Volatile
         private var instance: Repository? = null
         fun getInstance(
