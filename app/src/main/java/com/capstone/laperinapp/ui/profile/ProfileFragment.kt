@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.capstone.laperinapp.helper.Result
 import androidx.fragment.app.viewModels
 import com.capstone.laperinapp.data.pref.UserPreference
@@ -16,12 +17,12 @@ import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.databinding.FragmentProfileBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
-import com.capstone.laperinapp.ui.setting.SettingActivity
+import com.capstone.laperinapp.ui.edit.EditProfile
+import com.capstone.laperinapp.ui.login.LoginActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class ProfileFragment : Fragment() {
-
 
     private val viewModel by viewModels<ProfileViewModel> {
         ViewModelFactory.getInstance(requireActivity())
@@ -41,9 +42,36 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.ibSetting.setOnClickListener { onClickSetting() }
+        binding.ivLogout.setOnClickListener{
+            onClickLogout()
+        }
         getData()
-        onClickSetting()
     }
+
+    private fun onClickSetting() {
+        val intent = Intent(requireContext(), EditProfile::class.java)
+        startActivity(intent)
+    }
+
+    private fun onClickLogout() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle("Konfirmasi Keluar")
+        alertDialogBuilder.setMessage("Anda yakin ingin keluar?")
+        alertDialogBuilder.setPositiveButton("Ya") { _, _ ->
+            viewModel.logout()
+
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            requireActivity().finish()
+        }
+        alertDialogBuilder.setNegativeButton("Tidak") { dialog, _ ->
+            dialog.dismiss()
+        }
+        alertDialogBuilder.create().show()
+    }
+
     private fun getData() {
         val pref = UserPreference.getInstance(requireActivity().dataStore)
         val user = runBlocking { pref.getSession().first() }
@@ -52,6 +80,7 @@ class ProfileFragment : Fragment() {
         Log.i(TAG, "id: $id")
         setupDataUser(id)
     }
+
     private  fun setupDataUser(id :String?)  {
         if (id != null) {
             viewModel.getUser(id).observe(viewLifecycleOwner) { result ->
@@ -61,7 +90,6 @@ class ProfileFragment : Fragment() {
                         dataUser(result.data)
                         Log.i(TAG, "setupDataUser: ${result.data}")
                     }
-
                     is Result.Error -> {
                         showLoading(false)
                         Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
@@ -76,25 +104,24 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun onClickSetting() {
-        binding.btSettingProfil.setOnClickListener {
-            val intent = Intent(requireContext(), SettingActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun dataUser(data :DetailUserResponse) {
+    private fun dataUser(data : DetailUserResponse) {
         binding.tvUsernameProfil.text = data.username
-        binding.tvEmail.text = data.email
+        binding.tvEmailUser.text = data.email
+        binding.tvDetailUsername.text= data.username
+        binding.tvDetailEmail.text= data.email
+        binding.tvDetailFullname.text = data.fullname
+        binding.tvDetailAlamat.text= data.alamat
+        binding.tvDetailTelephone.text = data.telephone.toInt().toString()
+
     }
 
     private fun showLoading(isLoading: Boolean) {
         val binding = _binding
         if (binding != null) {
             if (isLoading) {
-                binding.progresBarProfile.visibility = View.VISIBLE
+                binding.progressBarProfile.visibility = View.VISIBLE
             } else {
-                binding.progresBarProfile.visibility = View.GONE
+                binding.progressBarProfile.visibility = View.GONE
             }
         }
     }
@@ -103,9 +130,8 @@ class ProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
     companion object {
         private const val TAG = "ProfileFragment"
+        const val ACTION_PROFILE_UPDATED = "ActionProfile"
     }
-
 }

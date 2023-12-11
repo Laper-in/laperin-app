@@ -43,9 +43,10 @@ interface ApiService {
     @PATCH("users/{id}")
     suspend fun updateDetailUser(
         @Path("id") id: String,
-        @Field("name") name: String,
-        @Field("email") email: String,
-        @Field("password") password: String
+        @Field("fullname") fullname: String,
+        @Field("picture") picture: String,
+        @Field("alamat") alamat: String,
+        @Field("telephone") telephone: Int
     ): Response<DetailUserResponse>
 
     @GET("recipes")

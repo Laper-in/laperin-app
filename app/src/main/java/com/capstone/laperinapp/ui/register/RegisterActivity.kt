@@ -39,16 +39,28 @@ class RegisterActivity : AppCompatActivity() {
             edUlangPassword.addTextChangedListener(textWatcher)
         }
 
+        binding.btMasukRegister.setOnClickListener { onClickLogin() }
         binding.btRegister.setOnClickListener { onClickRegister() }
+    }
+
+    private fun onClickLogin() {
+        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+        finish()
     }
 
     private fun onClickRegister() {
         val username = binding.edUsername.text.toString()
         val email = binding.edEmailRegister.text.toString()
         val password = binding.edPasswordRegister.text.toString()
+        val ulangPassword = binding.edUlangPassword.text.toString()
 
-        observeRegistrationResult(username, email, password)
+        if (ulangPassword == password) {
+            observeRegistrationResult(username, email, password)
+        } else {
+            Toast.makeText(this, "Password tidak cocok", Toast.LENGTH_SHORT).show()
+        }
     }
+
 
     private fun observeRegistrationResult(username: String, email: String, password: String) {
         viewModel.registerUser(username, email, password).observe(this) { result ->
@@ -72,7 +84,6 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
 
@@ -102,10 +113,9 @@ class RegisterActivity : AppCompatActivity() {
             buttonRegister.isEnabled =
                 isUsernameValid && email.isNotEmpty() &&
                         password.isNotEmpty() && ulangPassword.isNotEmpty()
+
         }
     }
-
-
 
     private fun showLoading(isLoading: Boolean) {
         runOnUiThread {
