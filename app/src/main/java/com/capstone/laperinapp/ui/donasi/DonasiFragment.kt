@@ -17,12 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.laperinapp.adapter.ClosestDonationAdapter
 import com.capstone.laperinapp.adapter.DonationAdapter
 import com.capstone.laperinapp.adapter.LoadingStateAdapter
+import com.capstone.laperinapp.data.pref.UserPreference
+import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.databinding.FragmentDonasiBinding
+import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
 import com.capstone.laperinapp.ui.donasi.detail.DetailDonationActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class DonasiFragment : Fragment() {
 
@@ -35,6 +41,8 @@ class DonasiFragment : Fragment() {
     }
     
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var userLatitude: Double = 0.0
+    private var userLongitude: Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +61,22 @@ class DonasiFragment : Fragment() {
         
         getCurrentLocation()
         setupDataAll()
+
+        binding.btnAddDonasi.setOnClickListener { moveToAddDonation() }
+    }
+
+    private fun moveToAddDonation() {
+        val pref = UserPreference.getInstance(requireActivity().dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val token = user.token
+        val id = JWTUtils.getId(token)
+        val username = JWTUtils.getUsername(token)
+        val intent = Intent(requireActivity(), AddDonasiActivity::class.java)
+        intent.putExtra(AddDonasiActivity.EXTRA_ID, id)
+        intent.putExtra(AddDonasiActivity.EXTRA_USERNAME, username)
+        intent.putExtra(AddDonasiActivity.EXTRA_LATITUDE, userLatitude)
+        intent.putExtra(AddDonasiActivity.EXTRA_LONGITUDE, userLongitude)
+        startActivity(intent)
     }
 
     private fun setupDataAll() {
@@ -100,6 +124,9 @@ class DonasiFragment : Fragment() {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     setupDataClosest(location.longitude, location.latitude)
+                    userLatitude = location.latitude
+                    userLongitude = location.longitude
+
                 } else {
                     Toast.makeText(requireContext(), "Lokasi tidak ditemukan, Coba lagi", Toast.LENGTH_SHORT).show()
                 }
