@@ -95,7 +95,6 @@
             app:layout_constraintTop_toBottomOf="@+id/searchBar">
 
 
-
         </androidx.recyclerview.widget.RecyclerView>
 
         <TextView

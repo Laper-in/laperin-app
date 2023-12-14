@@ -1,13 +1,14 @@
 package com.capstone.laperinapp.ui.detail
 
-import android.annotation.SuppressLint
-import android.nfc.NfcAdapter.EXTRA_DATA
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
+import com.capstone.laperinapp.data.favorite.entity.Favorite
 import com.capstone.laperinapp.data.response.DataDetailRecipes
 import com.capstone.laperinapp.databinding.ActivityDetailBinding
 import com.capstone.laperinapp.helper.Result
@@ -21,15 +22,38 @@ class DetailActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+    private lateinit var recipesFavorit: Favorite
+    private var ingredient: String? = null
+    private var image: String? = null
+    private var namerecipes: String? = null
+    private var category: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         configToolbar()
+
         val id = intent.getStringExtra(EXTRA_DATA)
         getData(id)
 
+        binding.btFavorite.setOnClickListener {
+            if (id != null && id != "") {
+                recipesFavorit = Favorite(
+                    name = namerecipes ?: "",
+                    image = image ?: "",
+                    category = category ?: "",
+                    ingredient = ingredient ?: ""
+                )
+                viewModel.insertFavorite(recipesFavorit)
+                binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.primary))
+            }
+        }
+
+        viewModel.findFavorite(id ?: "") {
+            binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.black))
+        }
     }
 
     private fun configToolbar() {
@@ -37,7 +61,7 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setTitle("")
+        supportActionBar?.title = ""
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
 
         toolbar.setOnMenuItemClickListener { menuItem ->
@@ -46,7 +70,6 @@ class DetailActivity : AppCompatActivity() {
                     Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show()
                     true
                 }
-
                 else -> false
             }
         }
@@ -54,15 +77,15 @@ class DetailActivity : AppCompatActivity() {
 
     private fun getData(id: String?) {
         if (id != null) {
-            viewModel.getRecipeById(id).observe(this){ result ->
-                when(result){
+            viewModel.getRecipeById(id).observe(this) { result ->
+                when (result) {
                     is Result.Success -> {
                         showLoading(false)
                         setupData(result.data)
                     }
                     is Result.Error -> {
                         showLoading(false)
-                        Toast.makeText(this, "detailError : ${result.error}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "detailError: ${result.error}", Toast.LENGTH_SHORT).show()
                     }
                     is Result.Loading -> {
                         showLoading(true)
@@ -76,19 +99,17 @@ class DetailActivity : AppCompatActivity() {
         Glide.with(this)
             .load(data.image)
             .into(binding.imgDetail)
+
         binding.apply {
             tvTitle.text = data.name
             tvKategori.text = data.category
             tvIngredients.text = data.ingredient
+
         }
     }
 
     private fun showLoading(state: Boolean) {
-        if (state) {
-            binding.progressBar.visibility = android.view.View.VISIBLE
-        } else {
-            binding.progressBar.visibility = android.view.View.GONE
-        }
+        binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     override fun onSupportNavigateUp(): Boolean {

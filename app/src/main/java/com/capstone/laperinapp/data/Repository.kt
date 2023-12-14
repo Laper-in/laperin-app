@@ -1,18 +1,18 @@
 package com.capstone.laperinapp.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.capstone.laperinapp.data.favorite.entity.Favorite
+import com.capstone.laperinapp.data.favorite.room.DbModule
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
 import com.capstone.laperinapp.data.paging.DonationsPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
-import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.data.response.DonationsItem
@@ -26,7 +26,19 @@ import kotlinx.coroutines.flow.Flow
 class Repository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference,
+    private val db : DbModule
 ){
+
+    fun findFavoriteById(name: String): Favorite? {
+        return db.recipesDao.findById(name)
+    }
+    fun insertFavorite(favorite: Favorite) {
+        db.recipesDao.insert(favorite)
+    }
+
+    fun deleteFavorite(favorite: Favorite) {
+        db.recipesDao.delete(favorite)
+    }
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
@@ -90,7 +102,7 @@ class Repository private constructor(
         try {
             val response = apiService.getDetailRecipes(id)
             if (response.isSuccessful) {
-                emit(Result.Success(response.body()?.data!!))
+                emit(Result.Success(response.body()?.data ?: throw IllegalStateException("Data is null")))
             } else {
                 val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 emit(Result.Error(errorResponse.message.toString()))
@@ -160,9 +172,10 @@ class Repository private constructor(
         fun getInstance(
             apiService: ApiService,
             userPreference: UserPreference,
+            db: DbModule
         ): Repository =
             instance ?: synchronized(this){
-                instance ?: Repository(apiService, userPreference)
+                instance ?: Repository(apiService, userPreference,db)
             }.also { instance = it }
 
         fun clearInstance(){

@@ -2,6 +2,8 @@ package com.capstone.laperinapp.di
 
 import android.content.Context
 import com.capstone.laperinapp.data.Repository
+import com.capstone.laperinapp.data.favorite.room.DbModule
+import com.capstone.laperinapp.data.favorite.room.FavoriteRoom
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.retrofit.ApiConfig
@@ -13,6 +15,8 @@ object Injection {
         val pref = UserPreference.getInstance(context.dataStore)
         val user = runBlocking { pref.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token)
-        return Repository.getInstance(apiService, pref)
+        val dbModule = DbModule(context)
+
+        return Repository.getInstance(apiService, pref, dbModule)
     }
 }

@@ -164,6 +164,7 @@ class EditProfile : AppCompatActivity(), OnImageSelectedListener {
             }
         }
     }
+
     companion object {
         private const val TAG = "EditProfile"
         private const val REQUIRED_PERMISSIONS = Manifest.permission.CAMERA

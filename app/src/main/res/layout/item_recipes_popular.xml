@@ -5,7 +5,8 @@
     android:minHeight="180dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:id="@+id/cv_item_popular">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
