@@ -38,19 +38,6 @@ class DetailActivity : AppCompatActivity() {
         val id = intent.getStringExtra(EXTRA_DATA)
         getData(id)
 
-        binding.btFavorite.setOnClickListener {
-            if (id != null && id != "") {
-                recipesFavorit = Favorite(
-                    name = namerecipes ?: "",
-                    image = image ?: "",
-                    category = category ?: "",
-                    ingredient = ingredient ?: ""
-                )
-                viewModel.insertFavorite(recipesFavorit)
-                binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.primary))
-            }
-        }
-
         viewModel.findFavorite(id ?: "") {
             binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.black))
         }
@@ -82,6 +69,7 @@ class DetailActivity : AppCompatActivity() {
                     is Result.Success -> {
                         showLoading(false)
                         setupData(result.data)
+                        onClickFavorite(result.data)
                     }
                     is Result.Error -> {
                         showLoading(false)
@@ -91,6 +79,40 @@ class DetailActivity : AppCompatActivity() {
                         showLoading(true)
                     }
                 }
+            }
+        }
+    }
+
+    private fun onClickFavorite(data: DataDetailRecipes) {
+        var isInFavorite = false
+        recipesFavorit = Favorite(
+            data.id,
+            data.image,
+            data.name,
+            data.category,
+            data.ingredient,
+            "",
+            ""
+        )
+        viewModel.getAllFavorite().observe(this) { favorite ->
+            if (favorite != null) {
+                for (fav in favorite) {
+                    isInFavorite = favorite.any { it.id == data.id }
+                    if (isInFavorite) {
+                        binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.black))
+                        true
+                    } else {
+                        binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.white))
+                        false
+                    }
+                }
+            }
+        }
+        binding.btFavorite.setOnClickListener {
+            if (isInFavorite) {
+                viewModel.deleteFavorite(recipesFavorit)
+            } else {
+                viewModel.insertFavorite(recipesFavorit)
             }
         }
     }

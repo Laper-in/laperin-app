@@ -6,8 +6,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.capstone.laperinapp.data.favorite.dao.FavoriteDao
 import com.capstone.laperinapp.data.favorite.entity.Favorite
-import com.capstone.laperinapp.data.favorite.room.DbModule
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
 import com.capstone.laperinapp.data.paging.DonationsPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
@@ -26,18 +26,22 @@ import kotlinx.coroutines.flow.Flow
 class Repository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference,
-    private val db : DbModule
+    private val favoriteDao : FavoriteDao
 ){
 
-    fun findFavoriteById(name: String): Favorite? {
-        return db.recipesDao.findById(name)
+    fun findFavoriteById(id: String): Favorite? {
+        return favoriteDao.findById(id)
     }
     fun insertFavorite(favorite: Favorite) {
-        db.recipesDao.insert(favorite)
+        favoriteDao.insert(favorite)
     }
 
     fun deleteFavorite(favorite: Favorite) {
-        db.recipesDao.delete(favorite)
+        favoriteDao.delete(favorite)
+    }
+
+    fun getAllFavorite(): LiveData<List<Favorite>> {
+        return favoriteDao.getAllFavorite()
     }
 
     suspend fun saveSession(user: UserModel) {
@@ -172,10 +176,10 @@ class Repository private constructor(
         fun getInstance(
             apiService: ApiService,
             userPreference: UserPreference,
-            db: DbModule
+            favoriteDao: FavoriteDao
         ): Repository =
             instance ?: synchronized(this){
-                instance ?: Repository(apiService, userPreference,db)
+                instance ?: Repository(apiService, userPreference, favoriteDao)
             }.also { instance = it }
 
         fun clearInstance(){
