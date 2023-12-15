@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     //id("com.google.devtools.ksp")
+    id("kotlin-kapt")
     id("kotlin-parcelize")
 }
 
@@ -76,6 +77,7 @@ dependencies {
     implementation("org.tensorflow:tensorflow-lite-gpu:2.3.0")
     testImplementation("junit:junit:4.13.2")
     //ksp("androidx.room:room-compiler:2.6.0")
+    kapt ("androidx.room:room-compiler:2.6.1")
 
     //Tensorflow
 

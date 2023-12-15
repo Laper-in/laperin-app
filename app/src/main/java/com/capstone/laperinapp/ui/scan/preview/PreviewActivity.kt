@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.ui.scan
+package com.capstone.laperinapp.ui.scan.preview
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,10 +10,13 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.net.toUri
+import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.capstone.laperinapp.databinding.ActivityPreviewBinding
+import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ml.Mobilev2Data498
+import com.capstone.laperinapp.ui.scan.result.ResultActivity
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
@@ -31,6 +34,10 @@ class PreviewActivity : AppCompatActivity() {
     private lateinit var imageProcessor: ImageProcessor
     private lateinit var labels: List<String>
 
+    private val viewModel by viewModels<PreviewViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPreviewBinding.inflate(layoutInflater)
@@ -40,7 +47,7 @@ class PreviewActivity : AppCompatActivity() {
 
         labels = application.assets.open("labels.txt").bufferedReader().readLines()
 
-        binding.btnLanjutkan.setOnClickListener { predictionImage() }
+        binding.btnLanjutkan.setOnClickListener { onClickLanjutkan() }
     }
 
     private fun imageProcessor() {
@@ -51,13 +58,18 @@ class PreviewActivity : AppCompatActivity() {
     }
 
     private fun onClickLanjutkan() {
+        val result = ScanResult(
+            0,
+            predictionImage()
+        )
+        viewModel.insertResult(result)
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra(ResultActivity.EXTRA_RESULT, currentImageUri.toString())
         startActivity(intent)
         finish()
     }
 
-    private fun predictionImage() {
+    private fun predictionImage(): String {
 
         var tensorImage = TensorImage(DataType.FLOAT32)
         tensorImage.load(bitmap)
@@ -83,10 +95,9 @@ class PreviewActivity : AppCompatActivity() {
             }
         }
 
-        Log.i(TAG, "predictionImage: ${labels[maxIdxFeature0]}")
-        Toast.makeText(this, labels[maxIdxFeature0], Toast.LENGTH_SHORT).show()
-
         model.close()
+
+        return labels[maxIdxFeature0]
     }
 
     @Suppress("DEPRECATION")

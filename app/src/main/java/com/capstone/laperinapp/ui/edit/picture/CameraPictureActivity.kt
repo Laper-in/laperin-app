@@ -16,12 +16,9 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.capstone.laperinapp.R
-import com.capstone.laperinapp.databinding.ActivityCameraBinding
 import com.capstone.laperinapp.databinding.ActivityCameraPictureBinding
 import com.capstone.laperinapp.helper.createCustomTempFile
 import com.capstone.laperinapp.ui.edit.EditProfile
-import com.capstone.laperinapp.ui.scan.PreviewActivity
 
 class CameraPictureActivity : AppCompatActivity() {
 

@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
 import com.capstone.laperinapp.data.paging.DonationsPagingSource
+import com.capstone.laperinapp.data.paging.IngredientsPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
@@ -16,9 +17,13 @@ import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.data.response.DonationsItem
+import com.capstone.laperinapp.data.response.IngredientItem
+import com.capstone.laperinapp.data.response.IngredientsItem
 import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
+import com.capstone.laperinapp.data.room.result.dao.ResultDao
+import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 
@@ -26,6 +31,7 @@ import kotlinx.coroutines.flow.Flow
 class Repository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference,
+    private val scanDao: ResultDao
 ){
 
     suspend fun saveSession(user: UserModel) {
@@ -151,6 +157,32 @@ class Repository private constructor(
             }
         ).liveData
     }
+    fun getAllIngredients(): LiveData<PagingData<IngredientsItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                IngredientsPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+    fun getAllResult(): LiveData<List<ScanResult>> {
+        return scanDao.getAllResult()
+    }
+
+    fun insertResult(result: ScanResult) {
+        scanDao.insert(result)
+    }
+
+    fun deleteAllResult() {
+        scanDao.deleteAllResult()
+    }
+
+    fun deleteResultById(result: ScanResult) {
+        scanDao.deleteById(result)
+    }
 
     companion object{
         private const val TAG = "Repository"
@@ -160,9 +192,10 @@ class Repository private constructor(
         fun getInstance(
             apiService: ApiService,
             userPreference: UserPreference,
+            scanDao: ResultDao
         ): Repository =
             instance ?: synchronized(this){
-                instance ?: Repository(apiService, userPreference)
+                instance ?: Repository(apiService, userPreference, scanDao)
             }.also { instance = it }
 
         fun clearInstance(){

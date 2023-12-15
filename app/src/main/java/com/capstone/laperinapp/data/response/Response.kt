@@ -351,3 +351,71 @@ data class DonationsItem(
 	@field:SerializedName("updatedAt")
 	val updatedAt: String
 ) : Parcelable
+
+@Parcelize
+data class SearchResultResponse(
+
+	@field:SerializedName("data")
+	val data: DataIngredient,
+
+	@field:SerializedName("message")
+	val message: String
+) : Parcelable
+
+@Parcelize
+data class DataIngredient(
+
+	@field:SerializedName("total_count")
+	val totalCount: Int,
+
+	@field:SerializedName("total_pages")
+	val totalPages: Int,
+
+	@field:SerializedName("users")
+	val ingredients: List<IngredientItem>
+) : Parcelable
+
+@Parcelize
+data class IngredientItem(
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("name")
+	val name: String,
+
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+) : Parcelable
+
+@Parcelize
+data class IngredientsResponse(
+
+	@field:SerializedName("total_count")
+	val totalCount: Int,
+
+	@field:SerializedName("recipe")
+	val recipe: List<IngredientsItem>,
+
+	@field:SerializedName("total_pages")
+	val totalPages: Int
+) : Parcelable
+
+@Parcelize
+data class IngredientsItem(
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("name")
+	val name: String,
+
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+) : Parcelable
