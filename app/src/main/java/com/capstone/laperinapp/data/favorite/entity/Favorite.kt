@@ -10,10 +10,14 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "favorites")
 @Parcelize
 data class Favorite(
+
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    var id: String,
+
     @ColumnInfo(name = "image")
     var image: String,
 
-    @PrimaryKey
     @ColumnInfo(name = "name")
     var name: String,
 
@@ -22,5 +26,12 @@ data class Favorite(
 
     @ColumnInfo(name = "ingredient")
     var ingredient: String,
+
+    @ColumnInfo(name = "guide")
+    var guide: String,
+
+    @ColumnInfo(name = "urlVideo")
+    var urlVideo: String,
+
 ) : Parcelable
 

@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.data.favorite.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -12,11 +13,11 @@ interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(recipes :Favorite)
 
-    @Query("SELECT * FROM favorites")
-    fun loadAll(): List<Favorite>
+    @Query("SELECT * FROM favorites ORDER BY name ASC")
+    fun getAllFavorite(): LiveData<List<Favorite>>
 
-    @Query("SELECT * FROM favorites WHERE name LIKE :name LIMIT 1")
-    fun findById(name: String): Favorite?
+    @Query("SELECT * FROM favorites WHERE id = :id")
+    fun findById(id: String): Favorite?
 
     @Delete
     fun delete(recipe: Favorite)

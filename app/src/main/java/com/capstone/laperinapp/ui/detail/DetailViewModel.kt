@@ -15,12 +15,14 @@ class DetailViewModel(
     private val repository: Repository): ViewModel() {
     private val _recipes = MutableLiveData<DataDetailRecipes>()
     val recipes : LiveData<DataDetailRecipes> = _recipes
-    val resultInsertFavorite = MutableLiveData<Boolean>()
-    val resultDeleteFavorite = MutableLiveData<Boolean>()
+    private val resultInsertFavorite = MutableLiveData<Boolean>()
+    private val resultDeleteFavorite = MutableLiveData<Boolean>()
 
     fun getRecipeById(id: String) = repository.getDetailRecipes(id)
 
-    private var isFavorite = false
+    var isFavorite = false
+
+    fun getAllFavorite() = repository.getAllFavorite()
 
     fun insertFavorite(favorite: Favorite) {
         viewModelScope.launch {

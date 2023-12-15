@@ -3,6 +3,8 @@ package com.capstone.laperinapp.data.favorite.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.data.favorite.entity.Favorite
@@ -11,95 +13,52 @@ import com.capstone.laperinapp.databinding.ItemRecipesPopularBinding
 import com.capstone.laperinapp.databinding.ItemRecipesRekomendasiBinding
 import com.capstone.laperinapp.ui.detail.DetailActivity
 
-class FavoriteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FavoriteAdapter : ListAdapter<Favorite, FavoriteAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
-    private val TYPE_REKOMENDASI = 1
-    private val TYPE_POPULAR = 2
-    private val listFavorite = ArrayList<Favorite>()
-    fun setListFavorit(favorite: List<Favorite>) {
-        listFavorite.clear()
-        listFavorite.addAll(favorite)
-        notifyDataSetChanged()
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnClickCallback(onItemClickCallback: OnItemClickCallback){
+        this.onItemClickCallback = onItemClickCallback
     }
 
-    inner class FavoriteRekomendasiViewHolder(val binding: ItemRecipesRekomendasiBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-            fun bind(favorite: Favorite) {
-                with(binding) {
-                    tvItemName.text = favorite.name
-                    Glide.with(itemView)
-                        .load(favorite.image)
-                        .centerCrop()
-                        .into(imgItemPhoto)
-                    tvItemCategory.text = favorite.category
-                    cvItemRekomendasi.setOnClickListener{
-                        val intent = Intent(it.context, DetailActivity::class.java)
-                        intent.putExtra(DetailActivity.EXTRA_DATA, favorite.name)
-                        it.context.startActivity(intent)
-                    }
-                }
+    class MyViewHolder(val binding: ItemRecipesPopularBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Favorite){
+            binding.apply {
+                tvItemName.text = item.name
+                Glide.with(itemView.context)
+                    .load(item.image)
+                    .into(imgItemPhoto)
             }
         }
 
-    inner class FavoritePopularViewHolder(val binding: ItemRecipesPopularBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-            fun bind(favorite: Favorite) {
-                with(binding) {
-                    tvItemName.text = favorite.name
-                    Glide.with(itemView)
-                        .load(favorite.image)
-                        .centerCrop()
-                        .into(imgItemPhoto)
-                    tvItemCategory.text= favorite.category
-                    cvItemPopular.setOnClickListener {
-                        val intent = Intent(it.context, DetailActivity::class.java)
-                        intent.putExtra(DetailActivity.EXTRA_DATA, favorite.name)
-                        it.context.startActivity(intent)
-                    }
-                }
-            }
-        }
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            TYPE_REKOMENDASI -> {
-                val binding = ItemRecipesRekomendasiBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                FavoriteRekomendasiViewHolder(binding)
-            }
-            TYPE_POPULAR -> {
-                val binding = ItemRecipesPopularBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                FavoritePopularViewHolder(binding)
-            }
-            else -> throw IllegalArgumentException("Invalid view type")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val binding = ItemRecipesPopularBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
+        holder.itemView.setOnClickListener{
+            onItemClickCallback.onItemClicked(item)
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder.itemViewType) {
-            TYPE_REKOMENDASI -> {
-                (holder as FavoriteRekomendasiViewHolder).bind(listFavorite[position])
+    interface OnItemClickCallback{
+        fun onItemClicked(data: Favorite)
+    }
+
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Favorite>() {
+            override fun areItemsTheSame(oldItem: Favorite, newItem: Favorite): Boolean {
+                return oldItem == newItem
             }
-            TYPE_POPULAR -> {
-                (holder as FavoritePopularViewHolder).bind(listFavorite[position])
+            override fun areContentsTheSame(oldItem: Favorite, newItem: Favorite): Boolean {
+                return oldItem == newItem
             }
         }
     }
 
-    override fun getItemCount(): Int = listFavorite.size
-
-    override fun getItemViewType(position: Int): Int {
-        return when {
-            position < listFavorite.size && listFavorite[position].name.toInt() == TYPE_REKOMENDASI -> TYPE_REKOMENDASI
-            position < listFavorite.size && listFavorite[position].name.toInt() == TYPE_POPULAR -> TYPE_POPULAR
-            else -> throw IllegalArgumentException("Invalid position or item type")
-        }
-    }
 }
