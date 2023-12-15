@@ -23,10 +23,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private lateinit var recipesFavorit: Favorite
-    private var ingredient: String? = null
-    private var image: String? = null
-    private var namerecipes: String? = null
-    private var category: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +35,7 @@ class DetailActivity : AppCompatActivity() {
         getData(id)
 
         viewModel.findFavorite(id ?: "") {
-            binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.black))
+            binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.primary))
         }
     }
 
@@ -94,28 +90,29 @@ class DetailActivity : AppCompatActivity() {
             "",
             ""
         )
+
         viewModel.getAllFavorite().observe(this) { favorite ->
             if (favorite != null) {
-                for (fav in favorite) {
-                    isInFavorite = favorite.any { it.id == data.id }
-                    if (isInFavorite) {
-                        binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.black))
-                        true
-                    } else {
-                        binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.white))
-                        false
-                    }
+                isInFavorite = favorite.any { it.id == data.id }
+                if (isInFavorite) {
+                    binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.primary))
+                } else {
+                    binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.white))
                 }
             }
         }
+
         binding.btFavorite.setOnClickListener {
             if (isInFavorite) {
                 viewModel.deleteFavorite(recipesFavorit)
+                Toast.makeText(this, "Recepi ${data.name} dihapus dari favorit", Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.insertFavorite(recipesFavorit)
+                Toast.makeText(this, "Recepi ${data.name} ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
     private fun setupData(data: DataDetailRecipes) {
         Glide.with(this)

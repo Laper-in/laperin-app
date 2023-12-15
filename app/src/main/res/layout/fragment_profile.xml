@@ -24,7 +24,6 @@
         android:layout_width="45dp"
         android:layout_height="35dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/material_on_primary_disabled"
         android:src="@drawable/baseline_settings_24"
         app:layout_constraintBottom_toBottomOf="@+id/tv_profile"
         app:layout_constraintEnd_toEndOf="parent"

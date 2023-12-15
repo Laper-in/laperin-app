@@ -24,7 +24,7 @@ abstract class FavoriteRoomDatabase : RoomDatabase() {
                         instance = Room.databaseBuilder(
                             context.applicationContext,
                             FavoriteRoomDatabase::class.java, "recipesfavorite.db"
-                        ).allowMainThreadQueries().build()
+                        ).fallbackToDestructiveMigration().build()
                     }
                 }
             }

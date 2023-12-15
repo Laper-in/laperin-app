@@ -13,51 +13,37 @@ import kotlinx.coroutines.withContext
 
 class DetailViewModel(
     private val repository: Repository): ViewModel() {
-    private val _recipes = MutableLiveData<DataDetailRecipes>()
-    val recipes : LiveData<DataDetailRecipes> = _recipes
+
     private val resultInsertFavorite = MutableLiveData<Boolean>()
     private val resultDeleteFavorite = MutableLiveData<Boolean>()
 
     fun getRecipeById(id: String) = repository.getDetailRecipes(id)
 
-    var isFavorite = false
-
     fun getAllFavorite() = repository.getAllFavorite()
 
     fun insertFavorite(favorite: Favorite) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.insertFavorite(favorite)
-            resultInsertFavorite.value = true
+            resultInsertFavorite.postValue(true)
         }
     }
+
 
     fun deleteFavorite(favorite: Favorite) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteFavorite(favorite)
-            resultDeleteFavorite.value = true
+            resultDeleteFavorite.postValue(true)
         }
     }
 
-    fun setFavorite(favorite: Favorite) {
-        viewModelScope.launch {
-            _recipes.value?.let {
-                if (isFavorite) {
-                    repository.deleteFavorite(favorite)
-                    resultDeleteFavorite.value = true
-                } else {
-                    repository.insertFavorite(favorite)
-                    resultInsertFavorite.value = true
-                }
-            }
-            isFavorite = !isFavorite
-        }
-    }
 
-    fun findFavorite(name: String, listenFavorite :() -> Unit) {
-        viewModelScope.launch {
+    fun findFavorite(name: String, listenFavorite: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
             val recipes = repository.findFavoriteById(name)
             if (recipes != null) {
-                listenFavorite()
+                withContext(Dispatchers.Main) {
+                    listenFavorite()
+                }
             }
         }
     }
