@@ -37,6 +37,10 @@ class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    fun setOnImageResultListener(listener: OnImageResultListener) {
+        onImageResultListener = listener
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dialog?.setOnShowListener { dialog ->
             val bottomSheetDialog = dialog as Dialog
@@ -53,15 +57,18 @@ class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         binding.btnCamera.setOnClickListener {
             val intent = Intent(requireContext(), CameraDonationActivity::class.java)
             launcherIntentCameraX.launch(intent)
             dismiss()
         }
-        
+
         binding.btnGalery.setOnClickListener {
-            startGallery()
+            // Ganti pemanggilan startGallery dengan memanggil fungsi setOnImageResultListener
+            onImageResultListener?.let {
+                startGallery(it)
+            }
         }
     }
 
@@ -74,8 +81,11 @@ class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun startGallery(){
-        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    private fun startGallery(onImageResultListener: OnImageResultListener) {
+        // Ganti pemanggilan launcherGallery dengan memanggil listener onImageResultListener
+        launcherGallery.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
     }
 
     private val launcherGallery = registerForActivityResult(

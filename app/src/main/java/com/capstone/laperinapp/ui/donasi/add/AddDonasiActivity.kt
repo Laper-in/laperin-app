@@ -4,9 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -25,6 +27,7 @@ import com.capstone.laperinapp.ui.ModalBottomSheetDialog
 import com.capstone.laperinapp.ui.donasi.camera.CameraDonationActivity
 import com.capstone.laperinapp.ui.donasi.camera.ModalBottomSheetDonationDialog
 import com.capstone.laperinapp.ui.donasi.camera.OnImageResultListener
+import com.capstone.laperinapp.ui.donasi.camera.PreviewDonationActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -58,6 +61,11 @@ class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
     override fun onImageResult(uri: Uri) {
         Log.d(TAG, "onImageResult: $uri")
         currentImageUri = uri
+
+        // Tambahkan logika untuk menampilkan gambar terlebih dahulu di PreviewDonationActivity
+        val intent = Intent(this, PreviewDonationActivity::class.java)
+        intent.putExtra(EXTRA_URI, currentImageUri.toString())
+        startActivityForResult(intent, REQUEST_CODE)
     }
 
     private fun getData() {
@@ -96,8 +104,18 @@ class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
     }
 
     private fun openModal() {
-        val modal = ModalBottomSheetDonationDialog()
-        supportFragmentManager.let { modal.show(it, ModalBottomSheetDonationDialog.TAG) }
+        // Ganti pemanggilan launcherGallery untuk membuka galeri
+        launcherGallery.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI))
+    }
+
+    private val launcherGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+            val uri: Uri? = data?.data
+            showImage(uri)
+        }
     }
 
     private fun sendData(
