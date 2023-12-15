@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.ui.donasi.camera
 
+import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
@@ -12,8 +13,11 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import com.google.android.material.R
 import com.capstone.laperinapp.databinding.LayoutBottomsheetBinding
+import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
+import com.capstone.laperinapp.ui.edit.picture.OnImageSelectedListener
 import com.capstone.laperinapp.ui.scan.CameraActivity
 import com.capstone.laperinapp.ui.scan.PreviewActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -21,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
     private lateinit var binding: LayoutBottomsheetBinding
+    private var onImageResultListener: OnImageResultListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +56,21 @@ class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
         
         binding.btnCamera.setOnClickListener {
             val intent = Intent(requireContext(), CameraDonationActivity::class.java)
-            startActivity(intent)
+            launcherIntentCameraX.launch(intent)
             dismiss()
         }
         
         binding.btnGalery.setOnClickListener {
             startGallery()
+        }
+    }
+
+    private val launcherIntentCameraX = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+            val uri = it.data?.getStringExtra(AddDonasiActivity.EXTRA_URI)?.toUri()
+            onImageResultListener?.onImageResult(uri!!)
         }
     }
 
@@ -68,9 +82,9 @@ class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
         if (uri != null){
-            val intent = Intent(requireContext(), PreviewDonationActivity::class.java)
-            intent.putExtra(PreviewDonationActivity.EXTRA_URI, uri.toString())
-            startActivity(intent)
+            onImageResultListener?.onImageResult(uri)
+            Toast.makeText(requireContext(), "$uri", Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "uri: $uri")
             dismiss()
         } else {
             Log.d(TAG, "photoPicker: No Image Selected")

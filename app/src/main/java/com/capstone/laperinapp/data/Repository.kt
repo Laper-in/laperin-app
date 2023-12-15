@@ -193,8 +193,10 @@ class Repository private constructor(
                 latitude,
                 longitude
             )
+            Log.d(TAG, "createDonation: ${response.message}")
             response
         } catch (e: Exception) {
+            Log.e(TAG, "createDonation: ${e.message}", )
             throw Exception(e.message.toString())
         }
     }

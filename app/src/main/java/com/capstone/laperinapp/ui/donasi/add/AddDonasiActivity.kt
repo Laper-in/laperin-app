@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.ui.donasi.add
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,7 +22,9 @@ import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.helper.reduceFileImage
 import com.capstone.laperinapp.helper.uriToFile
 import com.capstone.laperinapp.ui.ModalBottomSheetDialog
+import com.capstone.laperinapp.ui.donasi.camera.CameraDonationActivity
 import com.capstone.laperinapp.ui.donasi.camera.ModalBottomSheetDonationDialog
+import com.capstone.laperinapp.ui.donasi.camera.OnImageResultListener
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -31,7 +34,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class AddDonasiActivity : AppCompatActivity() {
+class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
 
     private lateinit var binding: ActivityAddDonasiBinding
     private var currentImageUri: Uri? = null
@@ -44,14 +47,17 @@ class AddDonasiActivity : AppCompatActivity() {
         binding = ActivityAddDonasiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val uri = intent.getStringExtra(EXTRA_URI)
         getData()
 
         binding.btnImage.setOnClickListener { openModal() }
         binding.btnRemoveImage.setOnClickListener { showImage(null) }
-        showImage(uri)
 
         setupToolbar()
+    }
+
+    override fun onImageResult(uri: Uri) {
+        Log.d(TAG, "onImageResult: $uri")
+        currentImageUri = uri
     }
 
     private fun getData() {
@@ -119,24 +125,31 @@ class AddDonasiActivity : AppCompatActivity() {
             val multipartBody =
                 MultipartBody.Part.createFormData("image", image.name, requestBodyImage)
 
-            viewModel.sendDonation(
-                requestBodyUserId,
-                requestBodyUsername,
-                requestBodyName,
-                requestBodyDescription,
-                requestBodyCategory,
-                requestBodyTotal,
-                requestBodyLatitude,
-                requestBodyLongitude,
-                multipartBody
-            )
+            lifecycleScope.launch {
+                try {
+                    viewModel.sendDonation(
+                        requestBodyUserId,
+                        requestBodyUsername,
+                        requestBodyName,
+                        requestBodyDescription,
+                        requestBodyCategory,
+                        requestBodyTotal,
+                        requestBodyLongitude,
+                        requestBodyLatitude,
+                        multipartBody
+                    )
+                    finish()
+                } catch (e: Exception) {
+                    Log.e(TAG, "sendData: ${e.message.toString()}")
+                }
+            }
 
         }
 
     }
 
-    private fun showImage(uri: String?) {
-        currentImageUri = uri?.toUri()
+    private fun showImage(uri: Uri?) {
+        currentImageUri = uri
         binding.apply {
             imgPreview.setImageURI(currentImageUri)
             imgPreview.visibility = if (currentImageUri != null) View.VISIBLE else View.GONE
@@ -157,6 +170,7 @@ class AddDonasiActivity : AppCompatActivity() {
         const val EXTRA_URI = "extra_uri"
         const val EXTRA_LONGITUDE = "extra_longitude"
         const val EXTRA_LATITUDE = "extra_latitude"
+        const val REQUEST_CODE = 100
         private const val TAG = "AddDonasiActivity"
     }
 }

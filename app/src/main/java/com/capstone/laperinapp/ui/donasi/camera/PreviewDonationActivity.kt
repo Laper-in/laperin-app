@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import com.capstone.laperinapp.databinding.ActivityPreviewDonationBinding
 import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
@@ -51,9 +52,18 @@ class PreviewDonationActivity : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
     private fun getImage() {
-        val imageUri = intent.getStringExtra(EXTRA_URI)
-        currentImageUri = imageUri?.toUri()
+        val intent = Intent(this, CameraDonationActivity::class.java)
+        launcherIntentCameraX.launch(intent)
         showImage()
+    }
+
+    private val launcherIntentCameraX = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+            currentImageUri = it.data?.getStringExtra(CameraDonationActivity.EXTRA_CAMERAX_IMAGE)?.toUri()
+            showImage()
+        }
     }
 
     private fun showImage() {

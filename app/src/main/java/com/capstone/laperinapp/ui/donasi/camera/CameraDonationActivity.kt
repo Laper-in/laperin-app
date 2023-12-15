@@ -76,9 +76,8 @@ class CameraDonationActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val intent = Intent()
-                    intent.putExtra(AddDonasiActivity.EXTRA_URI, outputFileResults.savedUri.toString())
-                    intent.putExtra(PreviewDonationActivity.EXTRA_URI, outputFileResults.savedUri.toString())
-                    setResult(Activity.RESULT_OK, intent)
+                    intent.putExtra(EXTRA_CAMERAX_IMAGE, outputFileResults.savedUri.toString())
+                    setResult(CAMERAX_RESULT, intent)
                     finish()
                 }
 

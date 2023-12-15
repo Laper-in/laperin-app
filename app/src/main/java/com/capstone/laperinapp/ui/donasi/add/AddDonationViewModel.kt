@@ -10,7 +10,7 @@ import okhttp3.RequestBody
 
 class AddDonationViewModel(private val repository: Repository): ViewModel() {
 
-    fun sendDonation(
+    suspend fun sendDonation(
         userId: RequestBody,
         username: RequestBody,
         name: RequestBody,
@@ -20,15 +20,7 @@ class AddDonationViewModel(private val repository: Repository): ViewModel() {
         longitude: RequestBody,
         latitude: RequestBody,
         image: MultipartBody.Part
-    ) {
-        viewModelScope.launch {
-            try {
-                repository.createDonation(userId, username, name, description, category, total, longitude, latitude, image)
-            } catch (e: Exception) {
-                Log.e(TAG, "sendDonation: ${e.message.toString()}")
-            }
-        }
-    }
+    ) = repository.createDonation(userId, username, name, description, category, total, longitude, latitude, image)
 
     fun sendsDonation(
         userId: RequestBody,
