@@ -11,14 +11,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.capstone.laperinapp.helper.Result
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
+import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
+import com.capstone.laperinapp.data.response.DataUser
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.databinding.FragmentProfileBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
-import com.capstone.laperinapp.ui.editProfile.EditProfilActivity
+import com.capstone.laperinapp.ui.profile.editProfile.EditProfilActivity
 import com.capstone.laperinapp.ui.login.LoginActivity
+import com.capstone.laperinapp.ui.profile.setting.SettingActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -42,15 +46,28 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.ibSetting.setOnClickListener { onClickSetting() }
-        binding.ivLogout.setOnClickListener{
-            onClickLogout()
-        }
         getData()
+        setupToolbar()
+    }
+
+    private fun setupToolbar() {
+        binding.appBar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.menu_edit_profile -> {
+                    onClickSetting()
+                    true
+                }
+                R.id.menu_logout -> {
+                    onClickLogout()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun onClickSetting() {
-        val intent = Intent(requireContext(), EditProfilActivity::class.java)
+        val intent = Intent(requireContext(), SettingActivity::class.java)
         startActivity(intent)
     }
 
@@ -103,9 +120,22 @@ class ProfileFragment : Fragment() {
             }
         }
     }
-    private fun dataUser(data : DetailUserResponse) {
-        binding.tvUsernameProfil.text = data.username
-        binding.tvEmailUser.text = data.email
+    private fun dataUser(data : DataUser) {
+        binding.tvUsernameProfil.text = data.fullname
+        if (data.alamat == null) {
+            binding.tvAlamat.text = getString(R.string.alamat_kosong)
+        } else {
+            binding.tvAlamat.text = data.alamat
+        }
+        Glide.with(requireContext())
+            .load(data.picture)
+            .circleCrop()
+            .into(binding.imgUser)
+        if (data.isPro){
+            binding.badge.visibility = View.VISIBLE
+        } else {
+            binding.badge.visibility = View.GONE
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -115,6 +145,17 @@ class ProfileFragment : Fragment() {
                 binding.progressBarProfile.visibility = View.VISIBLE
             } else {
                 binding.progressBarProfile.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showEmpty(isEmpty: Boolean) {
+        val binding = _binding
+        if (binding != null) {
+            if (isEmpty) {
+                binding.tvKoleksiKosong.visibility = View.VISIBLE
+            } else {
+                binding.tvKoleksiKosong.visibility = View.GONE
             }
         }
     }

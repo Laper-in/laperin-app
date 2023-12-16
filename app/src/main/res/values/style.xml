@@ -8,6 +8,7 @@
     <style name="bold.black">
         <item name="android:fontFamily">@font/poppins_bold</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16dp</item>
     </style>
 
     <style name="bold.light">

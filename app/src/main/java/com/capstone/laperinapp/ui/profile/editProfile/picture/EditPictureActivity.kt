@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.ui.editProfile.picture
+package com.capstone.laperinapp.ui.profile.editProfile.picture
 
 import android.app.Activity
 import android.content.Intent
@@ -13,7 +13,7 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.core.net.toUri
 import com.capstone.laperinapp.databinding.ActivityEditPictureBinding
-import com.capstone.laperinapp.ui.editProfile.EditProfilActivity
+import com.capstone.laperinapp.ui.profile.editProfile.EditProfilActivity
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import java.io.IOException

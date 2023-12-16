@@ -4,163 +4,189 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
-    tools:context=".ui.editProfile.EditProfilActivity">
+    tools:context=".ui.profile.editProfile.EditProfilActivity">
 
-    <ImageButton
-        android:id="@+id/ib_back"
-        android:layout_width="47dp"
-        android:layout_height="48dp"
-        android:background="@color/material_on_primary_disabled"
-        android:src="@drawable/back"
-        app:layout_constraintBottom_toBottomOf="@+id/tvEdit_akun"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvEdit_akun" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#00000000"
+            app:titleTextAppearance="@style/bold.black"
+            app:titleTextColor="@color/black"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/tvEdit_akun"
-        style="@style/bold.black"
+        android:id="@+id/title_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <EditText
+        android:id="@+id/edEdit_username"
+        style="@style/medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/username"
+        android:background="@drawable/bg_edit_text"
+        android:inputType="text"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:padding="15dp"
+        android:textColorHint="@color/dark_gray"
+        android:layout_marginTop="8dp"
+        android:textSize="13sp"
+        android:clickable="false"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_username"/>
+
+    <TextView
+        android:id="@+id/title_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:text="Edit Akun"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.462"
+        android:layout_marginTop="16dp"
+        android:text="@string/email"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintTop_toBottomOf="@+id/edEdit_username" />
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEdit_email"
         style="@style/medium"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content"
         android:hint="Email"
         android:inputType="text"
         android:padding="15dp"
+        android:textColorHint="@color/dark_gray"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEdit_akun"
-        app:layout_constraintVertical_bias="0.074" />
+        app:layout_constraintTop_toBottomOf="@+id/title_email" />
 
-    <com.capstone.laperinapp.ui.customView.EditText
-        android:id="@+id/edEdit_password"
-        style="@style/medium"
-        android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:hint="Password"
-        android:inputType="text"
-        android:padding="15dp"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/edEdit_email"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edEdit_email"
-        app:layout_constraintTop_toBottomOf="@+id/edEdit_email"
-        app:layout_constraintVertical_bias="0.026" />
+    <TextView
+        android:id="@+id/title_fullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="@string/fullname"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edEdit_email" />
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEdit_fullname"
         style="@style/medium"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:hint="Fullname"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/fullname"
         android:inputType="text"
         android:padding="15dp"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/edEdit_password"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edEdit_password"
-        app:layout_constraintTop_toBottomOf="@+id/edEdit_password"
-        app:layout_constraintVertical_bias="0.03" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_fullname" />
+
+    <TextView
+        android:id="@+id/title_alamat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="@string/alamat"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edEdit_fullname" />
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEdit_alamat"
         style="@style/medium"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
+        android:layout_height="wrap_content"
         android:hint="Alamat"
         android:inputType="text"
         android:padding="15dp"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="@+id/edEdit_fullname"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edEdit_fullname"
-        app:layout_constraintTop_toBottomOf="@+id/edEdit_fullname"
-        app:layout_constraintVertical_bias="0.03" />
+        app:layout_constraintTop_toBottomOf="@+id/title_alamat" />
+
+    <TextView
+        android:id="@+id/title_no_telp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="@string/telp_number"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edEdit_alamat" />
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEdit_telephone"
         style="@style/medium"
         android:layout_width="match_parent"
         android:layout_height="53dp"
-        android:hint="Telephone (Dimulai dengan 62)"
+        android:hint="@string/telp_number"
         android:inputType="number"
         android:padding="15dp"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/edEdit_alamat"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/edEdit_alamat"
-        app:layout_constraintTop_toBottomOf="@+id/edEdit_alamat"
-        app:layout_constraintVertical_bias="0.033" />
+        app:layout_constraintTop_toBottomOf="@+id/title_no_telp" />
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="92dp"
-        android:layout_height="76dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edEdit_telephone"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <com.capstone.laperinapp.ui.customView.ButtonActivity
-        android:id="@+id/btnSelectImage"
-        android:layout_width="100dp"
-        android:layout_height="41dp"
-        android:background="@drawable/rounded_button"
-        android:clickable="true"
-        android:text="Select Image"
-        android:textColor="@color/black"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivProfileImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
-        app:layout_constraintStart_toEndOf="@+id/ivProfileImage"
-        app:layout_constraintTop_toTopOf="@+id/ivProfileImage"
-        app:layout_constraintVertical_bias="0.484" />
-
-    <com.capstone.laperinapp.ui.customView.ButtonActivity
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bt_simpan"
         android:layout_width="match_parent"
         android:layout_height="53dp"
-        android:layout_marginTop="144dp"
-        android:background="@drawable/rounded"
-        android:text="Simpan"
-        app:layout_constraintEnd_toEndOf="@+id/edEdit_telephone"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edEdit_telephone"
-        app:layout_constraintTop_toBottomOf="@+id/edEdit_telephone" />
+        android:background="@drawable/bg_button"
+        android:text="@string/simpan"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="24dp"/>
 
     <ProgressBar
         android:id="@+id/progressBar_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bt_simpan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/edEdit_telephone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
