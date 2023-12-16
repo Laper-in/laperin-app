@@ -8,13 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.capstone.laperinapp.databinding.LayoutBottomsheetBinding
 import com.capstone.laperinapp.ui.scan.CameraActivity
-import com.capstone.laperinapp.ui.scan.PreviewActivity
+import com.capstone.laperinapp.ui.scan.preview.PreviewActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

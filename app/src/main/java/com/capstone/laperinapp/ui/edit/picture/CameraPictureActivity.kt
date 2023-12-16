@@ -1,5 +1,6 @@
-package com.capstone.laperinapp.ui.scan
+package com.capstone.laperinapp.ui.edit.picture
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -15,13 +16,13 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.capstone.laperinapp.databinding.ActivityCameraBinding
+import com.capstone.laperinapp.databinding.ActivityCameraPictureBinding
 import com.capstone.laperinapp.helper.createCustomTempFile
-import com.capstone.laperinapp.ui.scan.preview.PreviewActivity
+import com.capstone.laperinapp.ui.edit.EditProfile
 
-class CameraActivity : AppCompatActivity() {
+class CameraPictureActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityCameraBinding
+    private lateinit var binding: ActivityCameraPictureBinding
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private var imageCapture: ImageCapture? = null
 
@@ -56,7 +57,7 @@ class CameraActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCameraBinding.inflate(layoutInflater)
+        binding = ActivityCameraPictureBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.captureImage.setOnClickListener { takePicture() }
@@ -72,15 +73,15 @@ class CameraActivity : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val intent = Intent(this@CameraActivity, PreviewActivity::class.java)
-                    intent.putExtra(PreviewActivity.EXTRA_URI, outputFileResults.savedUri.toString())
-                    startActivity(intent)
+                    val resultIntent = Intent()
+                    resultIntent.putExtra(EditProfile.EXTRA_PROFILE, outputFileResults.savedUri.toString())
+                    setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    Toast.makeText(this@CameraActivity, "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
-                    Log.e(TAG, "onError: ${exception.message}", )
+                    Toast.makeText(this@CameraPictureActivity, "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "onError: ${exception.message}")
                 }
             }
         )

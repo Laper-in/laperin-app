@@ -33,6 +33,9 @@
             android:name=".ui.profile.editProfile.picture.EditPictureActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.scan.search.SearchIngredientActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.edit.picture.CameraPictureActivity"
             android:exported="false" />
         <activity
@@ -45,10 +48,10 @@
             android:name=".ui.donasi.detail.DetailDonationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.scan.ResultActivity"
+            android:name=".ui.scan.result.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.scan.PreviewActivity"
+            android:name=".ui.scan.preview.PreviewActivity"
             android:exported="false" />
         <activity
             android:name=".ui.scan.CameraActivity"

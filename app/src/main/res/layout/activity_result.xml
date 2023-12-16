@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3F3F3"
-    tools:context=".ui.scan.ResultActivity">
+    tools:context=".ui.scan.result.ResultActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_result"
@@ -34,7 +34,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            android:layout_marginHorizontal="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <com.google.android.material.search.SearchBar
@@ -42,12 +44,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Masukkan Bahan"
+            android:focusableInTouchMode="false"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rv_result" />
 
         <Button
+            android:id="@+id/btn_scan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -93,7 +97,7 @@
         app:layout_constraintEnd_toEndOf="@+id/rv_resep"
         app:layout_constraintTop_toBottomOf="@+id/rv_resep" />
 
-    <androidx.appcompat.widget.SearchView
+    <com.google.android.material.search.SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -102,9 +106,14 @@
         app:layout_anchor="@id/cl_result"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.search.SearchView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

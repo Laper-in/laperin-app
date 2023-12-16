@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.ui.scan
+package com.capstone.laperinapp.ui.scan.preview
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,10 +10,15 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.net.toUri
+import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.capstone.laperinapp.databinding.ActivityPreviewBinding
+import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ml.Mobilev2Data498
+import com.capstone.laperinapp.ui.scan.result.ResultActivity
 import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
@@ -29,64 +34,70 @@ class PreviewActivity : AppCompatActivity() {
     private lateinit var imageProcessor: ImageProcessor
     private lateinit var labels: List<String>
 
+    private val viewModel by viewModels<PreviewViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPreviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         getImage()
-        imageProcessor()
 
         labels = application.assets.open("labels.txt").bufferedReader().readLines()
 
-        binding.btnLanjutkan.setOnClickListener { predictionImage() }
+        binding.btnLanjutkan.setOnClickListener { onClickLanjutkan() }
     }
 
     private fun imageProcessor() {
-       imageProcessor = ImageProcessor.Builder()
-//           .add(NormalizeOp(0f, 255f))
-//           .add(TransformToGrayscaleOp())
-            .add(ResizeOp(640, 640, ResizeOp.ResizeMethod.BILINEAR))
+        imageProcessor = ImageProcessor.Builder()
+            .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
+            .add(NormalizeOp(0f, 255f))
             .build()
     }
 
     private fun onClickLanjutkan() {
+        val result = ScanResult(
+            0,
+            predictionImage()
+        )
+        viewModel.insertResult(result)
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra(ResultActivity.EXTRA_RESULT, currentImageUri.toString())
         startActivity(intent)
         finish()
     }
 
-    private fun predictionImage() {
+    private fun predictionImage(): String {
 
-//        var tensorImage = TensorImage(DataType.FLOAT32)
-//        tensorImage.load(bitmap)
-//
-//        tensorImage = imageProcessor.process(tensorImage)
-//
-//        val model = Resnet50Coba2.newInstance(this)
-//
-//        val inputFeature0 =
-//            TensorBuffer.createFixedSize(intArrayOf(1, 640, 640, 3), DataType.FLOAT32)
-//        inputFeature0.loadBuffer(tensorImage.buffer)
-//
-//        val outputs = model.process(inputFeature0)
-//        val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
-//        val outputFeature1 = outputs.outputFeature1AsTensorBuffer.floatArray
-//        val outputFeature2 = outputs.outputFeature2AsTensorBuffer.floatArray
-//        val outputFeature3 = outputs.outputFeature3AsTensorBuffer.floatArray
-//
-//        var maxIdxFeature0 = 0
-//        outputFeature0.forEachIndexed { index, fl ->
-//            if (outputFeature0[maxIdxFeature0] < fl) {
-//                maxIdxFeature0 = index
-//            }
-//        }
-//
-//        Log.i(TAG, "predictionImage: ${labels[maxIdxFeature0]}")
-//        Toast.makeText(this, labels[maxIdxFeature0], Toast.LENGTH_SHORT).show()
-//
-//        model.close()
+        var tensorImage = TensorImage(DataType.FLOAT32)
+        tensorImage.load(bitmap)
+
+        tensorImage = imageProcessor.process(tensorImage)
+
+        val model = Mobilev2Data498.newInstance(this)
+        val inputFeature0 =
+            TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.FLOAT32)
+        inputFeature0.loadBuffer(tensorImage.buffer)
+        inputFeature0.buffer.rewind()
+        val inputBuffer = inputFeature0.floatArray
+        for (i in inputBuffer.indices) {
+            inputBuffer[i] = inputBuffer[i].coerceIn(0.0f, 1.0f)
+        }
+        val outputs = model.process(inputFeature0)
+        val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
+
+        var maxIdxFeature0 = 0
+        outputFeature0.forEachIndexed { index, fl ->
+            if (outputFeature0[maxIdxFeature0] < fl) {
+                maxIdxFeature0 = index
+            }
+        }
+
+        model.close()
+
+        return labels[maxIdxFeature0]
     }
 
     @Suppress("DEPRECATION")
@@ -95,6 +106,7 @@ class PreviewActivity : AppCompatActivity() {
         currentImageUri = imageUri?.toUri()
         showImage()
         bitmap = MediaStore.Images.Media.getBitmap(contentResolver, currentImageUri)
+        imageProcessor()
     }
 
     private fun showImage() {
