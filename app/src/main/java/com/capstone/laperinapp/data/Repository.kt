@@ -7,6 +7,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.capstone.laperinapp.data.favorite.dao.FavoriteDao
+import com.capstone.laperinapp.data.favorite.entity.Favorite
 import com.capstone.laperinapp.data.paging.BookmarksPagingSource
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
 import com.capstone.laperinapp.data.paging.DonationsPagingSource
@@ -33,7 +35,8 @@ import java.math.BigInteger
 class Repository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference,
-    private val scanDao: ResultDao
+    private val scanDao: ResultDao,
+    private val favoriteDao: FavoriteDao
 ){
 
     suspend fun saveSession(user: UserModel) {
@@ -213,6 +216,22 @@ class Repository private constructor(
         scanDao.deleteById(id)
     }
 
+    fun getAllFavorite(): LiveData<List<Favorite>> {
+        return favoriteDao.getAllFavorite()
+    }
+
+    fun insertFavorite(favorite: Favorite) {
+        favoriteDao.insert(favorite)
+    }
+
+    fun deleteFavorite(favorite: Favorite) {
+        favoriteDao.delete(favorite)
+    }
+
+    fun findFavoriteById(id: String): Favorite? {
+        return favoriteDao.findById(id)
+    }
+
     companion object{
         private const val TAG = "Repository"
 
@@ -221,10 +240,11 @@ class Repository private constructor(
         fun getInstance(
             apiService: ApiService,
             userPreference: UserPreference,
-            scanDao: ResultDao
+            scanDao: ResultDao,
+            favoriteDao: FavoriteDao
         ): Repository =
             instance ?: synchronized(this){
-                instance ?: Repository(apiService, userPreference, scanDao)
+                instance ?: Repository(apiService, userPreference, scanDao, favoriteDao)
             }.also { instance = it }
 
         fun clearInstance(){

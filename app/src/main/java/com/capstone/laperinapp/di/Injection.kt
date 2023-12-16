@@ -6,6 +6,8 @@ import com.capstone.laperinapp.data.favorite.room.FavoriteRoomDatabase
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.retrofit.ApiConfig
+import com.capstone.laperinapp.data.room.result.dao.ResultDao
+import com.capstone.laperinapp.data.room.result.database.ScanDatabase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -16,7 +18,8 @@ object Injection {
         val apiService = ApiConfig.getApiService(user.token)
         val database = FavoriteRoomDatabase.getInstance(context)
         val favoriteDao = database.favoriteDao()
-
-        return Repository.getInstance(apiService, pref, favoriteDao)
+        val dbResult = ScanDatabase.getDatabase(context)
+        val scanDao = dbResult.resultDao()
+        return Repository.getInstance(apiService, pref, scanDao, favoriteDao)
     }
 }

@@ -7,6 +7,7 @@ import com.capstone.laperinapp.data.Repository
 import com.capstone.laperinapp.di.Injection
 import com.capstone.laperinapp.ui.detail.DetailViewModel
 import com.capstone.laperinapp.ui.donasi.DonasiViewModel
+import com.capstone.laperinapp.ui.history.HistoryViewModel
 import com.capstone.laperinapp.ui.profile.editProfile.EditViewModel
 import com.capstone.laperinapp.ui.home.HomeViewModel
 import com.capstone.laperinapp.ui.login.LoginViewModel
@@ -62,6 +63,9 @@ class ViewModelFactory private constructor(private val repository: Repository) :
             }
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
                 SearchViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
+                HistoryViewModel(repository) as T
             }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

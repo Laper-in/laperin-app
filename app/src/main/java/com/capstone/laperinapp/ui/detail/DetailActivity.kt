@@ -46,16 +46,6 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = ""
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menu_favorite -> {
-                    Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
     private fun getData(id: String?) {
