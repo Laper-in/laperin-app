@@ -8,6 +8,7 @@ import com.capstone.laperinapp.data.response.EditProfileResponse
 import com.capstone.laperinapp.data.response.LoginResponse
 import com.capstone.laperinapp.data.response.RecipeResponses
 import com.capstone.laperinapp.data.response.RegisterResponse
+import com.capstone.laperinapp.data.response.SearchRecipesResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
@@ -74,4 +75,11 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): DonationsResponses
+
+    @GET("recipes/search/name")
+    suspend fun getRecipesByName(
+        @Query("q") name: String,
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): SearchRecipesResponse
 }

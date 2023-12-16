@@ -24,6 +24,7 @@ import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.adapter.MarginItemDecoration
 import com.capstone.laperinapp.adapter.PopularRecipesAdapter
 import com.capstone.laperinapp.adapter.RekomendasiRecipesAdapter
+import com.capstone.laperinapp.adapter.SearchRecipesAdapter
 import com.capstone.laperinapp.data.model.Category
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
@@ -34,6 +35,7 @@ import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.detail.DetailActivity
+import com.capstone.laperinapp.ui.home.search.SearchRecipesActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.lang.ref.WeakReference
@@ -73,6 +75,13 @@ class HomeFragment : Fragment() {
         setupRVCategory()
         showDataPopular()
         showDataRekomendasi()
+        setupSearch()
+    }
+
+    private fun setupSearch() {
+        binding.searchBar.setOnClickListener {
+            startActivity(Intent(requireActivity(), SearchRecipesActivity::class.java))
+        }
     }
 
     private fun getData() {

@@ -10,6 +10,7 @@ import androidx.paging.liveData
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
 import com.capstone.laperinapp.data.paging.DonationsPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
+import com.capstone.laperinapp.data.paging.SearchRecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.response.DetailUserResponse
@@ -17,6 +18,7 @@ import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.data.response.DonationsItem
 import com.capstone.laperinapp.data.response.RecipeItem
+import com.capstone.laperinapp.data.response.RecipesItem
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
 import com.google.gson.Gson
@@ -148,6 +150,17 @@ class Repository private constructor(
             ),
             pagingSourceFactory = {
                 DonationsPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+    fun getRecipesByName(name: String): LiveData<PagingData<RecipesItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                SearchRecipesPagingSource(apiService, name)
             }
         ).liveData
     }
