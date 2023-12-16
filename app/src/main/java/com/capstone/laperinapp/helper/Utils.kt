@@ -73,3 +73,13 @@ fun formatTelpNumber(telephoneNumber: String): String {
     }
     return formated
 }
+
+fun meterToKilometer(meter: Double): String {
+    val kilometer = meter / 1000
+    val formated = formatTwoDecimalPlaces(kilometer)
+    return "$formated km"
+}
+
+fun formatTwoDecimalPlaces(value: Double): String {
+    return String.format("%.2f", value)
+}

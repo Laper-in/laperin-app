@@ -34,13 +34,13 @@ class EditText: AppCompatEditText {
         super.onDraw(canvas)
         background = if (isError) editTextBackground else editTextBackground
         addTextChangedListener(onTextChanged = { text, _, _, _ ->
-            if (!TextUtils.isEmpty(text) && text.toString().length < 8 && compoundDrawables[DRAWABLE_RIGHT] != null) {
-                error = resources.getString(R.string.password_minimum_character)
-                isError = true
-            } else {
-                error = null
-                isError = false
-            }
+//            if (!TextUtils.isEmpty(text) && text.toString().length < 8 && compoundDrawables[DRAWABLE_RIGHT] != null) {
+//                error = resources.getString(R.string.password_minimum_character)
+//                isError = true
+//            } else {
+//                error = null
+//                isError = false
+//            }
         })
     }
 

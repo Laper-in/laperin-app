@@ -88,7 +88,7 @@ class ProfileFragment : Fragment() {
         }
         alertDialogBuilder.create().show()
     }
-
+    
     private fun getData() {
         val pref = UserPreference.getInstance(requireActivity().dataStore)
         val user = runBlocking { pref.getSession().first() }
@@ -156,6 +156,17 @@ class ProfileFragment : Fragment() {
                 binding.tvKoleksiKosong.visibility = View.VISIBLE
             } else {
                 binding.tvKoleksiKosong.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        val binding = _binding
+        if (binding != null) {
+            if (isLoading) {
+                binding.progressBarProfile.visibility = View.VISIBLE
+            } else {
+                binding.progressBarProfile.visibility = View.GONE
             }
         }
     }

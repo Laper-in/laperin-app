@@ -54,8 +54,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
     //Datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -86,8 +86,12 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("androidx.exifinterface:exifinterface:1.3.6")
+
+    //Maps
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     //CameraX
     val cameraxVersion = "1.3.0"

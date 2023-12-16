@@ -3,11 +3,13 @@ package com.capstone.laperinapp.data.retrofit
 import com.capstone.laperinapp.data.response.BookmarkResponse
 import com.capstone.laperinapp.data.response.DataRecipes
 import com.capstone.laperinapp.data.response.DataUser
+import com.capstone.laperinapp.data.response.ClosestDonationsResponses
 import com.capstone.laperinapp.data.response.DetailRecipesResponses
 import com.capstone.laperinapp.data.response.DetailUserResponse
+import com.capstone.laperinapp.data.response.DonationsResponses
+import com.capstone.laperinapp.data.response.EditProfileResponse
 import com.capstone.laperinapp.data.response.LoginResponse
 import com.capstone.laperinapp.data.response.RecipeResponses
-import com.capstone.laperinapp.data.response.RecipesResponses
 import com.capstone.laperinapp.data.response.RegisterResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -73,4 +75,19 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): BookmarkResponse
+  
+    @GET("donations/closest/{lon}/{lat}")
+    suspend fun getAllClosestDonation(
+        @Path("lon") lon: Double,
+        @Path("lat") lat: Double,
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): ClosestDonationsResponses
+
+    @GET("donations")
+    suspend fun getAllDonation(
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): DonationsResponses
+  
 }

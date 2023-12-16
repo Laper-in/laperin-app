@@ -47,6 +47,9 @@ class ViewModelFactory private constructor(private val repository: Repository) :
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
                 SettingViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(DonasiViewModel::class.java) -> {
+                DonasiViewModel(repository) as T
+            }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }

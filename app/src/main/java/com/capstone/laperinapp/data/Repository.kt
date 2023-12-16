@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
@@ -12,7 +13,15 @@ import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.BookmarksItem
+import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
+import com.capstone.laperinapp.data.paging.DonationsPagingSource
+import com.capstone.laperinapp.data.paging.RecipesPagingSource
+import com.capstone.laperinapp.data.pref.UserModel
+import com.capstone.laperinapp.data.pref.UserPreference
+import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.ErrorResponse
+import com.capstone.laperinapp.data.response.ClosestDonationsItem
+import com.capstone.laperinapp.data.response.DonationsItem
 import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
@@ -108,10 +117,25 @@ class Repository private constructor(
         }
     }
 
-    fun getDetailUser(id :String) = liveData {
+       fun getDetailUser(id :String) = liveData {
+         emit(Result.Loading)
+         try {
+             val response =apiService.getDetailUser(id)
+             if (response.isSuccessful) {
+                 emit(Result.Success(response.body()!!))
+             } else {
+                 val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                 emit(Result.Error(errorResponse.message.toString()))
+             }
+         }catch (e:Exception) {
+             emit(Result.Error(e.message.toString()))
+         }
+     }
+
+    fun editProfile(id:String, fullname: String,picture :String, alamat :String, telephone :Int ) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getDetailUser(id)
+            val response =apiService.updateDetailUser(id, fullname, picture, alamat, telephone)
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()!!))
             } else {
@@ -139,6 +163,18 @@ class Repository private constructor(
     }
 
     fun getAllBookmarksById(id: String): LiveData<PagingData<BookmarksItem>> {
+    fun getClosestDonation(longitude: Double, latitude: Double): LiveData<PagingData<ClosestDonationsItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                ClosestDonationsPagingSource(apiService, longitude, latitude)
+            }
+        ).liveData
+    }
+
+    fun getAllDonations(): LiveData<PagingData<DonationsItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
@@ -150,6 +186,8 @@ class Repository private constructor(
     }
 
     companion object{
+        private const val TAG = "Repository"
+
         @Volatile
         private var instance: Repository? = null
         fun getInstance(
