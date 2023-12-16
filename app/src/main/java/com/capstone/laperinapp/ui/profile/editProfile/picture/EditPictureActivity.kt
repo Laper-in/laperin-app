@@ -89,6 +89,7 @@ class EditPictureActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun rotateBitmap(uri: Uri, rotation: Int): Bitmap {
         val originalBitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         val matrix = Matrix()

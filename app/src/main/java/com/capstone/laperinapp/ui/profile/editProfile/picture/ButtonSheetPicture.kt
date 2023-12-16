@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.databinding.LayoutBottomsheetBinding
 import com.capstone.laperinapp.ui.scan.CameraActivity
-import com.capstone.laperinapp.ui.scan.PreviewActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

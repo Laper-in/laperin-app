@@ -18,7 +18,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.capstone.laperinapp.databinding.ActivityCameraPictureBinding
 import com.capstone.laperinapp.helper.createCustomTempFile
-import com.capstone.laperinapp.ui.edit.EditProfile
+import com.capstone.laperinapp.ui.profile.editProfile.EditProfilActivity
 
 class CameraPictureActivity : AppCompatActivity() {
 
@@ -74,7 +74,7 @@ class CameraPictureActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val resultIntent = Intent()
-                    resultIntent.putExtra(EditProfile.EXTRA_PROFILE, outputFileResults.savedUri.toString())
+                    resultIntent.putExtra(EditProfilActivity.EXTRA_PROFILE, outputFileResults.savedUri.toString())
                     setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }

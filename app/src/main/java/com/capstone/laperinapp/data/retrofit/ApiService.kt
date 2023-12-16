@@ -4,13 +4,18 @@ import com.capstone.laperinapp.data.response.BookmarkResponse
 import com.capstone.laperinapp.data.response.DataRecipes
 import com.capstone.laperinapp.data.response.DataUser
 import com.capstone.laperinapp.data.response.ClosestDonationsResponses
+import com.capstone.laperinapp.data.response.DataIngredient
 import com.capstone.laperinapp.data.response.DetailRecipesResponses
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.DonationsResponses
 import com.capstone.laperinapp.data.response.EditProfileResponse
+import com.capstone.laperinapp.data.response.IngredientItem
+import com.capstone.laperinapp.data.response.IngredientsItem
+import com.capstone.laperinapp.data.response.IngredientsResponse
 import com.capstone.laperinapp.data.response.LoginResponse
 import com.capstone.laperinapp.data.response.RecipeResponses
 import com.capstone.laperinapp.data.response.RegisterResponse
+import com.capstone.laperinapp.data.response.SearchIngredientResultResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -89,5 +94,17 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): DonationsResponses
-  
+
+    @GET("ingredients")
+    suspend fun getIngredient(
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): IngredientsResponse
+
+    @GET("ingredients/search/name")
+    suspend fun getIngredientsByName(
+        @Query("q") name: String,
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): SearchIngredientResultResponse
 }

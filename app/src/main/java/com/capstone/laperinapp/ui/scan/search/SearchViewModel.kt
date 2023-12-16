@@ -26,8 +26,6 @@ class SearchViewModel(val repository: Repository): ViewModel() {
         }
     }
 
-    fun getAllIngredients() = repository.getAllIngredients()
-
     fun insertIngredient(ingredient: ScanResult) = repository.insertResult(ingredient)
 
     fun getIngredientByName(): LiveData<PagingData<IngredientItem>> = searchResults
