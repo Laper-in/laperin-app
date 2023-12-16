@@ -105,6 +105,8 @@ dependencies {
 
     //Paging
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 
     //Testing
     testImplementation("junit:junit:4.13.2")

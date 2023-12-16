@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.capstone.laperinapp.data.Repository
 import com.capstone.laperinapp.di.Injection
 import com.capstone.laperinapp.ui.detail.DetailViewModel
-import com.capstone.laperinapp.ui.edit.EditViewModel
-import com.capstone.laperinapp.ui.donasi.DonasiViewModel
+import com.capstone.laperinapp.ui.profile.editProfile.EditViewModel
 import com.capstone.laperinapp.ui.home.HomeViewModel
 import com.capstone.laperinapp.ui.login.LoginViewModel
 import com.capstone.laperinapp.ui.profile.ProfileViewModel
+import com.capstone.laperinapp.ui.profile.setting.SettingViewModel
 import com.capstone.laperinapp.ui.register.RegisterViewModel
 import com.capstone.laperinapp.ui.splashScreen.SplashViewModel
 import com.capstone.laperinapp.ui.welcome.WelcomeViewModel
@@ -43,6 +43,9 @@ class ViewModelFactory private constructor(private val repository: Repository) :
             }
             modelClass.isAssignableFrom(EditViewModel::class.java) -> {
                 EditViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
+                SettingViewModel(repository) as T
             }
             modelClass.isAssignableFrom(DonasiViewModel::class.java) -> {
                 DonasiViewModel(repository) as T

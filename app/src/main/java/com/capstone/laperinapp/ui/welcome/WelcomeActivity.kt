@@ -129,7 +129,7 @@ class WelcomeActivity : AppCompatActivity() {
             dots[i] = TextView(this)
             dots[i]?.text = Html.fromHtml("&#8226")
             dots[i]?.textSize = 35f
-            dots[i]?.setTextColor(getColor(R.color.light_gray))
+            dots[i]?.setTextColor(getColor(R.color.light_gray_2))
             binding.indicator.addView(dots[i])
         }
 

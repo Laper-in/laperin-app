@@ -21,6 +21,25 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_profile">Profil</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Keluar</string>
+    <string name="profil">Profil</string>
+    <string name="alamat">Alamat</string>
+    <string name="title_koleksi">Koleksi resep</string>
+    <string name="lihat_semua">Lihat semua</string>
+    <string name="koleksi_kosong">Anda belum menambahkan koleksi</string>
+    <string name="badge">Pro</string>
+    <string name="alamat_kosong">Alamat belum diisi</string>
+    <string name="title_informasi_pengguna">Informasi pengguna</string>
+    <string name="email">Email</string>
+    <string name="fullname">Nama Lengkap</string>
+    <string name="telp_number">No. Telepon</string>
+    <string name="preferensi">Preferensi</string>
+    <string name="tema_gelap">Tema Gelap</string>
+    <string name="simpan">Simpan</string>
+    <string name="nama_makanan">Nama Makanan</string>
+    <string name="deskripsi">Deskripsi</string>
+    <string name="durasi">durasi</string>
 
     <string-array name="category_name">
         <item>Surabaya</item>
