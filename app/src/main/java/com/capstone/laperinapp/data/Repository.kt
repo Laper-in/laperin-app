@@ -1,6 +1,5 @@
 package com.capstone.laperinapp.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
@@ -11,32 +10,17 @@ import com.capstone.laperinapp.data.paging.BookmarksPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
-import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.BookmarksItem
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
 import com.capstone.laperinapp.data.paging.DonationsPagingSource
-import com.capstone.laperinapp.data.paging.RecipesPagingSource
-import com.capstone.laperinapp.data.pref.UserModel
-import com.capstone.laperinapp.data.pref.UserPreference
-import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.data.response.DonationsItem
 import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
-import com.capstone.laperinapp.helper.JWTUtils
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.HttpException
-import java.io.File
 import java.math.BigInteger
 
 
@@ -132,7 +116,7 @@ class Repository private constructor(
          }
      }
 
-    fun editProfile(id:String, fullname: String,picture :String, alamat :String, telephone :Int ) = liveData {
+    fun editProfile(id:String, fullname: String,picture :String, alamat :String, telephone :BigInteger ) = liveData {
         emit(Result.Loading)
         try {
             val response =apiService.updateDetailUser(id, fullname, picture, alamat, telephone)
@@ -163,6 +147,16 @@ class Repository private constructor(
     }
 
     fun getAllBookmarksById(id: String): LiveData<PagingData<BookmarksItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                BookmarksPagingSource(apiService, id)
+            }
+        ).liveData
+    }
+
     fun getClosestDonation(longitude: Double, latitude: Double): LiveData<PagingData<ClosestDonationsItem>> {
         return Pager(
             config = PagingConfig(
@@ -180,7 +174,7 @@ class Repository private constructor(
                 pageSize = 5
             ),
             pagingSourceFactory = {
-                BookmarksPagingSource(apiService, id)
+                DonationsPagingSource(apiService)
             }
         ).liveData
     }

@@ -120,6 +120,7 @@ class ProfileFragment : Fragment() {
             }
         }
     }
+
     private fun dataUser(data : DataUser) {
         binding.tvUsernameProfil.text = data.fullname
         if (data.alamat == null) {
@@ -156,17 +157,6 @@ class ProfileFragment : Fragment() {
                 binding.tvKoleksiKosong.visibility = View.VISIBLE
             } else {
                 binding.tvKoleksiKosong.visibility = View.GONE
-            }
-        }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        val binding = _binding
-        if (binding != null) {
-            if (isLoading) {
-                binding.progressBarProfile.visibility = View.VISIBLE
-            } else {
-                binding.progressBarProfile.visibility = View.GONE
             }
         }
     }

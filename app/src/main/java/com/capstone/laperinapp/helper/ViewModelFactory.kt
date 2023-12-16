@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.capstone.laperinapp.data.Repository
 import com.capstone.laperinapp.di.Injection
 import com.capstone.laperinapp.ui.detail.DetailViewModel
+import com.capstone.laperinapp.ui.donasi.DonasiViewModel
 import com.capstone.laperinapp.ui.profile.editProfile.EditViewModel
 import com.capstone.laperinapp.ui.home.HomeViewModel
 import com.capstone.laperinapp.ui.login.LoginViewModel
