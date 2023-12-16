@@ -3,6 +3,7 @@ package com.capstone.laperinapp.ui
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
+        navView.itemActiveIndicatorColor = getColorStateList(R.color.white)
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main2)
         navView.setupWithNavController(navController)

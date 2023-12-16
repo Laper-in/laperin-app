@@ -35,4 +35,9 @@
         <item name="android:fontFamily">@font/poppins_bold</item>
         <item name="android:textColor">@color/primary</item>
     </style>
+
+    <style name="fab_circle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
