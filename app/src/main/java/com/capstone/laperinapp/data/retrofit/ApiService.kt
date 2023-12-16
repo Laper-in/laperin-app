@@ -9,7 +9,7 @@ import com.capstone.laperinapp.data.response.IngredientsResponse
 import com.capstone.laperinapp.data.response.LoginResponse
 import com.capstone.laperinapp.data.response.RecipeResponses
 import com.capstone.laperinapp.data.response.RegisterResponse
-import com.capstone.laperinapp.data.response.SearchResultResponse
+import com.capstone.laperinapp.data.response.SearchIngredientResultResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
@@ -82,4 +82,11 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): IngredientsResponse
+
+    @GET("ingredients/search/name")
+    suspend fun getIngredientsByName(
+        @Query("q") name: String,
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): SearchIngredientResultResponse
 }

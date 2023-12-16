@@ -11,6 +11,7 @@ import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
 import com.capstone.laperinapp.data.paging.DonationsPagingSource
 import com.capstone.laperinapp.data.paging.IngredientsPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
+import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.response.DetailUserResponse
@@ -164,6 +165,17 @@ class Repository private constructor(
             ),
             pagingSourceFactory = {
                 IngredientsPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+    fun getIngredientsByName(name: String): LiveData<PagingData<IngredientItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                SearchIngredientPagingSource(apiService, name)
             }
         ).liveData
     }

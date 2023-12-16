@@ -353,7 +353,7 @@ data class DonationsItem(
 ) : Parcelable
 
 @Parcelize
-data class SearchResultResponse(
+data class SearchIngredientResultResponse(
 
 	@field:SerializedName("data")
 	val data: DataIngredient,
@@ -372,7 +372,7 @@ data class DataIngredient(
 	val totalPages: Int,
 
 	@field:SerializedName("users")
-	val ingredients: List<IngredientItem>
+	val users: List<IngredientItem>
 ) : Parcelable
 
 @Parcelize
