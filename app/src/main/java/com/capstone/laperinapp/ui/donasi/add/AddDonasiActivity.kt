@@ -1,21 +1,14 @@
 package com.capstone.laperinapp.ui.donasi.add
 
-import android.content.Intent
+
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
-import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.databinding.ActivityAddDonasiBinding
@@ -23,21 +16,18 @@ import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.helper.reduceFileImage
 import com.capstone.laperinapp.helper.uriToFile
-import com.capstone.laperinapp.ui.ModalBottomSheetDialog
-import com.capstone.laperinapp.ui.donasi.camera.CameraDonationActivity
 import com.capstone.laperinapp.ui.donasi.camera.ModalBottomSheetDonationDialog
-import com.capstone.laperinapp.ui.donasi.camera.OnImageResultListener
-import com.capstone.laperinapp.ui.donasi.camera.PreviewDonationActivity
+import com.capstone.laperinapp.ui.edit.picture.OnImageSelectedListener
 import kotlinx.coroutines.flow.first
+import com.capstone.laperinapp.helper.Result
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
+class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
 
     private lateinit var binding: ActivityAddDonasiBinding
     private var currentImageUri: Uri? = null
@@ -58,40 +48,28 @@ class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
         setupToolbar()
     }
 
-    override fun onImageResult(uri: Uri) {
-        Log.d(TAG, "onImageResult: $uri")
-        currentImageUri = uri
-
-        // Tambahkan logika untuk menampilkan gambar terlebih dahulu di PreviewDonationActivity
-        val intent = Intent(this, PreviewDonationActivity::class.java)
-        intent.putExtra(EXTRA_URI, currentImageUri.toString())
-        startActivityForResult(intent, REQUEST_CODE)
+    override fun onImageSelected(uri: Uri) {
+        showImage(uri)
     }
 
     private fun getData() {
-        val pref = UserPreference.getInstance(this.dataStore)
-        val user = runBlocking { pref.getSession().first() }
-        val token = user.token
-        val id = JWTUtils.getId(token)
-        val username = JWTUtils.getUsername(token)
-        val latitude = "123"
-        val longitude = "123"
-        val name = binding.edNama.text.toString()
-        val description = binding.edDescription.text.toString()
-        val category = "charity"
-        val total = binding.edJumlah.text.toString()
-
         binding.btnDonasi.setOnClickListener {
-            sendData(
-                id,
-                username,
-                name,
-                description,
-                category,
-                total,
-                latitude,
-                longitude
-            )
+            val pref = UserPreference.getInstance(this.dataStore)
+            val user = runBlocking { pref.getSession().first() }
+            val token = user.token
+            val id = JWTUtils.getId(token)
+            val username = JWTUtils.getUsername(token)
+            val latitude = "123"
+            val longitude = "123"
+            val name = binding.edNama.text.toString()
+            val description = binding.edDescription.text.toString()
+            val category = "charity"
+            val total = binding.edJumlah.text.toString()
+            if (name.length >= 5) {
+                sendData(id, username, name, description, category, total, latitude, longitude)
+            } else {
+                Toast.makeText(this@AddDonasiActivity, "Nama harus lebih dari 5 karakter", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -104,18 +82,8 @@ class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
     }
 
     private fun openModal() {
-        // Ganti pemanggilan launcherGallery untuk membuka galeri
-        launcherGallery.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI))
-    }
-
-    private val launcherGallery = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result: ActivityResult ->
-        if (result.resultCode == RESULT_OK) {
-            val data: Intent? = result.data
-            val uri: Uri? = data?.data
-            showImage(uri)
-        }
+        val modalBottomSheet = ModalBottomSheetDonationDialog()
+        modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDonationDialog.TAG)
     }
 
     private fun sendData(
@@ -128,42 +96,57 @@ class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
         latitude: String? = null,
         longitude: String? = null
     ) {
+
+        lifecycleScope.launch {
+            try {
+                val requestBodyUserId = id!!.toRequestBody("text/plain".toMediaType())
+                val requestBodyUsername = username!!.toRequestBody("text/plain".toMediaType())
+                val requestBodyName = name.toRequestBody("text/plain".toMediaType())
+                val requestBodyDescription = description.toRequestBody("text/plain".toMediaType())
+                val requestBodyCategory = category.toRequestBody("text/plain".toMediaType())
+                val requestBodyTotal = total.toRequestBody("text/plain".toMediaType())
+                val requestBodyLatitude = latitude!!.toRequestBody("text/plain".toMediaType())
+                val requestBodyLongitude = longitude!!.toRequestBody("text/plain".toMediaType())
+
+                viewModel.sendDonation(
+                    requestBodyUserId,
+                    requestBodyUsername,
+                    requestBodyName,
+                    requestBodyDescription,
+                    requestBodyCategory,
+                    requestBodyTotal,
+                    requestBodyLongitude,
+                    requestBodyLatitude,
+                    createImageRequestBody()
+                ).observe(this@AddDonasiActivity) { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is Result.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(this@AddDonasiActivity, "Donasi berhasil di upload", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                        is Result.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(this@AddDonasiActivity, result.error, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "sendData: ${e.message.toString()}")
+            }
+        }
+    }
+
+    private fun createImageRequestBody(): MultipartBody.Part {
         currentImageUri?.let { uri ->
             val image = uriToFile(uri, this).reduceFileImage()
-
-            val requestBodyUserId = id!!.toRequestBody("text/plain".toMediaType())
-            val requestBodyUsername = username!!.toRequestBody("text/plain".toMediaType())
-            val requestBodyName = name.toRequestBody("text/plain".toMediaType())
-            val requestBodyDescription = description.toRequestBody("text/plain".toMediaType())
-            val requestBodyCategory = category.toRequestBody("text/plain".toMediaType())
-            val requestBodyTotal = total.toRequestBody("text/plain".toMediaType())
-            val requestBodyLatitude = latitude!!.toRequestBody("text/plain".toMediaType())
-            val requestBodyLongitude = longitude!!.toRequestBody("text/plain".toMediaType())
             val requestBodyImage = image.asRequestBody("image/jpeg".toMediaType())
-            val multipartBody =
-                MultipartBody.Part.createFormData("image", image.name, requestBodyImage)
-
-            lifecycleScope.launch {
-                try {
-                    viewModel.sendDonation(
-                        requestBodyUserId,
-                        requestBodyUsername,
-                        requestBodyName,
-                        requestBodyDescription,
-                        requestBodyCategory,
-                        requestBodyTotal,
-                        requestBodyLongitude,
-                        requestBodyLatitude,
-                        multipartBody
-                    )
-                    finish()
-                } catch (e: Exception) {
-                    Log.e(TAG, "sendData: ${e.message.toString()}")
-                }
-            }
-
+            return MultipartBody.Part.createFormData("image", image.name, requestBodyImage)
         }
-
+        throw IllegalStateException("Current image URI is null.")
     }
 
     private fun showImage(uri: Uri?) {
@@ -173,9 +156,10 @@ class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
             imgPreview.visibility = if (currentImageUri != null) View.VISIBLE else View.GONE
             btnRemoveImage.visibility = if (currentImageUri != null) View.VISIBLE else View.GONE
             btnImage.visibility = if (currentImageUri != null) View.GONE else View.VISIBLE
+            llInputFoto.visibility = if (currentImageUri != null) View.GONE else View.VISIBLE
         }
-
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
@@ -183,6 +167,7 @@ class AddDonasiActivity : AppCompatActivity(), OnImageResultListener {
     }
 
     companion object {
+        const val EXTRA_ADD = "addDonasiActivity"
         const val EXTRA_ID = "extra_id"
         const val EXTRA_USERNAME = "extra_username"
         const val EXTRA_URI = "extra_uri"

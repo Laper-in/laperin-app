@@ -10,7 +10,7 @@ import okhttp3.RequestBody
 
 class AddDonationViewModel(private val repository: Repository): ViewModel() {
 
-    suspend fun sendDonation(
+     fun sendDonation(
         userId: RequestBody,
         username: RequestBody,
         name: RequestBody,

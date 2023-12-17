@@ -36,6 +36,13 @@ class EditPictureActivity : AppCompatActivity() {
         }
     }
 
+    private fun getPicture() {
+        val resultIntent = Intent()
+        resultIntent.putExtra(EditProfile.EXTRA_PROFILE, currentImageUri.toString())
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
+
     @Suppress("DEPRECATION")
     private fun getImage() {
         val imageUri = intent.getStringExtra(EXTRA_URI)
@@ -50,12 +57,7 @@ class EditPictureActivity : AppCompatActivity() {
             .build()
     }
 
-    private fun getPicture() {
-        val resultIntent = Intent()
-        resultIntent.putExtra(EditProfile.EXTRA_PROFILE, currentImageUri.toString())
-        setResult(Activity.RESULT_OK, resultIntent)
-        finish()
-    }
+
 
     private fun showImage() {
         currentImageUri?.let { uri ->

@@ -1,7 +1,9 @@
 package com.capstone.laperinapp.ui.donasi.camera
 
-import android.app.Activity.RESULT_OK
+
+import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +19,9 @@ import androidx.core.net.toUri
 import com.google.android.material.R
 import com.capstone.laperinapp.databinding.LayoutBottomsheetBinding
 import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
+import com.capstone.laperinapp.ui.edit.EditProfile
+import com.capstone.laperinapp.ui.edit.picture.ButtonSheetPicture
+import com.capstone.laperinapp.ui.edit.picture.CameraPictureActivity
 import com.capstone.laperinapp.ui.edit.picture.OnImageSelectedListener
 import com.capstone.laperinapp.ui.scan.CameraActivity
 import com.capstone.laperinapp.ui.scan.PreviewActivity
@@ -25,7 +30,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
     private lateinit var binding: LayoutBottomsheetBinding
-    private var onImageResultListener: OnImageResultListener? = null
+    private var onImageSelectedListener: OnImageSelectedListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,10 +40,6 @@ class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
         binding = LayoutBottomsheetBinding.inflate(inflater, container, false)
 
         return binding.root
-    }
-
-    fun setOnImageResultListener(listener: OnImageResultListener) {
-        onImageResultListener = listener
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -59,42 +60,51 @@ class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnCamera.setOnClickListener {
-            val intent = Intent(requireContext(), CameraDonationActivity::class.java)
-            launcherIntentCameraX.launch(intent)
-            dismiss()
+            startCamera()
         }
 
         binding.btnGalery.setOnClickListener {
-            // Ganti pemanggilan startGallery dengan memanggil fungsi setOnImageResultListener
-            onImageResultListener?.let {
-                startGallery(it)
+            startGallery()
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnImageSelectedListener) {
+            onImageSelectedListener = context
+        } else {
+            throw ClassCastException("$context must implement OnImageSelectedListener")
+        }
+    }
+
+    private fun startCamera() {
+        val intent = Intent(requireContext(), CameraDonationActivity::class.java)
+        launcherCamera.launch(intent)
+    }
+
+    private val launcherCamera = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            if (data != null) {
+                val uri = data.getStringExtra(AddDonasiActivity.EXTRA_ADD)
+                onImageSelectedListener?.onImageSelected(Uri.parse(uri))
             }
         }
     }
 
-    private val launcherIntentCameraX = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == RESULT_OK) {
-            val uri = it.data?.getStringExtra(AddDonasiActivity.EXTRA_URI)?.toUri()
-            onImageResultListener?.onImageResult(uri!!)
-        }
+
+    private fun startGallery(){
+        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    private fun startGallery(onImageResultListener: OnImageResultListener) {
-        // Ganti pemanggilan launcherGallery dengan memanggil listener onImageResultListener
-        launcherGallery.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        )
-    }
 
     private val launcherGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
-        if (uri != null){
-            onImageResultListener?.onImageResult(uri)
-            Toast.makeText(requireContext(), "$uri", Toast.LENGTH_SHORT).show()
-            Log.d(TAG, "uri: $uri")
+        if (uri != null) {
+            onImageSelectedListener?.onImageSelected(uri)
             dismiss()
         } else {
             Log.d(TAG, "photoPicker: No Image Selected")

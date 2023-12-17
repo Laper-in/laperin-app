@@ -20,6 +20,7 @@
             app:tint="@color/primary"/>
 
         <TextView
+            android:id="@+id/tv_kamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pilih dari Galeri"
@@ -43,6 +44,7 @@
             app:tint="@color/primary"/>
 
         <TextView
+            android:id="@+id/tv_kemera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pilih dari Kamera"

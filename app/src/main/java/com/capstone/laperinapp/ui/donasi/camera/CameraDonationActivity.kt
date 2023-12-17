@@ -20,6 +20,8 @@ import com.capstone.laperinapp.databinding.ActivityCameraBinding
 import com.capstone.laperinapp.databinding.ActivityCameraDonationBinding
 import com.capstone.laperinapp.helper.createCustomTempFile
 import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
+import com.capstone.laperinapp.ui.edit.EditProfile
+import com.capstone.laperinapp.ui.edit.picture.CameraPictureActivity
 import com.capstone.laperinapp.ui.scan.PreviewActivity
 
 class CameraDonationActivity : AppCompatActivity() {
@@ -75,14 +77,15 @@ class CameraDonationActivity : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val intent = Intent()
-                    intent.putExtra(EXTRA_CAMERAX_IMAGE, outputFileResults.savedUri.toString())
-                    setResult(CAMERAX_RESULT, intent)
+                    val resultIntent = Intent()
+                    resultIntent.putExtra(AddDonasiActivity.EXTRA_ADD, outputFileResults.savedUri.toString())
+                    setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }
 
                 override fun onError(exception: ImageCaptureException) {
                     Toast.makeText(this@CameraDonationActivity, "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "onError: ${exception.message}")
                 }
             }
         )

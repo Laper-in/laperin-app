@@ -20,6 +20,7 @@ import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
+import com.capstone.laperinapp.data.response.DonationsItem
 import com.capstone.laperinapp.databinding.FragmentDonasiBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
@@ -90,6 +91,17 @@ class DonasiFragment : Fragment() {
         viewModel.getAllDonation().observe(viewLifecycleOwner){ result ->
             adapter.submitData(viewLifecycleOwner.lifecycle, result)
         }
+        adapter.setOnClickCallback(object : DonationAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: DonationsItem) {
+                navigateToDetailPage(data)
+            }
+        })
+    }
+
+    private fun navigateToDetailPage(data: DonationsItem) {
+        val intent = Intent(requireActivity(), DetailDonationActivity::class.java)
+        intent.putExtra(DetailDonationActivity.EXTRA_DATA, data)
+        startActivity(intent)
     }
 
     private val requestPermissionLauncher =

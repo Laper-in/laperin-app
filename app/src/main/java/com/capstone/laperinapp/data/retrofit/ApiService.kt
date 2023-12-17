@@ -92,7 +92,7 @@ interface ApiService {
         @Part image: MultipartBody.Part,
         @Part("lat") latitude: RequestBody,
         @Part("lon") longitude: RequestBody
-    ): AddDonationResponse
+    ): Response<AddDonationResponse>
 
     @Multipart
     @POST("donations")

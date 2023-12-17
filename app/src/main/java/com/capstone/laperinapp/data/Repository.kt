@@ -170,7 +170,7 @@ class Repository private constructor(
         ).liveData
     }
 
-    suspend fun createDonation(
+     fun createDonation(
         userId: RequestBody,
         username: RequestBody,
         name: RequestBody,
@@ -180,26 +180,21 @@ class Repository private constructor(
         longitude: RequestBody,
         latitude: RequestBody,
         image: MultipartBody.Part
-    ) : AddDonationResponse {
-        return try {
-            val response = apiService.addDonation(
-                userId,
-                username,
-                name,
-                description,
-                category,
-                total,
-                image,
-                latitude,
-                longitude
-            )
-            Log.d(TAG, "createDonation: ${response.message}")
-            response
-        } catch (e: Exception) {
-            Log.e(TAG, "createDonation: ${e.message}", )
-            throw Exception(e.message.toString())
-        }
+    ) = liveData{
+        emit(Result.Loading)
+         try {
+             val response =apiService.addDonation(userId,username, name, description, category, total, image, latitude, longitude)
+             if (response.isSuccessful) {
+                 emit(Result.Success(response.body()!!))
+             } else {
+                 val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                 emit(Result.Error(errorResponse.message.toString()))
+             }
+         } catch (e: Exception) {
+             emit(Result.Error(e.message.toString()))
+         }
     }
+
 
     fun addsDonations(
         userId: RequestBody,

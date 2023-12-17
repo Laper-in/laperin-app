@@ -29,4 +29,9 @@
         <item name="android:fontFamily">@font/poppins_bold</item>
         <item name="android:textColor">@color/primary</item>
     </style>
+
+    <style name="AppTheme.BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <!-- Customize your bottom sheet dialog theme here -->
+    </style>
+
 </resources>
