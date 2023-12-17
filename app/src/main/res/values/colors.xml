@@ -18,4 +18,5 @@
     <color name="light_yellow">#FDEFC1</color>
     <color name="transparent_white">#45000000</color>
     <color name="transparent_white_30">#19000000</color>
+    <color name="transparent">#00000000</color>
 </resources>

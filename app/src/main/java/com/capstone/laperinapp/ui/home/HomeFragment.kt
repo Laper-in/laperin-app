@@ -26,6 +26,7 @@ import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.detail.DetailActivity
+import com.capstone.laperinapp.ui.scan.result.ResultActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.lang.ref.WeakReference
@@ -65,6 +66,12 @@ class HomeFragment : Fragment() {
         setupRVPopular()
         showDataPopular()
         showDataRekomendasi()
+
+        binding.btnCariin.setOnClickListener { onClickCariin() }
+    }
+
+    private fun onClickCariin() {
+        startActivity(Intent(requireActivity(), ResultActivity::class.java))
     }
 
     private fun getDataUser() {

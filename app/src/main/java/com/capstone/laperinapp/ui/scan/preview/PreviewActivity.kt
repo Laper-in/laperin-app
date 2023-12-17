@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.core.net.toUri
+import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.capstone.laperinapp.databinding.ActivityPreviewBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
@@ -44,10 +45,21 @@ class PreviewActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getImage()
+        setupToolbar()
 
         labels = application.assets.open("labels.txt").bufferedReader().readLines()
 
         binding.btnLanjutkan.setOnClickListener { onClickLanjutkan() }
+    }
+
+    private fun setupToolbar() {
+        val toolbar = binding.appBar
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = "Scan"
+        supportActionBar?.setHomeAsUpIndicator(com.capstone.laperinapp.R.drawable.ic_back)
+
     }
 
     private fun imageProcessor() {
@@ -156,6 +168,11 @@ class PreviewActivity : AppCompatActivity() {
             matrix,
             true
         )
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
     }
 
     companion object {

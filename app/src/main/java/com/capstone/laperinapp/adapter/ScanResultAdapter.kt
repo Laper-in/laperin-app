@@ -33,12 +33,12 @@ class ScanResultAdapter : ListAdapter<ScanResult, ScanResultAdapter.ScanResultVi
         val item = getItem(position)
         holder.bind(item)
         holder.itemView.setOnClickListener {
-            onItemClickCallback.onItemClicked(item)
+            onItemClickCallback.onItemClicked(item, holder)
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: ScanResult)
+        fun onItemClicked(data: ScanResult, holder: ScanResultViewHolder)
     }
 
     companion object {

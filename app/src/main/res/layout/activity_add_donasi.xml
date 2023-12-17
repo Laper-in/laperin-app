@@ -127,7 +127,7 @@
         android:id="@+id/btn_remove_image"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ic_close_24"
+        android:src="@drawable/ic_delete_24"
         android:layout_margin="12dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/img_preview"

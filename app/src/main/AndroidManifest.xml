@@ -61,6 +61,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.scan.result.ResultActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
         <activity
             android:name=".ui.scan.preview.PreviewActivity"

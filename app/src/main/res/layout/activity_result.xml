@@ -1,119 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F3F3"
     tools:context=".ui.scan.result.ResultActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_result"
-        android:layout_width="0dp"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_welcome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="24dp"
-            android:text="Terdeteksi"
-            android:textColor="@color/primary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_result"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/searchBar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Masukkan Bahan"
-            android:focusableInTouchMode="false"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_result" />
-
-        <Button
-            android:id="@+id/btn_scan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="15dp"
-            android:text="Tambahkan dengan scan"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/searchBar"
-            app:layout_constraintStart_toStartOf="@+id/searchBar"
-            app:layout_constraintTop_toBottomOf="@id/searchBar" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Makanan yang bisa dibuat"
-        android:textColor="@color/primary"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_resep"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginHorizontal="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Selengkapnya"
-        android:textColor="@color/primary"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/rv_resep"
-        app:layout_constraintTop_toBottomOf="@+id/rv_resep" />
-
-    <com.google.android.material.search.SearchView
-        android:id="@+id/searchView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:hint="Cari Resep"
-        android:visibility="gone"
-        app:layout_anchor="@id/cl_result"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#00000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="#00000000"
+            android:gravity="center_vertical"
+            app:titleTextAppearance="@style/bold.black"
+            app:titleTextColor="@color/black"/>
 
-    </com.google.android.material.search.SearchView>
+    </com.google.android.material.appbar.AppBarLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appBarLayout"
+        android:padding="15dp"
+        android:background="@drawable/bg_seach"
+        android:drawableStart="@drawable/ic_search_24"
+        android:drawablePadding="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/cari_resep"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        android:inputType="text" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchBar"
+        android:layout_above="@+id/cl_result"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/cl_result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cl_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:maxHeight="350dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="14dp"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/terdeteksi"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_empty_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/result_kosong"
+                android:paddingVertical="50dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/btn_cari_resep"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_result"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:layoutDirection="ltr"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_cari_resep"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_scan"
+                android:layout_width="100dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_button_outline"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cari_resep"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button"
+                android:layout_marginHorizontal="16dp"
+                android:padding="16dp"
+                android:text="@string/cari_resep"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_scan"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_scan" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
