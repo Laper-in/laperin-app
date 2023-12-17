@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage
+import com.capstone.laperinapp.R
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -82,4 +83,25 @@ fun meterToKilometer(meter: Double): String {
 
 fun formatTwoDecimalPlaces(value: Double): String {
     return String.format("%.2f", value)
+}
+
+fun formatDuration(context: Context,duration: String): String {
+    val parts = duration.split(":")
+    if (parts.size != 3) {
+        return context.getString(R.string.format_waktu_tidak_valid)
+    }
+
+    val hours = parts[0].toInt()
+    val minutes = parts[1].toInt()
+    val seconds = parts[2].toInt()
+
+    val totalMinutes = hours * 60 + minutes
+    val formattedHours = totalMinutes / 60
+    val formattedMinutes = totalMinutes % 60
+
+    return if (formattedHours > 0) {
+        context.getString(R.string.estimasi_jam_menit, formattedHours, formattedMinutes)
+    } else {
+        context.getString(R.string.estimasi_menit, formattedMinutes)
+    }
 }

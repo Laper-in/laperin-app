@@ -16,4 +16,6 @@
     <color name="light_blue">#C2DDFD</color>
     <color name="light_green">#C8E8DD</color>
     <color name="light_yellow">#FDEFC1</color>
+    <color name="transparent_white">#45000000</color>
+    <color name="transparent_white_30">#19000000</color>
 </resources>

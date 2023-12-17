@@ -20,7 +20,6 @@ class CategoryAdapter(private val listCategory: ArrayList<Category>): RecyclerVi
         fun bind(item: Category){
             binding.apply {
                 tvItemName.text = item.name
-                imgItemPhoto.setImageResource(item.image)
             }
         }
 
