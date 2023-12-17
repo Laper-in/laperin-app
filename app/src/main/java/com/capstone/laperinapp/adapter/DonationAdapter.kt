@@ -43,7 +43,9 @@ class DonationAdapter() : PagingDataAdapter<DonationsItem, DonationAdapter.ViewH
         if (item != null) {
             holder.bind(item)
             holder.itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(item)
+                if (::onItemClickCallback.isInitialized) {
+                    onItemClickCallback.onItemClicked(item)
+                }
             }
         }
     }

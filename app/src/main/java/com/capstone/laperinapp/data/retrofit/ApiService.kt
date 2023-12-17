@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.data.retrofit
 
+import com.capstone.laperinapp.data.response.AddDonationResponse
 import com.capstone.laperinapp.data.response.BookmarkResponse
 import com.capstone.laperinapp.data.response.DataRecipes
 import com.capstone.laperinapp.data.response.DataUser
@@ -107,4 +108,32 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): SearchIngredientResultResponse
+
+    @Multipart
+    @POST("donations")
+    suspend fun addDonation(
+        @Part("idUser") id: RequestBody,
+        @Part("username") username: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("category") category: RequestBody,
+        @Part("total") total: RequestBody,
+        @Part image: MultipartBody.Part,
+        @Part("lat") latitude: RequestBody,
+        @Part("lon") longitude: RequestBody
+    ): Response<AddDonationResponse>
+
+    @Multipart
+    @POST("donations")
+    fun addsDonation(
+        @Part("idUser") id: RequestBody,
+        @Part("username") username: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("category") category: RequestBody,
+        @Part("total") total: RequestBody,
+        @Part image: MultipartBody.Part,
+        @Part("lat") latitude: RequestBody,
+        @Part("lon") longitude: RequestBody
+    ): Call<AddDonationResponse>
 }

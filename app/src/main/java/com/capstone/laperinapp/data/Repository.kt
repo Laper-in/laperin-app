@@ -2,6 +2,7 @@ package com.capstone.laperinapp.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -17,10 +18,12 @@ import com.capstone.laperinapp.data.paging.RecipesRecomPagingSource
 import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
+import com.capstone.laperinapp.data.response.AddDonationResponse
 import com.capstone.laperinapp.data.response.BookmarksItem
 import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
+import com.capstone.laperinapp.data.response.DataAddDonation
 import com.capstone.laperinapp.data.response.DonationsItem
 import com.capstone.laperinapp.data.response.IngredientItem
 import com.capstone.laperinapp.data.response.RecipeItem
@@ -30,6 +33,11 @@ import com.capstone.laperinapp.data.room.result.dao.ResultDao
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.math.BigInteger
 
 
@@ -210,6 +218,79 @@ class Repository private constructor(
                 SearchIngredientPagingSource(apiService, name)
             }
         ).liveData
+    }
+
+    fun createDonation(
+        userId: RequestBody,
+        username: RequestBody,
+        name: RequestBody,
+        description: RequestBody,
+        category: RequestBody,
+        total: RequestBody,
+        longitude: RequestBody,
+        latitude: RequestBody,
+        image: MultipartBody.Part
+    ) = liveData{
+        emit(Result.Loading)
+        try {
+            val response =apiService.addDonation(userId,username, name, description, category, total, image, latitude, longitude)
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()!!))
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+
+    fun addsDonations(
+        userId: RequestBody,
+        username: RequestBody,
+        name: RequestBody,
+        description: RequestBody,
+        category: RequestBody,
+        total: RequestBody,
+        longitude: RequestBody,
+        latitude: RequestBody,
+        image: MultipartBody.Part
+    ) : LiveData<Result<DataAddDonation>> {
+        val result = MutableLiveData<Result<DataAddDonation>>()
+        result.value = Result.Loading
+
+        val client = apiService.addsDonation(
+            userId,
+            username,
+            name,
+            description,
+            category,
+            total,
+            image,
+            latitude,
+            longitude
+        )
+        client.enqueue(object : Callback<AddDonationResponse> {
+            override fun onResponse(
+                call: Call<AddDonationResponse>,
+                response: Response<AddDonationResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()!!
+                    result.value = Result.Success(responseBody.data)
+                } else {
+                    result.value = Result.Error(response.message())
+                    Log.e(TAG, "onResponseSuccess: ${response.message()}", )
+                }
+            }
+
+            override fun onFailure(call: Call<AddDonationResponse>, t: Throwable) {
+                result.value = Result.Error(t.message.toString())
+            }
+
+        })
+        return result
     }
 
     fun insertResult(data: ScanResult) {
