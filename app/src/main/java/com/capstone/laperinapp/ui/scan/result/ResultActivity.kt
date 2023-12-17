@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.ScanResultAdapter
 import com.capstone.laperinapp.adapter.SearchAdapter
 import com.capstone.laperinapp.data.response.IngredientItem
@@ -63,7 +64,7 @@ class ResultActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = "Hasil Scan"
-        supportActionBar?.setHomeAsUpIndicator(com.capstone.laperinapp.R.drawable.ic_back)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
     private fun onClickScan() {

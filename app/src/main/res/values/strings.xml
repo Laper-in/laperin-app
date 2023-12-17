@@ -59,6 +59,23 @@
     <string name="scan_bahan">Scan Bahan</string>
     <string name="terdeteksi">Terdeteksi</string>
     <string name="result_kosong">Anda belum menambahkan item</string>
+    <string name="terdekat">Terdekat</string>
+    <string name="donasi_saya">Donasi Saya</string>
+    <string name="buat_donasi">Buat Donasi</string>
+    <string name="judul">Judul</string>
+    <string name="jumlah">Jumlah</string>
+    <string name="jenis_bahan_makanan">Jenis bahan/makanan</string>
+    <string name="unggah">Unggah</string>
+    <string name="tambahkan_foto">Tambahkan foto</string>
+    <string name="donasi">Donasi</string>
+    <string name="scan">Scan</string>
+    <string name="koleksi">Koleksi</string>
+    <string name="sedang_berlangsung">Sedang berlangsung</string>
+    <string name="sudah_selesai">Sudah selesai</string>
+    <string name="sudah_diambil">Sudah diambil</string>
+    <string name="jenis">Jenis</string>
+    <string name="belum_diambil">Belum diambil</string>
+    <string name="selesai_diambil">Selesai diambil</string>
 
     <string-array name="category_name">
         <item>Surabaya</item>

@@ -9,19 +9,19 @@
     <item
         android:id="@+id/navigation_donasi"
         android:icon="@drawable/ic_donasi_24"
-        android:title="Donasi" />
+        android:title="@string/donasi" />
 
     <item
-        android:title="Scan" />
+        android:title="@string/scan" />
 
     <item
-        android:id="@+id/navigation_history"
-        android:icon="@drawable/ic_history_24"
-        android:title="History" />
+        android:id="@+id/navigation_koleksi"
+        android:icon="@drawable/ic_bookmark_border_24"
+        android:title="@string/koleksi" />
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_person_outline_24"
-        android:title="Profile" />
+        android:title="@string/profil" />
 
 </menu>

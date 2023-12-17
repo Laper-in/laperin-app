@@ -1,14 +1,20 @@
 package com.capstone.laperinapp.ui.donasi
 
 import android.Manifest
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -26,10 +32,17 @@ import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
 import com.capstone.laperinapp.ui.donasi.detail.DetailDonationActivity
+import com.capstone.laperinapp.ui.donasi.saya.DonasiSayaActivity
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.util.concurrent.TimeUnit
 
 class DonasiFragment : Fragment() {
 
@@ -42,6 +55,8 @@ class DonasiFragment : Fragment() {
     }
     
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
     private var userLatitude: Double = 0.0
     private var userLongitude: Double = 0.0
 
@@ -60,9 +75,87 @@ class DonasiFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         
-        getCurrentLocation()
-        setupDataAll()
+//        getCurrentLocation()
+        createLocationRequest()
+        createLocationCallback()
         binding.btnAddDonation.setOnClickListener { moveToAddDonation() }
+        binding.btnDonasiSaya.setOnClickListener { moveToDonasiSaya() }
+    }
+
+    private fun moveToDonasiSaya() {
+        val intent = Intent(requireActivity(), DonasiSayaActivity::class.java)
+        startActivity(intent)
+    }
+
+    private val resolutionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult()
+        ) { result ->
+            when (result.resultCode) {
+                RESULT_OK -> {
+                    Log.i(TAG, "onActivityResult: All location settings are satisfied.")
+                }
+                RESULT_CANCELED -> {
+                    Toast.makeText(requireActivity(), "Anda harus mengaktifkan GPS", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest.create().apply {
+            interval = TimeUnit.SECONDS.toMillis(1)
+            fastestInterval = TimeUnit.SECONDS.toMillis(1)
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        val client = LocationServices.getSettingsClient(requireActivity())
+        client.checkLocationSettings(builder.build())
+            .addOnSuccessListener {
+                getCurrentLocation()
+            }
+            .addOnFailureListener { exception ->
+                if (exception is ResolvableApiException) {
+                    try {
+                        resolutionLauncher.launch(
+                            IntentSenderRequest.Builder(exception.resolution).build()
+                        )
+                    } catch (sendEx: IntentSender.SendIntentException) {
+                        Toast.makeText(requireActivity(), sendEx.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+    }
+
+    private fun createLocationCallback(){
+        locationCallback = object : LocationCallback(){
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations){
+                    sendData(location.longitude, location.latitude)
+                }
+            }
+        }
+    }
+
+    private fun sendData(longitude: Double, latitude: Double) {
+        viewModel.lonLatLiveData.value = longitude to latitude
+    }
+
+    private fun startLocationUpdates(){
+        try {
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        } catch (e: SecurityException){
+            Log.e(TAG, "Error: ${e.message}", )
+        }
+    }
+
+    private fun stopLocationUpdates(){
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     private fun moveToAddDonation() {
@@ -76,30 +169,6 @@ class DonasiFragment : Fragment() {
         intent.putExtra(AddDonasiActivity.EXTRA_USERNAME, username)
         intent.putExtra(AddDonasiActivity.EXTRA_LATITUDE, userLatitude)
         intent.putExtra(AddDonasiActivity.EXTRA_LONGITUDE, userLongitude)
-        startActivity(intent)
-    }
-
-    private fun setupDataAll() {
-        val adapter = DonationAdapter()
-        binding.rvLatest.adapter = adapter.withLoadStateFooter(
-            footer = LoadingStateAdapter { adapter.retry() }
-        )
-        val layoutManager = LinearLayoutManager(requireActivity())
-        binding.rvLatest.layoutManager = layoutManager
-
-        viewModel.getAllDonation().observe(viewLifecycleOwner){ result ->
-            adapter.submitData(viewLifecycleOwner.lifecycle, result)
-        }
-        adapter.setOnClickCallback(object : DonationAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: DonationsItem) {
-                navigateToDetailPage(data)
-            }
-        })
-    }
-
-    private fun navigateToDetailPage(data: DonationsItem) {
-        val intent = Intent(requireActivity(), DetailDonationActivity::class.java)
-        intent.putExtra(DetailDonationActivity.EXTRA_DATA, data)
         startActivity(intent)
     }
 
@@ -159,7 +228,7 @@ class DonasiFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.rvClosest.layoutManager = layoutManager
 
-        viewModel.getClosestDonation(longitude, latitude).observe(viewLifecycleOwner){ result ->
+        viewModel.getClosestDonation().observe(viewLifecycleOwner){ result ->
             adapter.submitData(viewLifecycleOwner.lifecycle, result)
         }
 
@@ -170,6 +239,16 @@ class DonasiFragment : Fragment() {
                 startActivity(intent)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
     }
 
     override fun onDestroyView() {

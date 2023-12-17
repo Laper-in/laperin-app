@@ -82,10 +82,10 @@ interface ApiService {
         @Query("pageSize") size: Int
     ): BookmarkResponse
   
-    @GET("donations/closest/{lon}/{lat}")
+    @GET("donations/closest")
     suspend fun getAllClosestDonation(
-        @Path("lon") lon: Double,
-        @Path("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("lat") lat: Double,
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): ClosestDonationsResponses

@@ -14,13 +14,13 @@
     <fragment
         android:id="@+id/navigation_donasi"
         android:name="com.capstone.laperinapp.ui.donasi.DonasiFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/donasi"
         tools:layout="@layout/fragment_donasi" />
 
     <fragment
-        android:id="@+id/navigation_history"
+        android:id="@+id/navigation_koleksi"
         android:name="com.capstone.laperinapp.ui.history.HistoryFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/koleksi"
         tools:layout="@layout/fragment_history" />
 
     <fragment

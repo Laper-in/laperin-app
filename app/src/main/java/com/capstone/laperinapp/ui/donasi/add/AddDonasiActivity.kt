@@ -77,7 +77,8 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = "Tambahkan Donasi"
+        supportActionBar?.title = "Buat Donasi"
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
     private fun openModal() {
