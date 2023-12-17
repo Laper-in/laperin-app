@@ -3,7 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#49B38D</color>
-    <color name="light_green">#76E5C0</color>
     <color name="gray_100">#F7F8F8</color>
     <color name="light_gray_1">#F3F5F9</color>
     <color name="light_gray_2">#D9D9D9</color>
@@ -14,4 +13,7 @@
     <color name="light_orange">#FDD9C2</color>
     <color name="light_orange_2">#FEE6D6</color>
     <color name="pink">#FECDCD</color>
+    <color name="light_blue">#C2DDFD</color>
+    <color name="light_green">#C8E8DD</color>
+    <color name="light_yellow">#FDEFC1</color>
 </resources>

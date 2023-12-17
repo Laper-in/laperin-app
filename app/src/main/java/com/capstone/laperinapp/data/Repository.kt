@@ -13,6 +13,7 @@ import com.capstone.laperinapp.data.paging.BookmarksPagingSource
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
 import com.capstone.laperinapp.data.paging.DonationsPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
+import com.capstone.laperinapp.data.paging.RecipesRecomPagingSource
 import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
@@ -92,6 +93,17 @@ class Repository private constructor(
             ),
             pagingSourceFactory = {
                 RecipesPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+    fun getAllRecipesRandom(): LiveData<PagingData<RecipeItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                RecipesRecomPagingSource(apiService)
             }
         ).liveData
     }

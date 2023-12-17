@@ -7,7 +7,10 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.capstone.laperinapp.data.response.RecipeItem
+import com.capstone.laperinapp.databinding.ItemBookmarkProfileBinding
 import com.capstone.laperinapp.databinding.ItemRecipesPopularBinding
 
 class PopularRecipesAdapter() : PagingDataAdapter<RecipeItem, PopularRecipesAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -19,7 +22,7 @@ class PopularRecipesAdapter() : PagingDataAdapter<RecipeItem, PopularRecipesAdap
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemRecipesPopularBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemBookmarkProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -33,14 +36,15 @@ class PopularRecipesAdapter() : PagingDataAdapter<RecipeItem, PopularRecipesAdap
         }
     }
 
-    class ViewHolder(val binding: ItemRecipesPopularBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ItemBookmarkProfileBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RecipeItem){
             Glide.with(binding.root.context)
                 .load(item.image)
-                .into(binding.imgItemPhoto)
+                .transform(CenterCrop(), RoundedCorners(20))
+                .into(binding.imgItem)
             binding.apply {
                 tvItemName.text = item.name
-                tvItemCategory.text = item.category
+                tvItemDescription.text = item.category
             }
         }
 

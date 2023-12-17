@@ -1,36 +1,29 @@
 package com.capstone.laperinapp.ui.home
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.capstone.laperinapp.R
-import com.capstone.laperinapp.adapter.CategoryAdapter
+import com.bumptech.glide.Glide
 import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.adapter.MarginItemDecoration
 import com.capstone.laperinapp.adapter.PopularRecipesAdapter
 import com.capstone.laperinapp.adapter.RekomendasiRecipesAdapter
-import com.capstone.laperinapp.data.model.Category
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
-import com.capstone.laperinapp.data.response.DataRecipes
+import com.capstone.laperinapp.data.response.DataUser
 import com.capstone.laperinapp.data.response.RecipeItem
 import com.capstone.laperinapp.databinding.FragmentHomeBinding
 import com.capstone.laperinapp.helper.JWTUtils
+import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.detail.DetailActivity
 import kotlinx.coroutines.flow.first
@@ -66,12 +59,40 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getDataUser()
         getData()
         setupRVRekomendasi()
         setupRVPopular()
-        setupRVCategory()
         showDataPopular()
         showDataRekomendasi()
+    }
+
+    private fun getDataUser() {
+        val pref = UserPreference.getInstance(requireActivity().dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val token = user.token
+        val id = JWTUtils.getId(token)
+
+        viewModel.getUser(id).observe(viewLifecycleOwner) {result ->
+            when(result){
+                is Result.Success -> {
+                    setupDataUser(result.data)
+                }
+                is Result.Error -> {
+                    Log.e(TAG, "getDataUser: ${result.error}", )              }
+                is Result.Loading -> {
+                    Log.d(TAG, "getDataUser: Loading")
+                }
+            }
+        }
+    }
+
+    private fun setupDataUser(data: DataUser) {
+        binding.tvUsername.text = data.username
+        Glide.with(requireActivity())
+            .load(data.picture)
+            .circleCrop()
+            .into(binding.imgProfile)
     }
 
     private fun getData() {
@@ -94,35 +115,14 @@ class HomeFragment : Fragment() {
         setupSlider(layoutManagerRekomendasi)
     }
 
-    private fun setupRVPopular(){
-        val layoutManagerPopular = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+    private fun setupRVPopular() {
+        val layoutManagerPopular = LinearLayoutManager(requireActivity())
         binding.rvPopular.layoutManager = layoutManagerPopular
 
         binding.apply {
             rvPopular.layoutManager = layoutManagerPopular
-//            rvPopular.isNestedScrollingEnabled = false
+            rvPopular.isNestedScrollingEnabled = false
         }
-    }
-
-    private fun setupRVCategory() {
-        val listCategory = ArrayList<Category>()
-        listCategory.addAll(showDataCategory())
-        val categoryAdapter = CategoryAdapter(listCategory)
-
-        val layoutManagerCategory = GridLayoutManager(requireActivity(), listCategory.size)
-
-        binding.apply {
-            rvCategory.layoutManager = layoutManagerCategory
-            rvCategory.setHasFixedSize(true)
-            rvCategory.adapter = categoryAdapter
-        }
-
-
-        categoryAdapter.setOnClickCallback(object : CategoryAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Category) {
-                Toast.makeText(requireContext(), data.name, Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun setupSlider(layoutManagerRekomendasi: LinearLayoutManager) {
@@ -135,8 +135,12 @@ class HomeFragment : Fragment() {
         timer?.scheduleAtFixedRate(object : java.util.TimerTask() {
             override fun run() {
                 if (bindingRef?.rvRekomendasi != null) {
-                    val currentPosition = layoutManagerRekomendasi.findLastCompletelyVisibleItemPosition()
-                    Log.d(TAG, "posisi sekarang: $currentPosition , jumlah data: ${rekomendasiAdapter.itemCount}")
+                    val currentPosition =
+                        layoutManagerRekomendasi.findLastCompletelyVisibleItemPosition()
+                    Log.d(
+                        TAG,
+                        "posisi sekarang: $currentPosition , jumlah data: ${rekomendasiAdapter.itemCount}"
+                    )
 
                     if (currentPosition < (rekomendasiAdapter.itemCount - 1)) {
                         layoutManagerRekomendasi.smoothScrollToPosition(
@@ -163,15 +167,24 @@ class HomeFragment : Fragment() {
                 popularAdapter.retry()
             }
         )
+
         viewModel.getAllRecipes().observe(viewLifecycleOwner) {
             popularAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
+
+        observeDataPopular()
 
         popularAdapter.setOnClickCallback(object : PopularRecipesAdapter.OnItemClickCallback {
             override fun onItemClicked(data: RecipeItem) {
                 showSelectedItem(data)
             }
         })
+    }
+
+    private fun observeDataPopular() {
+        popularAdapter.addLoadStateListener { loadState ->
+            showLoading(loadState.refresh is LoadState.Loading)
+        }
     }
 
     private fun showDataRekomendasi() {
@@ -181,7 +194,7 @@ class HomeFragment : Fragment() {
             }
         )
 
-        viewModel.getAllRecipes().observe(viewLifecycleOwner) {
+        viewModel.getAllRecipesRandom().observe(viewLifecycleOwner) {
             rekomendasiAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
 
@@ -191,21 +204,6 @@ class HomeFragment : Fragment() {
                 showSelectedItem(data)
             }
         })
-    }
-
-    @SuppressLint("Recycle")
-    private fun showDataCategory(): ArrayList<Category> {
-        val catName = resources.getStringArray(R.array.category_name)
-        val catImage = resources.obtainTypedArray(R.array.category_icon)
-        val listCategory = ArrayList<Category>()
-        for (position in catName.indices) {
-            val category = Category(
-                catName[position],
-                catImage.getResourceId(position, -1)
-            )
-            listCategory.add(category)
-        }
-        return listCategory
     }
 
     private fun showLoading(isLoading: Boolean) {

@@ -15,6 +15,10 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     fun getAllRecipes() = repository.getAllRecipes().cachedIn(viewModelScope)
 
+    fun getAllRecipesRandom() = repository.getAllRecipesRandom().cachedIn(viewModelScope)
+
+    fun getUser(id: String) = repository.getDetailUser(id)
+
     suspend fun getSession() {
         repository.getSession().first()
     }

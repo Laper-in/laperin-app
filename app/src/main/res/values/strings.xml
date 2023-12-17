@@ -40,6 +40,14 @@
     <string name="nama_makanan">Nama Makanan</string>
     <string name="deskripsi">Deskripsi</string>
     <string name="durasi">durasi</string>
+    <string name="tanyain">Tanya.in</string>
+    <string name="masakin">Masak.in</string>
+    <string name="donasiin">Donasi.in</string>
+    <string name="cariin">Cari.in</string>
+    <string name="resep_rekomendasi">Resep rekomendasi</string>
+    <string name="cari_resep">Cari Resep</string>
+    <string name="resep_populer">Resep populer</string>
+    <string name="hello">Hello,</string>
 
     <string-array name="category_name">
         <item>Surabaya</item>
