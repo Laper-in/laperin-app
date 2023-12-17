@@ -6,16 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.register.RegisterActivity">
 
+    <ImageView
+        android:layout_width="348dp"
+        android:layout_height="107dp"
+        android:src="@drawable/logo_laperin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.062" />
+
     <TextView
         android:id="@+id/tvDaftar"
-        style="@style/bold"
+        style="@style/bold.light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/daftar"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="228dp"
+        android:text="Daftar"
+        android:textColor="@color/orange"
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_marginHorizontal="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,16 +35,16 @@
         style="@style/medium"
         android:layout_width="0dp"
         android:layout_height="52dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="288dp"
+        android:layout_marginEnd="16dp"
         android:hint="@string/username"
         android:inputType="text"
         android:padding="10dp"
         android:textSize="13sp"
-        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvDaftar"
-        app:layout_constraintTop_toBottomOf="@+id/tvDaftar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEmailRegister"
@@ -88,28 +99,40 @@
         android:id="@+id/btRegister"
         android:layout_width="0dp"
         android:layout_height="52dp"
+        android:layout_marginBottom="92dp"
         android:background="@color/primary"
         android:enabled="false"
         android:textColor="@color/white"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_masuk_register"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/edUlang_password"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edUlang_password" />
 
-    <com.capstone.laperinapp.ui.customView.ButtonActivity
-        android:id="@+id/bt_masuk_register"
-        android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/rounded_button"
-        android:text="@string/masuk"
-        android:textColor="@color/primary"
-        android:layout_marginBottom="32dp"
+    <TextView
+        android:id="@+id/tv_register_toLogin"
+        style="@style/medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sudah punya akun?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btRegister"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.427"
         app:layout_constraintStart_toStartOf="@+id/btRegister"
+        app:layout_constraintTop_toBottomOf="@+id/btRegister"
+        app:layout_constraintVertical_bias="0.26" />
+
+    <TextView
+        android:id="@+id/bt_masuk_register"
+        style="@style/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Masuk"
+        android:textColor="@color/orange"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_register_toLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintStart_toEndOf="@+id/tv_register_toLogin"
+        app:layout_constraintTop_toTopOf="@+id/tv_register_toLogin"
         app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
