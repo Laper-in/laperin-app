@@ -39,7 +39,7 @@ class RegisterActivity : AppCompatActivity() {
             edUlangPassword.addTextChangedListener(textWatcher)
         }
 
-        binding.btMasukRegister.setOnClickListener { onClickLogin() }
+        binding.btMasukToLogin.setOnClickListener { onClickLogin() }
         binding.btRegister.setOnClickListener { onClickRegister() }
     }
 

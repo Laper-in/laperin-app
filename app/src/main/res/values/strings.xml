@@ -54,6 +54,8 @@
     <string name="bahan_bahan">Bahan - bahan</string>
     <string name="video_tutorial">Video tutorial</string>
     <string name="tahapan">Tahapan</string>
+    <string name="konfirm_login">Sudah punya akun?</string>
+    <string name="konfirm_regis">Belum punya akun?</string>
 
     <string-array name="category_name">
         <item>Surabaya</item>

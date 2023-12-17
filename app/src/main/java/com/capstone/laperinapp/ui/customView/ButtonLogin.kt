@@ -34,7 +34,7 @@ class ButtonLogin : AppCompatButton {
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if(isEnabled) "Masuk" else "Isi Dulu"
+        text = if(isEnabled) "Masuk" else "Masuk"
     }
 
     private fun init() {

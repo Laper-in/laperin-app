@@ -35,7 +35,7 @@ class ButtonRegister
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if(isEnabled) "Daftar Akun" else "Isi Dulu"
+        text = if(isEnabled) "Daftar Akun" else "Daftar Akun"
     }
 
     private fun init() {
