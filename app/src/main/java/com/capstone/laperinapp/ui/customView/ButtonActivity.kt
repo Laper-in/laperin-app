@@ -19,7 +19,7 @@ class ButtonActivity : AppCompatButton {
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init()
+        init() //
     }
 
     private fun init() {
