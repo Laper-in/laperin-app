@@ -62,11 +62,11 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                style="@style/textColorDetailRecipes"
+                style="@style/textColorDetailRecipesTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/nama_makanan"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +102,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_category"
-                style="@style/textColorDetailRecipes"
+                style="s@style/textColorDetailRecipes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"

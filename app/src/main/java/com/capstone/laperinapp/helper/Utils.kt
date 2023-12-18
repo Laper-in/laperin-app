@@ -123,6 +123,6 @@ fun formatDurationList(context: Context,duration: String): String {
     return if (formattedHours > 0) {
         context.getString(R.string.estimasi_jam, formattedHours)
     } else {
-        context.getString(R.string.estimasi_menit, formattedMinutes)
+        context.getString(R.string.estimasi_menit_2, formattedMinutes)
     }
 }

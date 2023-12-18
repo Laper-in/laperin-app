@@ -11,14 +11,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.capstone.laperinapp.helper.Result
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
+import com.capstone.laperinapp.adapter.BookmarkProfileAdapter
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
+import com.capstone.laperinapp.data.response.DataItemBookmark
 import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.FragmentProfileBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.detail.DetailActivity
 import com.capstone.laperinapp.ui.login.LoginActivity
 import com.capstone.laperinapp.ui.profile.setting.SettingActivity
 import kotlinx.coroutines.flow.first
@@ -32,6 +36,7 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private lateinit var adapter: BookmarkProfileAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +51,26 @@ class ProfileFragment : Fragment() {
 
         getData()
         setupToolbar()
+        setupRV()
+    }
+
+    private fun setupRV() {
+        adapter = BookmarkProfileAdapter()
+        binding.rvKoleksi.adapter = adapter
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.rvKoleksi.layoutManager = layoutManager
+
+        viewModel.getAllBookmark("").observe(viewLifecycleOwner) {
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
+
+        adapter.setOnClickCallback(object : BookmarkProfileAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: DataItemBookmark) {
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_DATA, data.recipe.id)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun setupToolbar() {

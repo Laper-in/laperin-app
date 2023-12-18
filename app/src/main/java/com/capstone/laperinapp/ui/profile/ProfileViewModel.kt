@@ -11,7 +11,7 @@ class ProfileViewModel (private val repository: Repository): ViewModel() {
 
     fun getUser() = repository.getDetailUser()
 
-    fun getAllBookmark(id:String) = repository.getAllBookmarksById(id).cachedIn(viewModelScope)
+    fun getAllBookmark(category:String) = repository.getAllBookmarks(category).cachedIn(viewModelScope)
 
     fun logout() {
         viewModelScope.launch {

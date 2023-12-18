@@ -16,12 +16,11 @@ import com.capstone.laperinapp.data.paging.RecipesRecomPagingSource
 import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
-import com.capstone.laperinapp.data.response.BookmarksItem
+import com.capstone.laperinapp.data.response.DataItemBookmark
 import com.capstone.laperinapp.data.response.ErrorResponse
 import com.capstone.laperinapp.data.response.DataItemDonation
 import com.capstone.laperinapp.data.response.DataItemIngredient
 import com.capstone.laperinapp.data.response.DataItemRecipes
-import com.capstone.laperinapp.data.response.IngredientItem
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
 import com.capstone.laperinapp.data.room.result.dao.ResultDao
@@ -156,13 +155,13 @@ class Repository private constructor(
         }
     }
 
-    fun getAllBookmarksById(id: String): LiveData<PagingData<BookmarksItem>> {
+    fun getAllBookmarks(category: String): LiveData<PagingData<DataItemBookmark>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
             pagingSourceFactory = {
-                BookmarksPagingSource(apiService, id)
+                BookmarksPagingSource(apiService, category)
             }
         ).liveData
     }

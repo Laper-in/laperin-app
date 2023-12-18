@@ -22,6 +22,11 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="textColorDetailRecipesTitle">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="textColorDetail">
         <item name="android:fontFamily">@font/poppins_light</item>
         <item name="android:textColor">@color/white</item>

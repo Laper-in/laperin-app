@@ -68,9 +68,9 @@ interface ApiService {
         @Path("id") id: String
     ): Response<RecipeDetailResponse>
 
-    @GET("bookmarks/{id}")
+    @GET("bookmarks/search")
     suspend fun getBookmarks(
-        @Path("id") id: String,
+        @Query("category") category: String,
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): BookmarkResponse

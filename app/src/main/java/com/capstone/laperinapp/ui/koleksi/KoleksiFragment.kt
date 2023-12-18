@@ -9,8 +9,13 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.capstone.laperinapp.R
+import com.capstone.laperinapp.adapter.BookmarkAdapter
+import com.capstone.laperinapp.adapter.StaggeredItemDecoration
+import com.capstone.laperinapp.data.response.DataItemBookmark
 import com.capstone.laperinapp.data.room.favorite.adapter.FavoriteAdapter
 import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.databinding.FragmentKoleksiBinding
@@ -28,7 +33,7 @@ class KoleksiFragment : Fragment() {
     private val viewModel by viewModels<KoleksiViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
-    private lateinit var adapter : FavoriteAdapter
+    private lateinit var adapter: BookmarkAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +56,13 @@ class KoleksiFragment : Fragment() {
     @Suppress("DEPRECATION")
     private fun setupCategory() {
         val chipGroup: ChipGroup = binding.chipCategory
-        val chipCategory = listOf("All", "Makanan", "Minuman", "Kue", "Jajanan", "Roti", "Kopi", "Teh", "Soda", "Jus", "Smoothies", "Es", "Lainnya")
+        val chipCategory = listOf(
+            "All",
+            "Pedas",
+            "Kuah",
+            "Gurih",
+            "Manis"
+        )
 
         for (category in chipCategory) {
             val chip = Chip(requireContext())
@@ -61,18 +72,30 @@ class KoleksiFragment : Fragment() {
                 .build()
             chip.text = category
             chip.isCheckable = true
-            if (category == "All"){
+            if (category == "All") {
                 chip.isChecked = true
                 chip.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.orange))
                 chip.chipBackgroundColor = resources.getColorStateList(R.color.light_orange)
+                viewModel.searchStringLiveData.value = category
             }
 
             chip.setOnCheckedChangeListener() { buttonView, isChecked ->
                 if (isChecked) {
-                    buttonView.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.orange))
+                    buttonView.setTextColor(
+                        ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.orange
+                        )
+                    )
                     chip.chipBackgroundColor = resources.getColorStateList(R.color.light_orange)
+                    viewModel.searchStringLiveData.value = category
                 } else {
-                    buttonView.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+                    buttonView.setTextColor(
+                        ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.black
+                        )
+                    )
                     chip.chipBackgroundColor = resources.getColorStateList(R.color.transparent)
                 }
             }
@@ -81,25 +104,29 @@ class KoleksiFragment : Fragment() {
     }
 
     private fun setupRV() {
-        adapter = FavoriteAdapter()
+        adapter = BookmarkAdapter()
 
-        binding.rvFavorite.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvFavorite.setHasFixedSize(true)
+        binding.rvFavorite.layoutManager =
+            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         binding.rvFavorite.adapter = adapter
+        binding.rvFavorite.addItemDecoration(StaggeredItemDecoration(50))
 
-        adapter.setOnClickCallback(object : FavoriteAdapter.OnItemClickCallback{
-            override fun onItemClicked(data: Favorite) {
+        adapter.setOnClickCallback(object : BookmarkAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: DataItemBookmark) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_DATA, data.id)
+                intent.putExtra(DetailActivity.EXTRA_DATA, data.recipe.id)
                 startActivity(intent)
             }
         })
     }
 
     private fun getData() {
-        viewModel.getRecipesFavorite().observe(viewLifecycleOwner) {
-            if (it != null) {
-                adapter.submitList(it)
+        viewModel.getAllBookmarks().observe(viewLifecycleOwner) {result ->
+            if (result != null) {
+                adapter.submitData(viewLifecycleOwner.lifecycle, result)
+                binding.tvEmpty.visibility = View.GONE
+            } else {
+                binding.tvEmpty.visibility = View.VISIBLE
             }
         }
     }

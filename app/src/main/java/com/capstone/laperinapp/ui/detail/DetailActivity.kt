@@ -3,16 +3,23 @@ package com.capstone.laperinapp.ui.detail
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import androidx.paging.PagingData
+import androidx.paging.filter
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.CategoryAdapter
 import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.data.model.Category
+import com.capstone.laperinapp.data.response.DataItemBookmark
 import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.databinding.ActivityDetailBinding
 import com.capstone.laperinapp.helper.Result
@@ -22,6 +29,7 @@ import com.capstone.laperinapp.helper.formatDuration
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
+    private var isInFavorite = false
 
     private val viewModel by viewModels<DetailViewModel> {
         ViewModelFactory.getInstance(this)
@@ -98,7 +106,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun onClickFavorite(data: DataItemRecipes) {
-        var isInFavorite = false
         recipesFavorit = Favorite(
             data.id,
             data.image,
@@ -110,16 +117,20 @@ class DetailActivity : AppCompatActivity() {
             data.video
         )
 
-        viewModel.getAllFavorite().observe(this) { favorite ->
-            if (favorite != null) {
-                isInFavorite = favorite.any { it.id == data.id }
-                if (isInFavorite) {
-                    binding.btFavorite.setImageResource(R.drawable.ic_bookmark_24)
-                } else {
-                    binding.btFavorite.setImageResource(R.drawable.ic_bookmark_border_24)
-                }
-            }
+        viewModel.getAllBookmarks().observe(this) { result ->
+            //TODO("ambil id")
         }
+
+//        viewModel.getAllFavorite().observe(this) { favorite ->
+//            if (favorite != null) {
+//                isInFavorite = favorite.any { it.id == data.id }
+//                if (isInFavorite) {
+//                    binding.btFavorite.setImageResource(R.drawable.ic_bookmark_24)
+//                } else {
+//                    binding.btFavorite.setImageResource(R.drawable.ic_bookmark_border_24)
+//                }
+//            }
+//        }
 
         binding.btFavorite.setOnClickListener {
             if (isInFavorite) {
@@ -171,5 +182,6 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_DATA = "extra_data"
+        private const val TAG = "DetailActivity"
     }
 }
