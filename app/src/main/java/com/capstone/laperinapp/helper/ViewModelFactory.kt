@@ -9,7 +9,7 @@ import com.capstone.laperinapp.ui.detail.DetailViewModel
 import com.capstone.laperinapp.ui.donasi.DonasiViewModel
 import com.capstone.laperinapp.ui.donasi.add.AddDonationViewModel
 import com.capstone.laperinapp.ui.donasi.saya.DonasiSayaViewModel
-import com.capstone.laperinapp.ui.history.HistoryViewModel
+import com.capstone.laperinapp.ui.koleksi.KoleksiViewModel
 import com.capstone.laperinapp.ui.profile.editProfile.EditViewModel
 import com.capstone.laperinapp.ui.home.HomeViewModel
 import com.capstone.laperinapp.ui.login.LoginViewModel
@@ -62,8 +62,8 @@ class ViewModelFactory private constructor(private val repository: Repository) :
             modelClass.isAssignableFrom(PreviewViewModel::class.java) -> {
                 PreviewViewModel(repository) as T
             }
-            modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
-                HistoryViewModel(repository) as T
+            modelClass.isAssignableFrom(KoleksiViewModel::class.java) -> {
+                KoleksiViewModel(repository) as T
             }
             modelClass.isAssignableFrom(AddDonationViewModel::class.java) -> {
                 AddDonationViewModel(repository) as T
