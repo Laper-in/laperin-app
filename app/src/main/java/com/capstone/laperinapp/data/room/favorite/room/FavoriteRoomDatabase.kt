@@ -1,11 +1,11 @@
-package com.capstone.laperinapp.data.favorite.room
+package com.capstone.laperinapp.data.room.favorite.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.capstone.laperinapp.data.favorite.dao.FavoriteDao
-import com.capstone.laperinapp.data.favorite.entity.Favorite
+import com.capstone.laperinapp.data.room.favorite.dao.FavoriteDao
+import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 
 @Database(entities = [Favorite::class], version = 1, exportSchema = false)
 abstract class FavoriteRoomDatabase : RoomDatabase() {

@@ -40,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_edit_text"
+            style="@style/editText"
             app:layout_constraintEnd_toEndOf="@+id/ed_jumlah"
             app:layout_constraintStart_toStartOf="@+id/ed_jumlah"
             app:layout_constraintTop_toBottomOf="@+id/ed_jumlah" />
@@ -57,14 +58,15 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_image_24" />
+                style="@style/imageTint"
+                android:src="@drawable/ic_image_24"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textColor="@color/dark_gray"
                 android:text="@string/tambahkan_foto"
+                style="@style/imageTint"
                 android:textSize="11sp" />
 
         </LinearLayout>
@@ -92,7 +94,7 @@
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_nama"
-        style="@style/medium"
+        style="@style/editText"
         android:layout_width="0dp"
         android:layout_height="53dp"
         android:layout_marginHorizontal="24dp"
@@ -100,7 +102,6 @@
         android:inputType="text"
         android:padding="15dp"
         android:textSize="13sp"
-        android:textColorHint="@color/dark_gray"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,14 +109,13 @@
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_description"
-        style="@style/medium"
+        style="@style/editText"
         android:layout_width="0dp"
         android:layout_height="53dp"
         android:hint="@string/deskripsi"
         android:inputType="text"
         android:padding="15dp"
         android:textSize="13sp"
-        android:textColorHint="@color/dark_gray"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@+id/ed_nama"
         app:layout_constraintStart_toStartOf="@+id/ed_nama"
@@ -123,14 +123,13 @@
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_jumlah"
-        style="@style/medium"
+        style="@style/editText"
         android:layout_width="0dp"
         android:layout_height="53dp"
         android:layout_marginTop="16dp"
         android:hint="@string/jumlah"
         android:inputType="number"
         android:padding="15dp"
-        android:textColorHint="@color/dark_gray"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@+id/ed_nama"
         app:layout_constraintStart_toStartOf="@+id/ed_nama"
@@ -138,14 +137,13 @@
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/ed_jenis"
-        style="@style/medium"
+        style="@style/editText"
         android:layout_width="0dp"
         android:layout_height="53dp"
         android:layout_marginTop="16dp"
         android:hint="@string/jenis_bahan_makanan"
         android:inputType="text"
         android:padding="15dp"
-        android:textColorHint="@color/dark_gray"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@+id/ed_nama"
         app:layout_constraintStart_toStartOf="@+id/ed_nama"
@@ -169,7 +167,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="Lokasi donasi diatur menyesuaikan lokasi anda saat ini"
+            style="@style/imageTint"
+            android:text="@string/hint_lokasi"
             android:textSize="12sp" />
 
     </LinearLayout>

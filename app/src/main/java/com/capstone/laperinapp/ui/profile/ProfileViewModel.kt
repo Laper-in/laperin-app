@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel (private val repository: Repository): ViewModel() {
 
-    fun getUser(id:String) = repository.getDetailUser(id)
+    fun getUser() = repository.getDetailUser()
 
     fun getAllBookmark(id:String) = repository.getAllBookmarksById(id).cachedIn(viewModelScope)
 

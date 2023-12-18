@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
             buttonLogin = btMasukLogin
             buttonLogin.isEnabled = false
 
-            edEmailLogin.addTextChangedListener(textWatcher)
+            edUsernameLogin.addTextChangedListener(textWatcher)
             edPasswordLogin.addTextChangedListener(textWatcher)
         }
 
@@ -44,10 +44,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onClickLogin() {
-        val email = binding.edEmailLogin.text.toString()
+        val username = binding.edUsernameLogin.text.toString()
         val password = binding.edPasswordLogin.text.toString()
 
-        observeLoginResult(email, password)
+        observeLoginResult(username, password)
     }
 
     private fun onClickRegister() {
@@ -55,13 +55,13 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun observeLoginResult(email: String, password: String) {
-        viewModel.setLogin(email, password).observe(this) { result ->
+    private fun observeLoginResult(username: String, password: String) {
+        viewModel.setLogin(username, password).observe(this) { result ->
             when (result) {
                 is Result.Success -> {
                     showLoading(false)
-                    val token = result.data.token
-                    val user = UserModel(email, token, true)
+                    val token = result.data.accessToken
+                    val user = UserModel(username, token, true)
                     viewModel.saveSession(user)
                     ViewModelFactory.clearInstance()
                     startActivity(Intent(this, MainActivity::class.java))
@@ -96,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkFieldsForEmptyValues() {
         binding.apply {
-            val email = edEmailLogin.text.toString()
+            val email = edUsernameLogin.text.toString()
             val password = edPasswordLogin.text.toString()
 
             buttonLogin.isEnabled = email.isNotEmpty() && password.isNotEmpty()

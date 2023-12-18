@@ -11,11 +11,10 @@ import java.math.BigInteger
 class EditViewModel(private  val repository: Repository) :ViewModel() {
 
     fun updateUser(
-        id: String,
         email: String,
         fullname: String,
         alamat: String,
         telephone: BigInteger
-    ) = repository.updateUser(id, email, fullname, alamat, telephone)
+    ) = repository.updateUser(email, fullname, alamat, telephone)
 
 }

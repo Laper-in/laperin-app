@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.Toast
 import com.capstone.laperinapp.helper.Result
 import androidx.activity.viewModels
+import com.capstone.laperinapp.data.pref.UserModel
+import com.capstone.laperinapp.data.response.AuthResponse
 import com.capstone.laperinapp.ui.customView.ButtonRegister
 import com.capstone.laperinapp.databinding.ActivityRegisterBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
@@ -75,6 +77,7 @@ class RegisterActivity : AppCompatActivity() {
                     intent.putExtra(WelcomeActivity.EXTRA_EMAIL, email)
                     intent.putExtra(WelcomeActivity.EXTRA_PASSWORD, password)
                     startActivity(intent)
+                    saveSession(username, result.data)
                     finish()
                 }
                 is Result.Error -> {
@@ -84,6 +87,11 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun saveSession(username: String, data: AuthResponse) {
+        val user = UserModel(username, data.accessToken, true)
+        viewModel.saveSession(user)
     }
 
 

@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.laperinapp.R
-import com.capstone.laperinapp.data.favorite.adapter.FavoriteAdapter
+import com.capstone.laperinapp.data.room.favorite.adapter.FavoriteAdapter
+import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.databinding.FragmentKoleksiBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.customView.ChipCategory
@@ -60,16 +61,18 @@ class KoleksiFragment : Fragment() {
                 .build()
             chip.text = category
             chip.isCheckable = true
-            if (category == "All") chip.isChecked = true
+            if (category == "All"){
+                chip.isChecked = true
+                chip.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.orange))
+                chip.chipBackgroundColor = resources.getColorStateList(R.color.light_orange)
+            }
 
             chip.setOnCheckedChangeListener() { buttonView, isChecked ->
-                buttonView.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.dark_gray))
                 if (isChecked) {
                     buttonView.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.orange))
                     chip.chipBackgroundColor = resources.getColorStateList(R.color.light_orange)
-                    Toast.makeText(requireContext(), category, Toast.LENGTH_SHORT).show()
                 } else {
-                    buttonView.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.dark_gray))
+                    buttonView.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
                     chip.chipBackgroundColor = resources.getColorStateList(R.color.transparent)
                 }
             }
@@ -85,7 +88,7 @@ class KoleksiFragment : Fragment() {
         binding.rvFavorite.adapter = adapter
 
         adapter.setOnClickCallback(object : FavoriteAdapter.OnItemClickCallback{
-            override fun onItemClicked(data: com.capstone.laperinapp.data.favorite.entity.Favorite) {
+            override fun onItemClicked(data: Favorite) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra(DetailActivity.EXTRA_DATA, data.id)
                 startActivity(intent)

@@ -9,17 +9,16 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.capstone.laperinapp.data.Repository
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
+import com.capstone.laperinapp.data.response.DataItemDonation
 import com.capstone.laperinapp.data.response.IngredientItem
 
 class DonasiViewModel(private val repository: Repository) : ViewModel() {
 
-    fun getAllDonation() = repository.getAllDonations().cachedIn(viewModelScope)
+    val lonLatLiveData = MutableLiveData<Pair<Float, Float>>()
 
-    val lonLatLiveData = MutableLiveData<Pair<Double, Double>>()
-
-    private val donationResults: LiveData<PagingData<ClosestDonationsItem>> = lonLatLiveData.switchMap { (lon, lat) ->
-        if (lon == 0.0) {
-            repository.getClosestDonation(0.0, 0.0).cachedIn(viewModelScope)
+    private val donationResults: LiveData<PagingData<DataItemDonation>> = lonLatLiveData.switchMap { (lon, lat) ->
+        if (lon == 0.toFloat()) {
+            repository.getClosestDonation(0F, 0F).cachedIn(viewModelScope)
         } else {
             repository.getClosestDonation(lon, lat).cachedIn(viewModelScope)
         }

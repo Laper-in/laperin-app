@@ -3,9 +3,7 @@ package com.capstone.laperinapp.ui.detail
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -13,12 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.CategoryAdapter
-import com.capstone.laperinapp.data.favorite.entity.Favorite
+import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.data.model.Category
-import com.capstone.laperinapp.data.response.DataDetailRecipes
+import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.databinding.ActivityDetailBinding
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.helper.formatDuration
 
 class DetailActivity : AppCompatActivity() {
 
@@ -75,7 +74,7 @@ class DetailActivity : AppCompatActivity() {
                         showLoading(false)
                         setupData(result.data)
                         onClickFavorite(result.data)
-                        onClickVideo(result.data.urlVideo)
+                        onClickVideo(result.data.video)
                         setupCategory(result.data.category)
                     }
                     is Result.Error -> {
@@ -98,16 +97,17 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun onClickFavorite(data: DataDetailRecipes) {
+    private fun onClickFavorite(data: DataItemRecipes) {
         var isInFavorite = false
         recipesFavorit = Favorite(
             data.id,
             data.image,
             data.name,
+            data.description,
             data.category,
             data.ingredient,
             data.guide,
-            data.urlVideo
+            data.video
         )
 
         viewModel.getAllFavorite().observe(this) { favorite ->
@@ -124,16 +124,16 @@ class DetailActivity : AppCompatActivity() {
         binding.btFavorite.setOnClickListener {
             if (isInFavorite) {
                 viewModel.deleteFavorite(recipesFavorit)
-                Toast.makeText(this, "Recepi ${data.name} dihapus dari favorit", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${data.name} dihapus dari favorit", Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.insertFavorite(recipesFavorit)
-                Toast.makeText(this, "Recepi ${data.name} ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${data.name} ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
 
-    private fun setupData(data: DataDetailRecipes) {
+    private fun setupData(data: DataItemRecipes) {
         Glide.with(this)
             .load(data.image)
             .into(binding.imgDetail)
@@ -149,8 +149,12 @@ class DetailActivity : AppCompatActivity() {
 //        var counter = 1
 //        val formatedTahapan = dataTahapan.joinToString("\n") { "$counter. $it".also { counter++ } }
 
+        val formatedTime = formatDuration(this, data.time)
+
         binding.apply {
             tvTitle.text = data.name
+            tvDescription.text = data.description
+            tvDurasi.text = formatedTime
             tvIngredients.text = formatedBahan
             tvSteps.text = data.guide
         }

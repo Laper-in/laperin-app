@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstone.laperinapp.data.Repository
-import com.capstone.laperinapp.data.favorite.entity.Favorite
+import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.data.response.DataDetailRecipes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

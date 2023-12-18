@@ -18,10 +18,6 @@ import com.capstone.laperinapp.helper.ViewModelFactory
 
 class WelcomeActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<WelcomeViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
-
     private lateinit var binding: ActivityWelcomeBinding
     private lateinit var adapter: WelcomeAdapter
     private lateinit var dots: Array<TextView?>
@@ -37,33 +33,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         setupLayout()
         setupViewPager()
-        setupLogin()
 
-    }
-
-    private fun setupLogin() {
-        val email = intent.getStringExtra(EXTRA_EMAIL)
-        val password = intent.getStringExtra(EXTRA_PASSWORD)
-
-        if (email != null && password != null){
-            viewModel.login(email, password).observe(this){ result ->
-                when(result){
-                    is Result.Loading -> {
-                        Log.d(TAG, "setupLogin: Loading")
-                    }
-                    is Result.Success -> {
-                        Log.d(TAG, "setupLogin: Success")
-                        val token = result.data.token
-                        val user = UserModel(email, token, true)
-                        viewModel.saveSession(user)
-                        ViewModelFactory.clearInstance()
-                    }
-                    is Result.Error -> {
-                        Log.d(TAG, "setupLogin: Error")
-                    }
-                }
-            }
-        }
     }
 
     private fun setupLayout() {

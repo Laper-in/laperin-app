@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.data.favorite.adapter
+package com.capstone.laperinapp.data.room.favorite.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.capstone.laperinapp.data.favorite.entity.Favorite
+import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.databinding.ItemCategoryBinding
 import com.capstone.laperinapp.databinding.ItemRecipesPopularBinding
 import com.capstone.laperinapp.databinding.ItemRecipesRekomendasiBinding

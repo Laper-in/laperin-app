@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
+import com.capstone.laperinapp.data.response.DataItemDonation
 import com.capstone.laperinapp.databinding.ItemDonationBinding
 import com.capstone.laperinapp.helper.meterToKilometer
 
 class ClosestDonationAdapter() :
-    PagingDataAdapter<ClosestDonationsItem, ClosestDonationAdapter.MyViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<DataItemDonation, ClosestDonationAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -21,7 +22,7 @@ class ClosestDonationAdapter() :
     }
 
     class MyViewHolder(val binding: ItemDonationBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ClosestDonationsItem) {
+        fun bind(item: DataItemDonation) {
             val distance = item.distance.toDouble()
             if (distance < 1000) {
                 binding.tvItemDistance.text = "${item.distance} m"
@@ -57,22 +58,22 @@ class ClosestDonationAdapter() :
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: ClosestDonationsItem)
+        fun onItemClicked(data: DataItemDonation)
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ClosestDonationsItem>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DataItemDonation>() {
             override fun areItemsTheSame(
-                oldItem: ClosestDonationsItem,
-                newItem: ClosestDonationsItem
+                oldItem: DataItemDonation,
+                newItem: DataItemDonation
             ): Boolean {
                 return oldItem == newItem
             }
 
             @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(
-                oldItem: ClosestDonationsItem,
-                newItem: ClosestDonationsItem
+                oldItem: DataItemDonation,
+                newItem: DataItemDonation
             ): Boolean {
                 return oldItem == newItem
             }

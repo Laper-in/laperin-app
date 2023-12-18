@@ -7,12 +7,14 @@ import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.capstone.laperinapp.data.response.DataItemIngredient
 import com.capstone.laperinapp.data.response.IngredientItem
 import com.capstone.laperinapp.data.response.IngredientsItem
 import com.capstone.laperinapp.databinding.ItemSearchBinding
 
 class SearchAdapter :
-    PagingDataAdapter<IngredientItem, SearchAdapter.MyViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<DataItemIngredient, SearchAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -21,9 +23,14 @@ class SearchAdapter :
     }
 
     class MyViewHolder(val binding: ItemSearchBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: IngredientItem) {
+        fun bind(item: DataItemIngredient) {
+            Glide.with(itemView.context)
+                .load(item.image)
+                .into(binding.imgItem)
+            val name = item.name
+            val capitalized = name.substring(0, 1).toUpperCase() + name.substring(1)
             binding.apply {
-                tvName.text = item.name
+                tvName.text = capitalized
             }
         }
 
@@ -46,22 +53,22 @@ class SearchAdapter :
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: IngredientItem, holder: MyViewHolder)
+        fun onItemClicked(data: DataItemIngredient, holder: MyViewHolder)
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<IngredientItem>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DataItemIngredient>() {
             override fun areItemsTheSame(
-                oldItem: IngredientItem,
-                newItem: IngredientItem
+                oldItem: DataItemIngredient,
+                newItem: DataItemIngredient
             ): Boolean {
                 return oldItem == newItem
             }
 
             @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(
-                oldItem: IngredientItem,
-                newItem: IngredientItem
+                oldItem: DataItemIngredient,
+                newItem: DataItemIngredient
             ): Boolean {
                 return oldItem == newItem
             }

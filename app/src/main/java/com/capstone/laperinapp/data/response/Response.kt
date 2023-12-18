@@ -103,7 +103,7 @@ data class DataRecipes(
 ) : Parcelable
 
 @Parcelize
-data class RecipeResponses(
+data class RecipessResponses(
 
     @field:SerializedName("total_count")
     val totalCount: Int,

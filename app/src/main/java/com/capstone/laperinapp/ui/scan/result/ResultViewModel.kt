@@ -8,17 +8,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.capstone.laperinapp.data.Repository
+import com.capstone.laperinapp.data.response.DataItemIngredient
 import com.capstone.laperinapp.data.response.IngredientItem
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
 
 class ResultViewModel(val repository: Repository): ViewModel() {
 
-    private var currentQueryValue: String = "a"
     val searchStringLiveData = MutableLiveData<String>()
 
-    private val searchResults: LiveData<PagingData<IngredientItem>> = searchStringLiveData.switchMap { query ->
+    private val searchResults: LiveData<PagingData<DataItemIngredient>> = searchStringLiveData.switchMap { query ->
         if (query.isNullOrEmpty() || query.isBlank()) {
-            repository.getIngredientsByName("a").cachedIn(viewModelScope)
+            repository.getIngredientsByName("").cachedIn(viewModelScope)
         }else {
             repository.getIngredientsByName(query).cachedIn(viewModelScope)
         }
@@ -26,12 +26,7 @@ class ResultViewModel(val repository: Repository): ViewModel() {
 
     fun insertIngredient(ingredient: ScanResult) = repository.insertResult(ingredient)
 
-    fun getIngredientByName(): LiveData<PagingData<IngredientItem>> = searchResults
-
-    fun submitQuery(query: String) {
-        currentQueryValue = query
-        searchStringLiveData.value = query
-    }
+    fun getIngredientByName(): LiveData<PagingData<DataItemIngredient>> = searchResults
 
     fun getAllResult() = repository.getAllResult()
 

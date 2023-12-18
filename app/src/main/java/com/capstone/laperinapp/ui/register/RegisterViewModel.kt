@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstone.laperinapp.data.Repository
+import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.response.RegisterResponse
 import kotlinx.coroutines.launch
@@ -17,5 +18,11 @@ class RegisterViewModel(private val repository: Repository) : ViewModel() {
         password: String,
 
     ) = repository.registerUser(username, email, password)
+
+    fun saveSession(user: UserModel) {
+        viewModelScope.launch {
+            repository.saveSession(user)
+        }
+    }
 
 }

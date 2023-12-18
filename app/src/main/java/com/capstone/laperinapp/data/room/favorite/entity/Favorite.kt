@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.data.favorite.entity
+package com.capstone.laperinapp.data.room.favorite.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -20,6 +20,9 @@ data class Favorite(
 
     @ColumnInfo(name = "name")
     var name: String,
+
+    @ColumnInfo(name = "deskripsi")
+    var deskripsi: String,
 
     @ColumnInfo(name = "category")
     var category: String,

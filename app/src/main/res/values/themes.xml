@@ -2,7 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.LaperinApp" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">@color/primary</item>
+         <item name="colorPrimary">@color/orange</item>
+
+        <item name="bottomNavigationStyle">@style/navbar</item>
     </style>
 
     <style name="Theme.LaperinApp" parent="Base.Theme.LaperinApp" />
@@ -19,12 +21,12 @@
 
     <style name="textColorDetailRecipes">
         <item name="android:fontFamily">@font/poppins_light</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/black_200</item>
     </style>
 
     <style name="textColorDetail">
         <item name="android:fontFamily">@font/poppins_light</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/black_200</item>
     </style>
 
     <style name="textColorDonasi">
@@ -47,4 +49,37 @@
         <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="navbar">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <style name="backDetail">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <style name="editText">
+        <item name="android:backgroundTint">@color/light_gray_1</item>
+        <item name="android:textColorHint">@color/dark_gray</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="imageTint">
+        <item name="android:tint">@color/dark_gray</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
+    <style name="textColorHome">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/black_200</item>
+    </style>
+
+    <style name="textColorHome.medium">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="textColorHome.bold">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
 </resources>

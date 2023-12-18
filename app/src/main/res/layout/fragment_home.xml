@@ -34,6 +34,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/textColorHome"
                 android:text="@string/hello" />
 
             <LinearLayout
@@ -49,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:ellipsize="end"
+                    style="@style/textColorHome.bold"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -88,7 +90,6 @@
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="26dp"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,10 +97,10 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -115,11 +116,12 @@
                 </RelativeLayout>
 
                 <TextView
+                    style="@style/textColorHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:text="@string/tanyain"
-                    android:textStyle="bold"
-                    android:layout_marginTop="6dp"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -148,6 +150,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/masakin"
                     android:textStyle="bold"
+                    style="@style/textColorHome"
                     android:layout_marginTop="6dp"/>
 
             </LinearLayout>
@@ -177,6 +180,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/donasiin"
                     android:textStyle="bold"
+                    style="@style/textColorHome"
                     android:layout_marginTop="6dp"/>
 
             </LinearLayout>
@@ -207,6 +211,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cariin"
                     android:textStyle="bold"
+                    style="@style/textColorHome"
                     android:layout_marginTop="6dp"/>
 
             </LinearLayout>
@@ -220,6 +225,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/resep_rekomendasi"
             android:textSize="16sp"
+            style="@style/textColorHome.bold"
             android:textStyle="bold"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -241,6 +247,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/resep_populer"
             android:textSize="16sp"
+            style="@style/textColorHome.bold"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/tv_title_rekomendasi"
             app:layout_constraintTop_toBottomOf="@+id/rv_rekomendasi" />
