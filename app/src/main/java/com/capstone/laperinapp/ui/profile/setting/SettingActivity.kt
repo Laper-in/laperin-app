@@ -1,11 +1,20 @@
 package com.capstone.laperinapp.ui.profile.setting
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ImageSpan
+import android.text.style.TextAppearanceSpan
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.lifecycleScope
+import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.DataEditProfile
@@ -35,6 +44,14 @@ class SettingActivity : AppCompatActivity() {
         getData()
         changeTheme()
         binding.btnLogout.setOnClickListener { onClickLogout() }
+        val imageView = findViewById<ImageView>(R.id.btn_edit)
+        val tintColorResId = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            R.color.white
+        } else {
+            R.color.black
+        }
+        val tintColorList = ContextCompat.getColorStateList(this, tintColorResId)
+        ImageViewCompat.setImageTintList(imageView, tintColorList)
     }
 
     override fun onResume() {
@@ -72,13 +89,22 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setupToolbar() {
         val toolbar = binding.appBar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = "Akun"
-        supportActionBar?.setHomeAsUpIndicator(com.capstone.laperinapp.R.drawable.ic_back)
+        val title = "Akun"
+        val spannableTitle = SpannableString(title)
+        spannableTitle.setSpan(TextAppearanceSpan(this, R.style.textColorDonasi), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        supportActionBar?.title = spannableTitle
+        val backIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        backIcon?.let {
+            it.setBounds(0, 0, it.intrinsicWidth, it.intrinsicHeight)
+            val imageSpan = ImageSpan(it, ImageSpan.ALIGN_BASELINE)
+            spannableTitle.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
     }
 
     private fun onClickLogout() {

@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        style="@style/bold.light"
+        style="@style/textColorAkun"
         android:text="@string/title_informasi_pengguna"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/username"
-            android:textColor="@color/black"
+            style="@style/textColorSettingProfile"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +83,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="@color/dark_gray"
             android:text="@string/username"
             app:layout_constraintStart_toStartOf="@+id/title_username"
             app:layout_constraintTop_toBottomOf="@+id/title_username" />
@@ -94,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/email"
-            android:textColor="@color/black"
+            style="@style/textColorSettingProfile"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_username" />
@@ -104,7 +103,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="@color/dark_gray"
             android:text="@string/email"
             app:layout_constraintStart_toStartOf="@+id/title_email"
             app:layout_constraintTop_toBottomOf="@+id/title_email" />
@@ -115,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/fullname"
-            android:textColor="@color/black"
+            style="@style/textColorSettingProfile"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_email" />
@@ -126,7 +124,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/fullname"
-            android:textColor="@color/dark_gray"
             app:layout_constraintStart_toStartOf="@+id/title_fullname"
             app:layout_constraintTop_toBottomOf="@+id/title_fullname" />
 
@@ -136,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/alamat"
-            android:textColor="@color/black"
+            style="@style/textColorSettingProfile"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_fullname" />
@@ -147,7 +144,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/alamat"
-            android:textColor="@color/dark_gray"
             app:layout_constraintStart_toStartOf="@+id/title_alamat"
             app:layout_constraintTop_toBottomOf="@+id/title_alamat" />
 
@@ -157,7 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/telp_number"
-            android:textColor="@color/black"
+            style="@style/textColorSettingProfile"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_alamat" />
@@ -168,7 +164,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/telp_number"
-            android:textColor="@color/dark_gray"
             app:layout_constraintStart_toStartOf="@+id/title_no_telp"
             app:layout_constraintTop_toBottomOf="@+id/title_no_telp" />
 
@@ -176,7 +171,7 @@
 
     <TextView
         android:id="@+id/tv_detail_user"
-        style="@style/bold.light"
+        style="@style/textColorAkun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/preferensi"
@@ -205,7 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tema_gelap"
-                android:textColor="@color/black"
+                style="@style/textColorSettingProfile"
                 android:textStyle="bold"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"/>

@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/appBarLayout"
         android:padding="15dp"
+        android:textColorHint="@color/dark_gray"
         android:background="@drawable/bg_seach"
         android:drawableStart="@drawable/ic_search_24"
         android:drawablePadding="8dp"
