@@ -6,4 +6,45 @@
     </style>
 
     <style name="Theme.LaperinApp" parent="Base.Theme.LaperinApp" />
+
+    <style name="textColorDark">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="textColorSettingProfile">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="textColorDetailRecipes">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="textColorDetail">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="textColorDonasi">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="textColor">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="textColorKoleksiResep">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="textColorAkun">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

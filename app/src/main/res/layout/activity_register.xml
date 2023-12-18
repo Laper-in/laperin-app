@@ -51,12 +51,13 @@
 
         <com.capstone.laperinapp.ui.customView.EditText
             android:id="@+id/edUsername"
-            style="@style/medium"
+            style="@style/textColorEditText"
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
             android:hint="@string/username"
+            android:textColorHint="@color/dark_gray"
             android:inputType="text"
             android:padding="10dp"
             android:textSize="13sp"
@@ -72,6 +73,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:textColorHint="@color/dark_gray"
             android:hint="@string/masukkan_email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
@@ -89,6 +91,7 @@
             android:drawableEnd="@drawable/ic_password"
             android:hint="@string/Masukkan_password"
             android:inputType="textPassword"
+            android:textColorHint="@color/dark_gray"
             android:padding="10dp"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="@+id/edEmailRegister"
@@ -103,6 +106,7 @@
             android:layout_marginTop="16dp"
             android:drawableEnd="@drawable/ic_password"
             android:hint="@string/masukkan_ulang_password"
+            android:textColorHint="@color/dark_gray"
             android:inputType="textPassword"
             android:padding="10dp"
             android:textSize="13sp"
@@ -138,19 +142,18 @@
 
         <TextView
             android:id="@+id/tv_register_toLogin"
-            style="@style/medium"
+            style="@style/textColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/konfirm_login" />
 
         <TextView
             android:id="@+id/bt_masuk_toLogin"
-            style="@style/bold"
+            style="@style/textColorDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/masuk"
-            android:textColor="@color/orange" />
+            android:text="@string/masuk" />
 
     </LinearLayout>
 

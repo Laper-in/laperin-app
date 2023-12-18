@@ -130,19 +130,18 @@
 
         <TextView
             android:id="@+id/tv_login_toregister"
-            style="@style/medium"
+            style="@style/textColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/konfirm_regis" />
 
         <TextView
             android:id="@+id/bt_daftar_login"
-            style="@style/bold"
+            style="@style/textColorDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/daftar"
-            android:textColor="@color/orange" />
+            android:text="@string/daftar" />
 
     </LinearLayout>
 
