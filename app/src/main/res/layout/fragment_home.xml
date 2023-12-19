@@ -10,16 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/img_profile"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            android:contentDescription="@string/profil"
             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout"
-            app:srcCompat="@drawable/avatar" />
+            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+
+            <View
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:background="@drawable/bg_photo_home"/>
+
+            <ImageView
+                android:id="@+id/img_profile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/profil"
+                app:srcCompat="@drawable/avatar" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"

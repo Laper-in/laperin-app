@@ -100,10 +100,9 @@ class RegisterActivity : AppCompatActivity() {
                     showLoading(false)
                     Toast.makeText(this, "Registrasi Berhasil", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, WelcomeActivity::class.java)
-                    intent.putExtra(WelcomeActivity.EXTRA_EMAIL, email)
-                    intent.putExtra(WelcomeActivity.EXTRA_PASSWORD, password)
                     startActivity(intent)
                     saveSession(username, result.data)
+                    ViewModelFactory.clearInstance()
                     finish()
                 }
                 is Result.Error -> {

@@ -94,3 +94,21 @@ data class Recipe(
 	@field:SerializedName("updatedAt")
 	val updatedAt: String
 ) : Parcelable
+
+@Parcelize
+data class AllBookmarkResponse(
+
+	@field:SerializedName("data")
+	val data: List<DataItemAllBookmark>,
+
+	@field:SerializedName("message")
+	val message: String
+
+) : Parcelable
+
+@Parcelize
+data class DataItemAllBookmark(
+
+	@field:SerializedName("bookmark")
+	val bookmark: Bookmark
+) : Parcelable

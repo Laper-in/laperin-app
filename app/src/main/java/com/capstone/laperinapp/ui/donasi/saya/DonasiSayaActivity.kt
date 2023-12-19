@@ -133,9 +133,8 @@ class DonasiSayaActivity : AppCompatActivity() {
                 viewModel.selesaikanDonasi(data.idDonation).observe(this) { result ->
                     when (result) {
                         is Result.Success -> {
-                            dialog.dismiss()
-                            finish()
-                            startActivity(intent)
+                            setupRVUncompleted()
+                            setupRVCompleted()
                             true
                         }
                         is Result.Error -> {

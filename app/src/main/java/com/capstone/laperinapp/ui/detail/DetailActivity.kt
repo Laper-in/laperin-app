@@ -11,11 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
-import com.capstone.laperinapp.adapter.BookmarkAdapter
 import com.capstone.laperinapp.adapter.CategoryAdapter
 import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.data.model.Category
-import com.capstone.laperinapp.data.response.DataItemBookmark
+import com.capstone.laperinapp.data.response.DataItemAllBookmark
 import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.databinding.ActivityDetailBinding
 import com.capstone.laperinapp.helper.Result
@@ -26,14 +25,12 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private var isInFavorite = true
-    private var listName: List<String> = emptyList()
 
     private val viewModel by viewModels<DetailViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
     private lateinit var recipesFavorit: Favorite
-    private lateinit var adapter: BookmarkAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,57 +114,59 @@ class DetailActivity : AppCompatActivity() {
             data.video
         )
 
-        adapter = BookmarkAdapter()
-        binding.rvSampah.adapter = adapter
-        binding.rvSampah.layoutManager = LinearLayoutManager(this)
-
-        viewModel.getAllBookmarks().observe(this) {
-            adapter.submitData(lifecycle, it)
-        }
-
-
-        adapter.setOnClickCallback(object : BookmarkAdapter.OnItemClickCallback {
-            override fun onItemClicked(
-                dataBookmark: DataItemBookmark,
-                holder: BookmarkAdapter.ViewHolder
-            ) {
-               setupFavorite(data, dataBookmark)
-                Log.d(TAG, "setupFavoritess: ${data.name} == ${dataBookmark.recipe.name}")
+        viewModel.getAllBookmarks().observe(this) {result ->
+            when (result) {
+                is Result.Success -> {
+                    val list = result.data
+                    isInFavorite = list.any { it.bookmark.idRecipe == data.id }
+                    if (isInFavorite) {
+                        binding.btFavorite.setImageResource(R.drawable.ic_bookmark_24)
+                    } else {
+                        binding.btFavorite.setImageResource(R.drawable.ic_bookmark_border_24)
+                    }
+                    setupFavorite(list, data)
+                }
+                else -> false
             }
-        })
 
-
-//        viewModel.getAllFavorite().observe(this) { favorite ->
-//            if (favorite != null) {
-//                isInFavorite = favorite.any { it.id == data.id }
-//                if (isInFavorite) {
-//                    binding.btFavorite.setImageResource(R.drawable.ic_bookmark_24)
-//                } else {
-//                    binding.btFavorite.setImageResource(R.drawable.ic_bookmark_border_24)
-//                }
-//            }
-//        }
-
-        binding.btFavorite.setOnClickListener {
-            if (isInFavorite) {
-                viewModel.deleteFavorite(recipesFavorit)
-                Toast.makeText(this, "${data.name} dihapus dari favorit", Toast.LENGTH_SHORT).show()
-            } else {
-                viewModel.insertFavorite(recipesFavorit)
-                Toast.makeText(this, "${data.name} ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
-    private fun setupFavorite(dataRecipes: DataItemRecipes, dataBookmark: DataItemBookmark) {
-        if (dataRecipes.name == dataBookmark.recipe.name) {
-            binding.btFavorite.setImageResource(R.drawable.ic_bookmark_24)
-            Toast.makeText(this, "${dataRecipes.name} == ${dataBookmark.recipe.name}", Toast.LENGTH_SHORT).show()
-            Log.d(TAG, "setupFavorite: ${dataRecipes.name} == ${dataBookmark.recipe.name}")
-        } else {
-            binding.btFavorite.setImageResource(R.drawable.ic_bookmark_border_24)
-            Toast.makeText(this, "${dataRecipes.name} == ${dataBookmark.recipe.name}", Toast.LENGTH_SHORT).show()
-            Log.d(TAG, "setupFavorite: ${dataRecipes.name} == ${dataBookmark.recipe.name}")
+    private fun setupFavorite(dataBookmark: List<DataItemAllBookmark>, data: DataItemRecipes) {
+        val list = dataBookmark.find { it.bookmark.idRecipe == data.id }
+        val idBookmark = list?.bookmark?.idBookmark
+        binding.btFavorite.setOnClickListener {
+            if (isInFavorite) {
+                viewModel.deleteBookmark(idBookmark!!).observe(this) { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            Toast.makeText(this, "${data.name} dihapus dari favorit", Toast.LENGTH_SHORT).show()
+                            getData(data.id)
+                        }
+                        is Result.Error -> {
+                            Log.e(TAG, "onClickFavorite: ${result.error}", )
+                        }
+                        is Result.Loading -> {
+                            Log.d(TAG, "onClickFavorite: loading")
+                        }
+                    }
+                }
+            } else {
+                viewModel.addBookmark(data.id).observe(this) {result ->
+                    when (result) {
+                        is Result.Success -> {
+                            Toast.makeText(this, "${data.name} ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
+                            getData(data.id)
+                        }
+                        is Result.Error -> {
+                            Log.e(TAG, "onClickFavorite: ${result.error}", )
+                        }
+                        is Result.Loading -> {
+                            Log.d(TAG, "onClickFavorite: loading")
+                        }
+                    }
+                }
+            }
         }
     }
 

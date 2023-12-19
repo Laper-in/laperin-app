@@ -1,6 +1,7 @@
 package com.capstone.laperinapp.data.retrofit
 
 import androidx.room.Delete
+import com.capstone.laperinapp.data.response.AllBookmarkResponse
 import com.capstone.laperinapp.data.response.BookmarkResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsResponses
 import com.capstone.laperinapp.data.response.DonationsResponses
@@ -66,6 +67,10 @@ interface ApiService {
     suspend fun updateImageUser(
         @Part image: MultipartBody.Part,
     ):  Response<UpdateResponse>
+
+    @POST("users/signout")
+    suspend fun logout(
+    ): Response<UpdateResponse>
 
     @GET("recipes")
     suspend fun getAllRecipes(
@@ -142,4 +147,19 @@ interface ApiService {
     suspend fun getDetailDonation(
         @Path("id") id: String
     ): Response<DetailDonationResponse>
+
+    @GET("bookmarks")
+    suspend fun getAllBookmarks(
+    ): Response<AllBookmarkResponse>
+
+    @FormUrlEncoded
+    @POST("bookmarks")
+    suspend fun addBookmark(
+        @Field("idRecipe") idRecipe: String
+    ): Response<CreateDonationResponse>
+
+    @DELETE("bookmarks/{id}")
+    suspend fun deleteBookmark(
+        @Path("id") id: String
+    ): Response<CreateDonationResponse>
 }

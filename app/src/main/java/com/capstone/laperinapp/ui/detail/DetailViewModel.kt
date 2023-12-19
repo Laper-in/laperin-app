@@ -62,5 +62,9 @@ class DetailViewModel(
         }
     }
 
-    fun getAllBookmarks() = searchResults
+    fun getAllBookmarks() = repository.getAllBookmark()
+
+    fun addBookmark(idRecipe: String) = repository.insertBookmark(idRecipe)
+
+    fun deleteBookmark(idRecipe: String) = repository.deleteBookmark(idRecipe)
 }

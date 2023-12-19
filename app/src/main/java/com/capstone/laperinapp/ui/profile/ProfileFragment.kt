@@ -113,6 +113,8 @@ class ProfileFragment : Fragment() {
         .setPositiveButton("Ya") { _, _ ->
             viewModel.logout()
 
+            viewModel.logoutUser()
+
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -157,11 +159,6 @@ class ProfileFragment : Fragment() {
 
     private fun dataUser(data: UserDetailResponse) {
         binding.tvUsernameProfil.text = data.data.username
-        if (data.data.alamat == null) {
-            binding.tvAlamat.text = getString(R.string.alamat_kosong)
-        } else {
-            binding.tvAlamat.text = data.data.alamat
-        }
         Glide.with(requireContext())
             .load(data.data.image)
             .circleCrop()
