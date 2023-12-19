@@ -16,6 +16,7 @@ import com.capstone.laperinapp.data.paging.MyUncompletedDonationPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.paging.RecipesRecomPagingSource
 import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
+import com.capstone.laperinapp.data.paging.SearchRecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.response.DataItemBookmark
@@ -90,7 +91,7 @@ class Repository private constructor(
     fun getAllRecipes(): LiveData<PagingData<DataItemRecipes>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 5
+                pageSize = 50
             ),
             pagingSourceFactory = {
                 RecipesPagingSource(apiService)
@@ -105,6 +106,17 @@ class Repository private constructor(
             ),
             pagingSourceFactory = {
                 RecipesRecomPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+    fun getRecipesByName(name: String): LiveData<PagingData<DataItemRecipes>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                SearchRecipesPagingSource(apiService, name)
             }
         ).liveData
     }
@@ -222,7 +234,7 @@ class Repository private constructor(
     fun getIngredientsByName(name: String): LiveData<PagingData<DataItemIngredient>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 5
+                pageSize = 50
             ),
             pagingSourceFactory = {
                 SearchIngredientPagingSource(apiService, name)

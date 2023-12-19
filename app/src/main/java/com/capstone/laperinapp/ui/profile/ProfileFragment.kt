@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.capstone.laperinapp.helper.Result
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
@@ -23,6 +24,7 @@ import com.capstone.laperinapp.databinding.FragmentProfileBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.detail.DetailActivity
+import com.capstone.laperinapp.ui.koleksi.KoleksiFragment
 import com.capstone.laperinapp.ui.login.LoginActivity
 import com.capstone.laperinapp.ui.profile.setting.SettingActivity
 import kotlinx.coroutines.flow.first
@@ -52,6 +54,14 @@ class ProfileFragment : Fragment() {
         getData()
         setupToolbar()
         setupRV()
+
+        binding.btnLihatSemua.setOnClickListener { onClickFavorite() }
+    }
+
+    private fun onClickFavorite() {
+        val botNav = activity?.findNavController(R.id.nav_host_fragment_activity_main2)
+        botNav?.navigate(R.id.navigation_koleksi)
+        onDestroyView()
     }
 
     private fun setupRV() {

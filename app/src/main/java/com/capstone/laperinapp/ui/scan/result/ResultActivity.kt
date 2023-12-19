@@ -1,7 +1,5 @@
 package com.capstone.laperinapp.ui.scan.result
 
-import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
@@ -9,21 +7,18 @@ import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.text.style.TextAppearanceSpan
 import android.view.View
-import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.ScanResultAdapter
 import com.capstone.laperinapp.adapter.SearchAdapter
 import com.capstone.laperinapp.data.response.DataItemIngredient
-import com.capstone.laperinapp.data.response.IngredientItem
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.capstone.laperinapp.databinding.ActivityResultBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
@@ -71,7 +66,12 @@ class ResultActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         val title = "Hasil Scan"
         val spannableTitle = SpannableString(title)
-        spannableTitle.setSpan(TextAppearanceSpan(this, R.style.textColorDonasi), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableTitle.setSpan(
+            TextAppearanceSpan(this, R.style.textColorDonasi),
+            0,
+            title.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         supportActionBar?.title = spannableTitle
         val backIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
         backIcon?.let {
@@ -102,6 +102,7 @@ class ResultActivity : AppCompatActivity() {
                 } else {
                     View.GONE
                 }
+                onClickAdd(result)
             }
         }
 
@@ -128,15 +129,35 @@ class ResultActivity : AppCompatActivity() {
         binding.rvIngredients.adapter = searchAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         binding.rvIngredients.layoutManager = linearLayoutManager
+    }
 
+    private fun onClickAdd(result: List<ScanResult>) {
         searchAdapter.setOnClickCallback(object : SearchAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: DataItemIngredient, holder: SearchAdapter.MyViewHolder) {
+            override fun onItemClicked(
+                data: DataItemIngredient,
+                holder: SearchAdapter.MyViewHolder
+            ) {
                 holder.binding.btnAdd.setOnClickListener {
                     AlertDialog.Builder(this@ResultActivity)
                         .setTitle("Tambahkan ke list")
                         .setMessage("Ingin menambahkan ${data.name} ke list?")
                         .setPositiveButton("Tambahkan") { dialog, _ ->
-                            viewModel.insertIngredient(ScanResult(0, data.name))
+                            var isResultExist = false
+                            for (i in result.indices) {
+                                isResultExist = result[i].name == data.name
+                            }
+
+                            if (!isResultExist) {
+                                viewModel.insertIngredient(ScanResult(0, data.name))
+                            } else {
+                                Toast.makeText(
+                                    this@ResultActivity,
+                                    "Anda sudah menambahkan bahan ini",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+
+                            }
                         }
                         .setNegativeButton("Batal") { dialog, _ ->
                             dialog.dismiss()
@@ -165,7 +186,6 @@ class ResultActivity : AppCompatActivity() {
         alertDialog()
         return super.onSupportNavigateUp()
     }
-
 
 
     companion object {

@@ -13,6 +13,7 @@ import com.capstone.laperinapp.ui.donasi.saya.DonasiSayaViewModel
 import com.capstone.laperinapp.ui.koleksi.KoleksiViewModel
 import com.capstone.laperinapp.ui.profile.editProfile.EditViewModel
 import com.capstone.laperinapp.ui.home.HomeViewModel
+import com.capstone.laperinapp.ui.home.search.SearchRecipesViewModel
 import com.capstone.laperinapp.ui.login.LoginViewModel
 import com.capstone.laperinapp.ui.profile.ProfileViewModel
 import com.capstone.laperinapp.ui.profile.setting.SettingViewModel
@@ -67,6 +68,9 @@ class ViewModelFactory private constructor(private val repository: Repository, p
             }
             modelClass.isAssignableFrom(DonasiSayaViewModel::class.java) -> {
                 DonasiSayaViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(SearchRecipesViewModel::class.java) -> {
+                SearchRecipesViewModel(repository) as T
             }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

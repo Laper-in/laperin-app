@@ -24,6 +24,9 @@
         android:theme="@style/Theme.LaperinApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.home.search.SearchRecipesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.donasi.saya.DonasiSayaActivity"
             android:exported="false" />
         <activity

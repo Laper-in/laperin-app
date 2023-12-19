@@ -8,4 +8,6 @@ class PreviewViewModel(val repository: Repository): ViewModel() {
 
     fun insertResult(result: ScanResult) = repository.insertResult(result)
 
+    fun getAllResult() = repository.getAllResult()
+
 }
