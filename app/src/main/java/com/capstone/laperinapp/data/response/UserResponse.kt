@@ -124,6 +124,12 @@ data class DataEditProfile(
 ) : Parcelable
 
 @Parcelize
+data class DataUpdateImage(
+	@field:SerializedName("image")
+	val image: String,
+): Parcelable
+
+@Parcelize
 data class UpdateResponse(
 
 	@field:SerializedName("message")

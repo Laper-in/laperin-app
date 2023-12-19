@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import com.capstone.laperinapp.data.Repository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
 class ProfileViewModel (private val repository: Repository): ViewModel() {
 
@@ -18,7 +19,6 @@ class ProfileViewModel (private val repository: Repository): ViewModel() {
             repository.logout()
         }
     }
-
     fun logoutUser() {
         viewModelScope.launch {
             repository.logoutUser()
@@ -27,4 +27,6 @@ class ProfileViewModel (private val repository: Repository): ViewModel() {
     suspend fun getSession() {
         repository.getSession().first()
     }
+    fun updateImageUser( image: MultipartBody.Part) =
+        repository.updateImageUser(image)
 }

@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.ui.edit.picture
+package com.capstone.laperinapp.ui.profile.editProfile.picture
 
 import android.app.Activity
 import android.content.Intent

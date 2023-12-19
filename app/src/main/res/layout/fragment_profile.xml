@@ -59,6 +59,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_profile" >
 
         <View
+            android:id="@+id/btn_add_image_user"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_photo_profile"/>

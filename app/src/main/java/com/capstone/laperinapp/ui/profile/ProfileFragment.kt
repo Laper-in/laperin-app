@@ -1,6 +1,9 @@
 package com.capstone.laperinapp.ui.profile
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.capstone.laperinapp.helper.Result
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -23,22 +28,34 @@ import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.FragmentProfileBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.helper.reduceFileImage
+import com.capstone.laperinapp.helper.uriToFile
+import com.capstone.laperinapp.ui.MainActivity
+import com.capstone.laperinapp.ui.ModalBottomSheetDialog
 import com.capstone.laperinapp.ui.detail.DetailActivity
 import com.capstone.laperinapp.ui.koleksi.KoleksiFragment
 import com.capstone.laperinapp.ui.login.LoginActivity
+import com.capstone.laperinapp.ui.profile.editProfile.EditProfilActivity
+import com.capstone.laperinapp.ui.profile.editProfile.picture.ButtonSheetPicture
 import com.capstone.laperinapp.ui.profile.setting.SettingActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
 
     private val viewModel by viewModels<ProfileViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
-
+    private var currentImageUri: Uri? = null
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: BookmarkProfileAdapter
+    private var selectedImageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,10 +71,91 @@ class ProfileFragment : Fragment() {
         getData()
         setupToolbar()
         setupRV()
-
         binding.btnLihatSemua.setOnClickListener { onClickFavorite() }
+        binding.btnAddImageUser.setOnClickListener{onClickImportImage()}
     }
 
+    override fun onImageSelected(uri: Uri) {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle("Konfirmasi")
+        alertDialogBuilder.setMessage("Apakah Anda yakin ingin mengganti gambar profil?")
+        alertDialogBuilder.setPositiveButton("Ya") { _, _ ->
+            selectedImageUri = uri
+            currentImageUri = uri
+            updateImageUser()
+            showImage(uri)
+        }
+        alertDialogBuilder.setNegativeButton("Batal") { dialog, _ ->
+            dialog.dismiss()
+        }
+        alertDialogBuilder.show()
+    }
+
+
+
+    private fun updateImageUser() {
+            viewModel.updateImageUser(createImageRequestBody()).observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
+                    is Result.Success -> {
+                        showLoading(false)
+                        Glide.with(requireContext())
+                            .load(selectedImageUri)
+                            .circleCrop()
+                            .into(binding.imgUser)
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+    }
+
+    private fun createImageRequestBody(): MultipartBody.Part {
+        currentImageUri?.let { uri ->
+            val image = uriToFile(uri, requireContext()).reduceFileImage()
+            val requestBodyImage = image.asRequestBody("image/jpeg".toMediaType())
+            return MultipartBody.Part.createFormData("image", image.name, requestBodyImage)
+        }
+        throw IllegalStateException("Current image URI is null.")
+    }
+
+    private fun showImage(uri: Uri?) {
+        currentImageUri = uri
+        binding.apply {
+            imgUser.setImageURI(currentImageUri)
+
+        }
+    }
+
+    private fun onClickImportImage() {
+        if (!allPermisionGranted()) {
+            requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
+        } else {
+            val modal = ButtonSheetPicture()
+            modal.show(childFragmentManager, ButtonSheetPicture.TAG)
+            modal.setOnImageSelectedListener(this)
+        }
+    }
+
+
+    private fun allPermisionGranted() = ContextCompat.checkSelfPermission(
+        requireContext(),
+        REQUIRED_PERMISSIONS
+    ) == PackageManager.PERMISSION_GRANTED
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Toast.makeText(requireContext(), "Permission request granted", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Permission request denied", Toast.LENGTH_SHORT).show()
+        }
+    }
     private fun onClickFavorite() {
         val botNav = activity?.findNavController(R.id.nav_host_fragment_activity_main2)
         botNav?.navigate(R.id.navigation_koleksi)
@@ -200,6 +298,7 @@ class ProfileFragment : Fragment() {
     companion object {
         private const val TAG = "ProfileFragment"
         const val EXTRA_EMAIL = "extra_email"
+        private const val REQUIRED_PERMISSIONS = Manifest.permission.CAMERA
     }
 
 }
