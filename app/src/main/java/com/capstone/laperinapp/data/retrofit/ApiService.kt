@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.data.retrofit
 
+import androidx.room.Delete
 import com.capstone.laperinapp.data.response.BookmarkResponse
 import com.capstone.laperinapp.data.response.ClosestDonationsResponses
 import com.capstone.laperinapp.data.response.DonationsResponses
@@ -16,6 +17,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -103,4 +105,14 @@ interface ApiService {
         @Part("lon") longitude: RequestBody
     ): Response<DonationResponse>
 
+    @GET("donations/user")
+    suspend fun getDonationByUser(
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): DonationResponse
+
+    @DELETE("donations/{id}")
+    suspend fun deleteDonation(
+        @Path("id") id: String
+    ): Response<CreateDonationResponse>
 }

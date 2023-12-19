@@ -36,6 +36,7 @@ class ClosestDonationAdapter() :
                 .into(binding.ivItemPhoto)
             binding.apply {
                 tvItemName.text = item.name
+                tvItemNamaPengirim.text = item.username
                 tvItemCount.text = "Jumlah : ${item.total}"
             }
         }

@@ -51,7 +51,7 @@ class ResultActivity : AppCompatActivity() {
         getResult()
 
         binding.btnScan.setOnClickListener { onClickScan() }
-        viewModel.searchStringLiveData.value = "a"
+        viewModel.searchStringLiveData.value = ""
         binding.searchBar.addTextChangedListener { text ->
             viewModel.searchStringLiveData.value = text.toString()
         }

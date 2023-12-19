@@ -11,6 +11,8 @@ import com.capstone.laperinapp.data.room.favorite.dao.FavoriteDao
 import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.data.paging.BookmarksPagingSource
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
+import com.capstone.laperinapp.data.paging.MyCompletedDonationPagingSource
+import com.capstone.laperinapp.data.paging.MyUncompletedDonationPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.paging.RecipesRecomPagingSource
 import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
@@ -175,6 +177,46 @@ class Repository private constructor(
                 ClosestDonationsPagingSource(apiService, longitude, latitude)
             }
         ).liveData
+    }
+
+    fun getMyUncompletedDonations(): LiveData<PagingData<DataItemDonation>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                MyUncompletedDonationPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+    fun getMyCompletedDonations(): LiveData<PagingData<DataItemDonation>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                MyCompletedDonationPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+    fun deleteDonation(id: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.deleteDonation(id)
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()!!))
+                Log.d(TAG, "deleteDonation: ${response.body()}")
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                emit(Result.Error(errorResponse.message.toString()))
+                Log.e(TAG, "deleteDonation: ${errorResponse.message}", )
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "deleteDonation: $e", )
+        }
     }
 
     fun getIngredientsByName(name: String): LiveData<PagingData<DataItemIngredient>> {

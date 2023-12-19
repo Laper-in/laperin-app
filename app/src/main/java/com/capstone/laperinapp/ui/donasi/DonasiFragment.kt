@@ -19,15 +19,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.laperinapp.adapter.ClosestDonationAdapter
-import com.capstone.laperinapp.adapter.DonationAdapter
 import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
-import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.data.response.DataItemDonation
-import com.capstone.laperinapp.data.response.DonationsItem
 import com.capstone.laperinapp.databinding.FragmentDonasiBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
@@ -168,11 +166,13 @@ class DonasiFragment : Fragment() {
         val id = JWTUtils.getId(token)
         val username = JWTUtils.getUsername(token)
         val intent = Intent(requireActivity(), AddDonasiActivity::class.java)
-        intent.putExtra(AddDonasiActivity.EXTRA_ID, id)
-        intent.putExtra(AddDonasiActivity.EXTRA_USERNAME, username)
-        intent.putExtra(AddDonasiActivity.EXTRA_LATITUDE, userLatitude)
-        intent.putExtra(AddDonasiActivity.EXTRA_LONGITUDE, userLongitude)
-        Log.d(TAG, "moveToAddDonation: $userLatitude, $userLongitude")
+        val bundle = Bundle()
+        bundle.putString(AddDonasiActivity.EXTRA_ID, id)
+        bundle.putString(AddDonasiActivity.EXTRA_USERNAME, username)
+        bundle.putString(AddDonasiActivity.EXTRA_LATITUDE, userLatitude.toString())
+        bundle.putString(AddDonasiActivity.EXTRA_LONGITUDE, userLongitude.toString())
+        intent.putExtras(bundle)
+        Log.d(TAG, "moveToAddDonation: $userLatitude, $userLongitude, $username")
         startActivity(intent)
     }
 
@@ -243,6 +243,14 @@ class DonasiFragment : Fragment() {
                 startActivity(intent)
             }
         })
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.Loading) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
     }
 
     override fun onResume() {

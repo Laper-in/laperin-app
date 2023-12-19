@@ -40,9 +40,7 @@ class SearchAdapter :
         val item = getItem(position)
         if (item != null) {
             holder.bind(item)
-            holder.itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(item, holder)
-            }
+            onItemClickCallback.onItemClicked(item, holder)
         }
     }
 
