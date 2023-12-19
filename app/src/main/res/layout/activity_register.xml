@@ -65,7 +65,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-        <com.capstone.laperinapp.ui.customView.EditText
+        <com.capstone.laperinapp.ui.customView.EditTextEmail
             android:id="@+id/edEmailRegister"
             style="@style/medium"
             android:layout_width="0dp"
@@ -82,13 +82,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edUsername" />
 
-        <com.capstone.laperinapp.ui.customView.EditText
+        <com.capstone.laperinapp.ui.customView.EditTextPassword
             android:id="@+id/edPassword_register"
             style="@style/medium"
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginTop="16dp"
-            android:drawableEnd="@drawable/ic_password"
             android:hint="@string/Masukkan_password"
             android:inputType="textPassword"
             android:textColorHint="@color/dark_gray"
@@ -98,13 +97,24 @@
             app:layout_constraintStart_toStartOf="@+id/edEmailRegister"
             app:layout_constraintTop_toBottomOf="@+id/edEmailRegister" />
 
-        <com.capstone.laperinapp.ui.customView.EditText
+        <ImageView
+            android:id="@+id/ic_password_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:src="@drawable/ic_password"
+            app:layout_constraintBottom_toBottomOf="@+id/edPassword_register"
+            app:layout_constraintEnd_toEndOf="@+id/edPassword_register"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/edPassword_register"
+            app:layout_constraintTop_toTopOf="@+id/edPassword_register" />
+
+        <com.capstone.laperinapp.ui.customView.EditTextPassword
             android:id="@+id/edUlang_password"
             style="@style/medium"
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginTop="16dp"
-            android:drawableEnd="@drawable/ic_password"
             android:hint="@string/masukkan_ulang_password"
             android:textColorHint="@color/dark_gray"
             android:inputType="textPassword"
@@ -113,6 +123,18 @@
             app:layout_constraintEnd_toEndOf="@+id/edPassword_register"
             app:layout_constraintStart_toStartOf="@+id/edPassword_register"
             app:layout_constraintTop_toBottomOf="@+id/edPassword_register" />
+
+        <ImageView
+            android:id="@+id/ic_password_toggle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:src="@drawable/ic_password"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/edUlang_password"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/edUlang_password"
+            app:layout_constraintTop_toTopOf="@+id/edUlang_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

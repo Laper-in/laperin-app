@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.capstone.laperinapp.R
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.databinding.ActivityLoginBinding
@@ -37,6 +38,8 @@ class LoginActivity : AppCompatActivity() {
 
             edUsernameLogin.addTextChangedListener(textWatcher)
             edPasswordLogin.addTextChangedListener(textWatcher)
+
+            icPasswordToggle.setOnClickListener { togglePasswordVisibility() }
         }
 
         binding.btMasukLogin.setOnClickListener { onClickLogin() }
@@ -47,8 +50,17 @@ class LoginActivity : AppCompatActivity() {
         val username = binding.edUsernameLogin.text.toString()
         val password = binding.edPasswordLogin.text.toString()
 
-        observeLoginResult(username, password)
+        if (isPasswordValid(password)) {
+            observeLoginResult(email, password)
+        } else {
+            Toast.makeText(this, "Password harus memiliki panjang minimal 6 karakter", Toast.LENGTH_SHORT).show()
+        }
     }
+
+    private fun isPasswordValid(password: String): Boolean {
+        return password.length >= 5
+    }
+
 
     private fun onClickRegister() {
         startActivity(Intent(this, RegisterActivity::class.java))
@@ -82,16 +94,25 @@ class LoginActivity : AppCompatActivity() {
 
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // Do nothing
         }
-
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             checkFieldsForEmptyValues()
         }
-
         override fun afterTextChanged(s: Editable?) {
-            // Do nothing
         }
+    }
+
+    private fun togglePasswordVisibility() {
+        val passwordEditText = binding.edPasswordLogin
+        val passwordToggle = binding.icPasswordToggle
+        if (passwordEditText.inputType == 129) {
+            passwordEditText.inputType = 1
+            passwordToggle.setImageResource(R.drawable.ic_password_visible)
+        } else {
+            passwordEditText.inputType = 129
+            passwordToggle.setImageResource(R.drawable.ic_password)
+        }
+        passwordEditText.setSelection(passwordEditText.text!!.length)
     }
 
     private fun checkFieldsForEmptyValues() {
