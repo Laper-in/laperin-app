@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.adapter.MarginItemDecoration
 import com.capstone.laperinapp.adapter.PopularRecipesAdapter
@@ -26,6 +28,7 @@ import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.detail.DetailActivity
+import com.capstone.laperinapp.ui.home.search.SearchRecipesActivity
 import com.capstone.laperinapp.ui.scan.result.ResultActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -65,8 +68,22 @@ class HomeFragment : Fragment() {
         setupRVPopular()
         showDataPopular()
         showDataRekomendasi()
+        setupSearch()
 
         binding.btnCariin.setOnClickListener { onClickCariin() }
+        binding.btnDonasiin.setOnClickListener { onClickDonasiin() }
+    }
+
+    private fun onClickDonasiin() {
+        val botNav = activity?.findNavController(R.id.nav_host_fragment_activity_main2)
+        botNav?.navigate(R.id.navigation_donasi)
+        onDestroyView()
+    }
+
+    private fun setupSearch() {
+        binding.searchBar.setOnClickListener {
+            startActivity(Intent(requireActivity(), SearchRecipesActivity::class.java))
+        }
     }
 
     private fun onClickCariin() {

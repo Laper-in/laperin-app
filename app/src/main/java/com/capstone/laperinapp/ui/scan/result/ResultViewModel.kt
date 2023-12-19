@@ -11,6 +11,7 @@ import com.capstone.laperinapp.data.Repository
 import com.capstone.laperinapp.data.response.DataItemIngredient
 import com.capstone.laperinapp.data.response.IngredientItem
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
+import kotlinx.coroutines.launch
 
 class ResultViewModel(val repository: Repository): ViewModel() {
 
@@ -24,13 +25,24 @@ class ResultViewModel(val repository: Repository): ViewModel() {
         }
     }
 
+    fun containsIngredient(ingredient: String): LiveData<Boolean> {
+        val resultLiveData = MutableLiveData<Boolean>()
+
+        viewModelScope.launch {
+            val count = repository.getAllResultContainsName(ingredient)
+            resultLiveData.postValue(count > 0)
+        }
+
+        return resultLiveData
+    }
+
     fun insertIngredient(ingredient: ScanResult) = repository.insertResult(ingredient)
 
     fun getIngredientByName(): LiveData<PagingData<DataItemIngredient>> = searchResults
 
     fun getAllResult() = repository.getAllResult()
 
-    fun insertResult(result: ScanResult) = repository.insertResult(result)
+    fun getAllResultName() = repository.getAllResultName()
 
     fun deleteAllResult() = repository.deleteAllResult()
 

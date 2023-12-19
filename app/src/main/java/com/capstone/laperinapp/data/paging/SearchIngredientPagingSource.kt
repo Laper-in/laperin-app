@@ -13,7 +13,7 @@ class SearchIngredientPagingSource(private val apiService: ApiService, private v
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataItemIngredient> {
         return try {
             val position = params.key ?: INITIAL_PAGE_INDEX
-            val response = apiService.getIngredientsByName(name, position, params.loadSize).data.sortedBy { it.name }
+            val response = apiService.getIngredientsByName(name, position, params.loadSize).data
 
             Log.d(TAG, "response: $response")
 

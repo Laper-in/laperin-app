@@ -14,6 +14,7 @@ import android.text.style.ImageSpan
 import android.text.style.TextAppearanceSpan
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -64,7 +65,12 @@ class PreviewActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         val title = "Scan"
         val spannableTitle = SpannableString(title)
-        spannableTitle.setSpan(TextAppearanceSpan(this, R.style.textColorDonasi), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableTitle.setSpan(
+            TextAppearanceSpan(this, R.style.textColorDonasi),
+            0,
+            title.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         supportActionBar?.title = spannableTitle
         val backIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
         backIcon?.let {
@@ -87,7 +93,16 @@ class PreviewActivity : AppCompatActivity() {
             0,
             predictionImage()
         )
-        viewModel.insertResult(result)
+        viewModel.getAllResult().observe(this) {
+            for (i in it.indices) {
+                if (it[i].name == result.name) {
+                    Toast.makeText(this, "Anda sudah menambahkan bahan ini", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    viewModel.insertResult(result)
+                }
+            }
+        }
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra(ResultActivity.EXTRA_RESULT, currentImageUri.toString())
         startActivity(intent)
