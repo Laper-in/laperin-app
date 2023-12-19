@@ -181,6 +181,21 @@ class Repository private constructor(
         }
     }
 
+    fun updateImageUser( image: MultipartBody.Part) = liveData{
+        emit(Result.Loading)
+        try {
+            val response = apiService.updateImageUser(image)
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()!!))
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
     fun getAllBookmarks(category: String): LiveData<PagingData<DataItemBookmark>> {
         return Pager(
             config = PagingConfig(
