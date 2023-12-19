@@ -7,9 +7,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import com.capstone.laperinapp.helper.Result
 import androidx.activity.viewModels
+import com.capstone.laperinapp.R
 import com.capstone.laperinapp.ui.customView.ButtonRegister
 import com.capstone.laperinapp.databinding.ActivityRegisterBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
@@ -41,11 +44,24 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.btMasukToLogin.setOnClickListener { onClickLogin() }
         binding.btRegister.setOnClickListener { onClickRegister() }
+
+        onClickCheckPassowrd()
     }
 
     private fun onClickLogin() {
         startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
         finish()
+    }
+
+    private fun onClickCheckPassowrd() {
+        binding.icPasswordToggle.setOnClickListener {
+            togglePasswordVisibility(binding.edPasswordRegister, binding.icPasswordToggle)
+        }
+
+        binding.icPasswordToggle1.setOnClickListener {
+            togglePasswordVisibility(binding.edUlangPassword, binding.icPasswordToggle1)
+        }
+
     }
 
     private fun onClickRegister() {
@@ -55,11 +71,21 @@ class RegisterActivity : AppCompatActivity() {
         val ulangPassword = binding.edUlangPassword.text.toString()
 
         if (ulangPassword == password) {
-            observeRegistrationResult(username, email, password)
+            if (isPasswordValid()) {
+                observeRegistrationResult(username, email, password)
+            } else {
+                Toast.makeText(this, "Password tidak memenuhi kriteria", Toast.LENGTH_SHORT).show()
+            }
         } else {
             Toast.makeText(this, "Password tidak cocok", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun isPasswordValid(): Boolean {
+        val password = binding.edPasswordRegister.text.toString()
+        return password.length > 5
+    }
+
 
 
     private fun observeRegistrationResult(username: String, email: String, password: String) {
@@ -89,15 +115,11 @@ class RegisterActivity : AppCompatActivity() {
 
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // Do nothing
         }
-
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             checkFieldsForEmptyValues()
         }
-
         override fun afterTextChanged(s: Editable?) {
-            // Do nothing
         }
     }
 
@@ -116,6 +138,18 @@ class RegisterActivity : AppCompatActivity() {
 
         }
     }
+
+    private fun togglePasswordVisibility(passwordEditText: EditText, passwordToggle: ImageView) {
+        if (passwordEditText.inputType == 129) {
+            passwordEditText.inputType = 1
+            passwordToggle.setImageResource(R.drawable.ic_password_visible)
+        } else {
+            passwordEditText.inputType = 129
+            passwordToggle.setImageResource(R.drawable.ic_password)
+        }
+        passwordEditText.setSelection(passwordEditText.text.length)
+    }
+
 
     private fun showLoading(isLoading: Boolean) {
         runOnUiThread {
