@@ -36,7 +36,7 @@ class EditTextEmail : AppCompatEditText {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        hint = context.getString(R.string.email)
+        hint = context.getString(R.string.username)
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         background = editTextBackground ?: ContextCompat.getDrawable(context, R.drawable.bg_edit_text)
 
@@ -48,22 +48,5 @@ class EditTextEmail : AppCompatEditText {
     private fun init() {
         editTextBackground = ContextCompat.getDrawable(context, R.drawable.bg_edit_text)
         editTextErrorBackground = ContextCompat.getDrawable(context, R.drawable.bg_edit_text_error)
-
-
-        addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (!Patterns.EMAIL_ADDRESS.matcher(p0.toString()).matches()) {
-                    setError(context.getString(R.string.error_email), null)
-                } else {
-                    error = null
-                }
-            }
-        })
     }
 }

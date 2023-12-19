@@ -93,19 +93,15 @@ class PreviewActivity : AppCompatActivity() {
             0,
             predictionImage()
         )
-        viewModel.getAllResult().observe(this) {
-            for (i in it.indices) {
-                if (it[i].name == result.name) {
-                    Toast.makeText(this, "Anda sudah menambahkan bahan ini", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    viewModel.insertResult(result)
-                }
+        viewModel.containsIngredient(result.name).observe(this) { isExist ->
+            if (isExist) {
+                Toast.makeText(this, "${result.name} sudah ada", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.insertResult(result)
+                Toast.makeText(this, "${result.name} berhasil ditambahkan", Toast.LENGTH_SHORT).show()
             }
         }
-        val intent = Intent(this, ResultActivity::class.java)
-        intent.putExtra(ResultActivity.EXTRA_RESULT, currentImageUri.toString())
-        startActivity(intent)
+        startActivity(Intent(this, ResultActivity::class.java))
         finish()
     }
 

@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
             buttonLogin = btMasukLogin
             buttonLogin.isEnabled = false
 
-            edUsernameLogin.addTextChangedListener(textWatcher)
+            edEmailLogin.addTextChangedListener(textWatcher)
             edPasswordLogin.addTextChangedListener(textWatcher)
 
             icPasswordToggle.setOnClickListener { togglePasswordVisibility() }
@@ -47,11 +47,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onClickLogin() {
-        val username = binding.edUsernameLogin.text.toString()
+        val username = binding.edEmailLogin.text.toString()
         val password = binding.edPasswordLogin.text.toString()
 
         if (isPasswordValid(password)) {
-            observeLoginResult(email, password)
+            observeLoginResult(username, password)
         } else {
             Toast.makeText(this, "Password harus memiliki panjang minimal 6 karakter", Toast.LENGTH_SHORT).show()
         }
@@ -117,7 +117,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkFieldsForEmptyValues() {
         binding.apply {
-            val email = edUsernameLogin.text.toString()
+            val email = edEmailLogin.text.toString()
             val password = edPasswordLogin.text.toString()
 
             buttonLogin.isEnabled = email.isNotEmpty() && password.isNotEmpty()

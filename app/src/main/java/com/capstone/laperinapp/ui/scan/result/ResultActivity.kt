@@ -23,6 +23,7 @@ import com.capstone.laperinapp.data.response.DataItemIngredient
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.capstone.laperinapp.databinding.ActivityResultBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.MainActivity
 import com.capstone.laperinapp.ui.ModalBottomSheetDialog
 import com.capstone.laperinapp.ui.scan.recommendation.RecommendationActivity
 
@@ -159,11 +160,17 @@ class ResultActivity : AppCompatActivity() {
                                 if (isExisting) {
                                     Toast.makeText(
                                         this@ResultActivity,
-                                        "Bahan sudah ada di list",
+                                        "${data.name} sudah ada",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 } else {
                                     viewModel.insertIngredient(ScanResult(0, data.name))
+                                    Toast.makeText(
+                                        this@ResultActivity,
+                                        "${data.name} berhasil ditambahkan",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
                                 }
                             }
                             .setNegativeButton("Batal") { dialog, _ ->
@@ -182,6 +189,7 @@ class ResultActivity : AppCompatActivity() {
             .setMessage("Pilihan anda akan menghapus semua data yang telah anda scan")
             .setPositiveButton("Keluar") { dialog, _ ->
                 viewModel.deleteAllResult()
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
             .setNegativeButton("Batal") { dialog, _ ->
