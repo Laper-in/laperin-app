@@ -119,6 +119,8 @@ class SettingActivity : AppCompatActivity() {
             .setPositiveButton("Ya") { _, _ ->
                 viewModel.logout()
 
+                viewModel.logoutUser()
+
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)

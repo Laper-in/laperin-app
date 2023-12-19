@@ -70,7 +70,7 @@ fun formatTelpNumber(telephoneNumber: String): String {
     } else if (telephoneNumber.startsWith("62")){
         telephoneNumber
     } else {
-        "Tidak Valid"
+        "Nomor telepon diawali dengan 0 atau 62"
     }
     return formated
 }

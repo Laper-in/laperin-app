@@ -19,6 +19,14 @@ class ProfileViewModel (private val repository: Repository): ViewModel() {
             repository.logout()
         }
     }
+    fun logoutUser() {
+        viewModelScope.launch {
+            repository.logoutUser()
+        }
+    }
+    suspend fun getSession() {
+        repository.getSession().first()
+    }
     fun updateImageUser( image: MultipartBody.Part) =
         repository.updateImageUser(image)
 }

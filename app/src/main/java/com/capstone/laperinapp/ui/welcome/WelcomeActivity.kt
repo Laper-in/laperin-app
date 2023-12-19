@@ -7,6 +7,7 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.capstone.laperinapp.ui.MainActivity
@@ -22,6 +23,10 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var adapter: WelcomeAdapter
     private lateinit var dots: Array<TextView?>
     private lateinit var layouts: IntArray
+    
+    private val viewModel by viewModels<WelcomeViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +38,18 @@ class WelcomeActivity : AppCompatActivity() {
 
         setupLayout()
         setupViewPager()
+        setupData()
 
+    }
+
+    private fun setupData() {
+        viewModel.getUser().observe(this){ user ->
+            if (user.isLogin){
+                Toast.makeText(this, "Aman boss", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Belum login", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupLayout() {

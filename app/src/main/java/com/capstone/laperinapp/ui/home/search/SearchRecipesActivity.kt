@@ -49,9 +49,7 @@ class SearchRecipesActivity : AppCompatActivity() {
     }
 
     private fun setupRVRecipe() {
-        binding.rvRecipes.adapter = searchAdapter.withLoadStateFooter(
-            footer = LoadingStateAdapter { searchAdapter.retry() }
-        )
+        binding.rvRecipes.adapter = searchAdapter
         binding.rvRecipes.layoutManager = LinearLayoutManager(this)
 
         viewModel.searchByName().observe(this) {

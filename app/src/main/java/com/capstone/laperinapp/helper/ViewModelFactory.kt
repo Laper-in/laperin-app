@@ -23,6 +23,7 @@ import com.capstone.laperinapp.ui.scan.preview.PreviewViewModel
 import com.capstone.laperinapp.ui.scan.recommendation.RecommendationViewModel
 import com.capstone.laperinapp.ui.scan.result.ResultViewModel
 import com.capstone.laperinapp.ui.splashScreen.SplashViewModel
+import com.capstone.laperinapp.ui.welcome.WelcomeViewModel
 
 class ViewModelFactory private constructor(private val repository: Repository, private val pref: SettingPreferences) :
     ViewModelProvider.NewInstanceFactory() {
@@ -79,6 +80,9 @@ class ViewModelFactory private constructor(private val repository: Repository, p
             }
             modelClass.isAssignableFrom(DetailDonationViewModel::class.java) -> {
                 DetailDonationViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(WelcomeViewModel::class.java) -> {
+                WelcomeViewModel(repository) as T
             }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

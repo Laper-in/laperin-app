@@ -26,4 +26,10 @@ class SettingViewModel(private val repository: Repository, private val pref: Set
             pref.saveThemeSetting(isDarkMode)
         }
     }
+
+    fun logoutUser() {
+        viewModelScope.launch {
+            repository.logoutUser()
+        }
+    }
 }

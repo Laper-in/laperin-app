@@ -166,6 +166,24 @@ class Repository private constructor(
          }
      }
 
+    fun logoutUser() = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.logout()
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()!!))
+                Log.d(TAG, "logoutUser: ${response.body()}")
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                Log.e(TAG, "logoutUser: $response", )
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        }catch (e:Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "logoutUser: ${e.message}", )
+        }
+    }
+
     fun updateUser(email: String, fullname: String, alamat: String, telephone: BigInteger) = liveData {
         emit(Result.Loading)
         try {
@@ -308,6 +326,63 @@ class Repository private constructor(
             }
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun getAllBookmark() = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getAllBookmarks()
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()?.data!!))
+                Log.d(TAG, "getAllBookmark: ${response.body()}")
+            } else {
+                val errorResponse =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                Log.e(TAG, "getAllBookmark: $response",)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "getAllBookmark: ${e.message}",)
+        }
+    }
+
+    fun insertBookmark(idRecipe: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.addBookmark(idRecipe)
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()!!))
+                Log.d(TAG, "insertBookmark: ${response.body()}")
+            } else {
+                val errorResponse =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                Log.e(TAG, "insertBookmark: $response",)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "insertBookmark: ${e.message}",)
+        }
+    }
+
+    fun deleteBookmark(idRecipe: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.deleteBookmark(idRecipe)
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()!!))
+                Log.d(TAG, "deleteBookmark: ${response.body()}")
+            } else {
+                val errorResponse =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                Log.e(TAG, "deleteBookmark: $response",)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "deleteBookmark: ${e.message}",)
         }
     }
 
