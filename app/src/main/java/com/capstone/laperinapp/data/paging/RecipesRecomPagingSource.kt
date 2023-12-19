@@ -12,12 +12,12 @@ class RecipesRecomPagingSource(private val apiService: ApiService) : PagingSourc
             val response = apiService.getAllRecipes(position, params.loadSize).data
 
             val dataRandom = response.shuffled()
-            val slicedData = dataRandom.slice(0 until minOf(dataRandom.size, 5))
+            val slicedData = dataRandom.take(5)
 
             LoadResult.Page(
                 data = slicedData,
                 prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
-                nextKey = if (slicedData.size < 5) null else position + 1
+                nextKey = if (slicedData.isNullOrEmpty()) null else position + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

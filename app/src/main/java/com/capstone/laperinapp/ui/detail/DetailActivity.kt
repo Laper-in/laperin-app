@@ -8,12 +8,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
-import androidx.paging.AsyncPagingDataDiffer
-import androidx.paging.PagingData
-import androidx.paging.filter
-import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
@@ -31,13 +25,15 @@ import com.capstone.laperinapp.helper.formatDuration
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private var isInFavorite = false
+    private var isInFavorite = true
+    private var listName: List<String> = emptyList()
 
     private val viewModel by viewModels<DetailViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
     private lateinit var recipesFavorit: Favorite
+    private lateinit var adapter: BookmarkAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +48,8 @@ class DetailActivity : AppCompatActivity() {
         viewModel.findFavorite(id ?: "") {
             binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.primary))
         }
+
+        viewModel.searchStringLiveData.value = ""
     }
 
     private fun setupCategory(category: String) {
@@ -119,9 +117,25 @@ class DetailActivity : AppCompatActivity() {
             data.video
         )
 
-        viewModel.getAllBookmarks().observe(this) { result ->
-            //TODO("ambil id")
+        adapter = BookmarkAdapter()
+        binding.rvSampah.adapter = adapter
+        binding.rvSampah.layoutManager = LinearLayoutManager(this)
+
+        viewModel.getAllBookmarks().observe(this) {
+            adapter.submitData(lifecycle, it)
         }
+
+
+        adapter.setOnClickCallback(object : BookmarkAdapter.OnItemClickCallback {
+            override fun onItemClicked(
+                dataBookmark: DataItemBookmark,
+                holder: BookmarkAdapter.ViewHolder
+            ) {
+               setupFavorite(data, dataBookmark)
+                Log.d(TAG, "setupFavoritess: ${data.name} == ${dataBookmark.recipe.name}")
+            }
+        })
+
 
 //        viewModel.getAllFavorite().observe(this) { favorite ->
 //            if (favorite != null) {
@@ -145,6 +159,17 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupFavorite(dataRecipes: DataItemRecipes, dataBookmark: DataItemBookmark) {
+        if (dataRecipes.name == dataBookmark.recipe.name) {
+            binding.btFavorite.setImageResource(R.drawable.ic_bookmark_24)
+            Toast.makeText(this, "${dataRecipes.name} == ${dataBookmark.recipe.name}", Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "setupFavorite: ${dataRecipes.name} == ${dataBookmark.recipe.name}")
+        } else {
+            binding.btFavorite.setImageResource(R.drawable.ic_bookmark_border_24)
+            Toast.makeText(this, "${dataRecipes.name} == ${dataBookmark.recipe.name}", Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "setupFavorite: ${dataRecipes.name} == ${dataBookmark.recipe.name}")
+        }
+    }
 
     private fun setupData(data: DataItemRecipes) {
         Glide.with(this)

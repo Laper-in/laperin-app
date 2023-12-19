@@ -1,11 +1,13 @@
 package com.capstone.laperinapp.ui.donasi.saya
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.text.style.TextAppearanceSpan
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -20,6 +22,8 @@ import com.capstone.laperinapp.data.response.DataItemDonation
 import com.capstone.laperinapp.databinding.ActivityDonasiSayaBinding
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
+import com.capstone.laperinapp.ui.donasi.detail.DetailDonationActivity
 import okhttp3.internal.notifyAll
 
 class DonasiSayaActivity : AppCompatActivity() {
@@ -59,15 +63,26 @@ class DonasiSayaActivity : AppCompatActivity() {
                 data: DataItemDonation,
                 holder: CompletedDonationAdapter.ViewHolder
             ) {
-
+                holder.itemView.setOnClickListener {
+                    val intent = Intent(this@DonasiSayaActivity, DetailDonationActivity::class.java)
+                    intent.putExtra(DetailDonationActivity.EXTRA_DATA, data.idDonation)
+                    intent.putExtra(DetailDonationActivity.EXTRA_DISTANCE, data.distance.toString())
+                    startActivity(intent)
+                }
             }
         })
 
         completedAdapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                binding.progressBarCompleted.visibility = android.view.View.VISIBLE
+                binding.progressBarCompleted.visibility = View.VISIBLE
             } else {
-                binding.progressBarCompleted.visibility = android.view.View.GONE
+                binding.progressBarCompleted.visibility = View.GONE
+
+                if (completedAdapter.itemCount != 0) {
+                    binding.emptyCompleted.visibility = View.GONE
+                } else {
+                    binding.emptyCompleted.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -92,7 +107,11 @@ class DonasiSayaActivity : AppCompatActivity() {
                     alertDialog(data)
                 }
                 holder.itemView.setOnClickListener {
-                    Toast.makeText(this@DonasiSayaActivity, data.name, Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@DonasiSayaActivity, DetailDonationActivity::class.java)
+                    intent.putExtra(DetailDonationActivity.EXTRA_DATA, data.idDonation)
+                    intent.putExtra(DetailDonationActivity.EXTRA_DISTANCE, data.distance.toString())
+                    intent.putExtra(DetailDonationActivity.EXTRA_SPECIAL, true)
+                    startActivity(intent)
                 }
             }
         })

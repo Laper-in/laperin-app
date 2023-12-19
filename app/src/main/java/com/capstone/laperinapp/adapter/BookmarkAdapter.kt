@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -43,9 +42,7 @@ class BookmarkAdapter: PagingDataAdapter<DataItemBookmark, BookmarkAdapter.ViewH
         val item = getItem(position)
         if (item != null) {
             holder.bind(item)
-            holder.itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(item)
-            }
+            onItemClickCallback.onItemClicked(item, holder)
         }
     }
 
@@ -56,7 +53,7 @@ class BookmarkAdapter: PagingDataAdapter<DataItemBookmark, BookmarkAdapter.ViewH
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: DataItemBookmark)
+        fun onItemClicked(data: DataItemBookmark, holder: ViewHolder)
     }
 
     companion object {

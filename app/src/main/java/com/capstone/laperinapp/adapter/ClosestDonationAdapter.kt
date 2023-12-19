@@ -7,6 +7,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.capstone.laperinapp.data.response.ClosestDonationsItem
 import com.capstone.laperinapp.data.response.DataItemDonation
 import com.capstone.laperinapp.databinding.ItemDonationBinding
@@ -33,7 +35,9 @@ class ClosestDonationAdapter() :
 
             Glide.with(binding.root.context)
                 .load(item.image)
+                .transform(CenterCrop(), RoundedCorners(16))
                 .into(binding.ivItemPhoto)
+
             binding.apply {
                 tvItemName.text = item.name
                 tvItemNamaPengirim.text = item.username

@@ -9,6 +9,7 @@ import com.capstone.laperinapp.data.response.RecipeResponse
 import com.capstone.laperinapp.data.response.SearchIngredientResultResponse
 import com.capstone.laperinapp.data.response.AuthResponse
 import com.capstone.laperinapp.data.response.CreateDonationResponse
+import com.capstone.laperinapp.data.response.DetailDonationResponse
 import com.capstone.laperinapp.data.response.DonationResponse
 import com.capstone.laperinapp.data.response.IngredientResponse
 import com.capstone.laperinapp.data.response.RecipeDetailResponse
@@ -129,4 +130,9 @@ interface ApiService {
     suspend fun deleteDonation(
         @Path("id") id: String
     ): Response<CreateDonationResponse>
+
+    @GET("donations/{id}")
+    suspend fun getDetailDonation(
+        @Path("id") id: String
+    ): Response<DetailDonationResponse>
 }

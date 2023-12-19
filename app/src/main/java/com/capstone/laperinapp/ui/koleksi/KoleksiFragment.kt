@@ -5,22 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.BookmarkAdapter
 import com.capstone.laperinapp.adapter.StaggeredItemDecoration
 import com.capstone.laperinapp.data.response.DataItemBookmark
-import com.capstone.laperinapp.data.room.favorite.adapter.FavoriteAdapter
-import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.databinding.FragmentKoleksiBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
-import com.capstone.laperinapp.ui.customView.ChipCategory
 import com.capstone.laperinapp.ui.detail.DetailActivity
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -112,10 +107,12 @@ class KoleksiFragment : Fragment() {
         binding.rvFavorite.addItemDecoration(StaggeredItemDecoration(50))
 
         adapter.setOnClickCallback(object : BookmarkAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: DataItemBookmark) {
-                val intent = Intent(requireContext(), DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_DATA, data.recipe.id)
-                startActivity(intent)
+            override fun onItemClicked(data: DataItemBookmark, holder: BookmarkAdapter.ViewHolder) {
+                holder.itemView.setOnClickListener {
+                    val intent = Intent(requireContext(), DetailActivity::class.java)
+                    intent.putExtra(DetailActivity.EXTRA_DATA, data.recipe.id)
+                    startActivity(intent)
+                }
             }
         })
     }

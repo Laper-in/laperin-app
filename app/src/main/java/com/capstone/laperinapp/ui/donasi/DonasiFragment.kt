@@ -100,9 +100,10 @@ class DonasiFragment : Fragment() {
             }
         }
 
+    @Suppress("DEPRECATION")
     private fun createLocationRequest() {
         locationRequest = LocationRequest.create().apply {
-            interval = TimeUnit.SECONDS.toMillis(1)
+            interval = TimeUnit.MINUTES.toMillis(5)
             fastestInterval = TimeUnit.SECONDS.toMillis(1)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
@@ -239,7 +240,8 @@ class DonasiFragment : Fragment() {
         adapter.setOnClickCallback(object : ClosestDonationAdapter.OnItemClickCallback{
             override fun onItemClicked(data: DataItemDonation) {
                 val intent = Intent(requireActivity(), DetailDonationActivity::class.java)
-                intent.putExtra(DetailDonationActivity.EXTRA_DATA, data)
+                intent.putExtra(DetailDonationActivity.EXTRA_DATA, data.idDonation)
+                intent.putExtra(DetailDonationActivity.EXTRA_DISTANCE, data.distance.toString())
                 startActivity(intent)
             }
         })

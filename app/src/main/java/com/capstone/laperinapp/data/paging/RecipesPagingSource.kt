@@ -11,7 +11,7 @@ class RecipesPagingSource(private val apiService: ApiService) : PagingSource<Int
             val position = params.key ?: INITIAL_PAGE_INDEX
             val response = apiService.getAllRecipes(position, params.loadSize).data
 
-            val limit = response.take(5)
+            val limit = response.take(15)
 
             LoadResult.Page(
                 data = limit,

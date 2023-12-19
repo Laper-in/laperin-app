@@ -103,7 +103,7 @@ class Repository private constructor(
     fun getAllRecipesRandom(): LiveData<PagingData<DataItemRecipes>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 5
+                pageSize = 50
             ),
             pagingSourceFactory = {
                 RecipesRecomPagingSource(apiService)
@@ -201,6 +201,24 @@ class Repository private constructor(
                 ClosestDonationsPagingSource(apiService, longitude, latitude)
             }
         ).liveData
+    }
+
+    fun getDetailDonation(id: String) = liveData{
+        emit(Result.Loading)
+        try {
+            val response = apiService.getDetailDonation(id)
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()?.data!!))
+                Log.d(TAG, "getDetailDonation: ${response.body()}")
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                Log.e(TAG, "getDetailDonation: $response", )
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        }catch (e:Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "getDetailDonation: ${e.message}", )
+        }
     }
 
     fun getMyUncompletedDonations(): LiveData<PagingData<DataItemDonation>> {

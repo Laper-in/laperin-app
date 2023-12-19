@@ -86,6 +86,8 @@
     <string name="estimasi_menit_2">%d menit</string>
     <string name="empty_koleksi">Anda belum menambahkan koleksi</string>
     <string name="cari_bahan">Cari Bahan</string>
+    <string name="empty_uncompleted">Anda belum menambahkan donasi.</string>
+    <string name="empty_completed">Anda belum menyelesaikan donasi.</string>
 
     <string-array name="category_name">
         <item>Surabaya</item>

@@ -51,6 +51,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+        <LinearLayout
+            android:id="@+id/empty_uncompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            android:paddingVertical="40dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_uncompleted" />
+
+            <TextView
+                android:id="@+id/buat_donasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buat_donasi"
+                android:textColor="@color/orange" />
+
+        </LinearLayout>
+
         <ProgressBar
             android:id="@+id/progressBarUncompleted"
             style="?android:attr/progressBarStyle"
@@ -85,6 +112,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <LinearLayout
+            android:id="@+id/empty_completed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingVertical="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_completed" />
+
+        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/progressBarCompleted"

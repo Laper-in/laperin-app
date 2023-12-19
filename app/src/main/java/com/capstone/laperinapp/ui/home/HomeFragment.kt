@@ -118,6 +118,11 @@ class HomeFragment : Fragment() {
             .load(data.image)
             .circleCrop()
             .into(binding.imgProfile)
+        if (data.isPro){
+            binding.badge.visibility = View.VISIBLE
+        } else {
+            binding.badge.visibility = View.GONE
+        }
     }
 
     private fun setupRVRekomendasi() {

@@ -82,3 +82,14 @@ data class CreateDonationResponse(
     val message: String
 
 ) : Parcelable
+
+@Parcelize
+data class DetailDonationResponse(
+
+    @field:SerializedName("data")
+    val data: DataItemDonation,
+
+    @field:SerializedName("message")
+    val message: String
+
+) : Parcelable
