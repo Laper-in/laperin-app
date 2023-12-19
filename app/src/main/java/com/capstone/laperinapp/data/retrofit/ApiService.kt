@@ -13,6 +13,7 @@ import com.capstone.laperinapp.data.response.DetailDonationResponse
 import com.capstone.laperinapp.data.response.DonationResponse
 import com.capstone.laperinapp.data.response.IngredientResponse
 import com.capstone.laperinapp.data.response.RecipeDetailResponse
+import com.capstone.laperinapp.data.response.UpdateResponse
 import com.capstone.laperinapp.data.response.UserDetailResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -58,7 +59,13 @@ interface ApiService {
         @Field("fullname") fullname: String,
         @Field("alamat") alamat: String,
         @Field("telephone") telephone: BigInteger
-    ):  Response<com.capstone.laperinapp.data.response.UpdateResponse>
+    ):  Response<UpdateResponse>
+
+    @Multipart
+    @PATCH("users/id")
+    suspend fun updateImageUser(
+        @Part image: MultipartBody.Part,
+    ):  Response<UpdateResponse>
 
     @GET("recipes")
     suspend fun getAllRecipes(

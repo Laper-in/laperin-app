@@ -74,7 +74,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:textColorHint="@color/dark_gray"
-            android:hint="@string/masukkan_email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textSize="13sp"

@@ -59,6 +59,7 @@
             android:layout_marginHorizontal="16dp"
             android:background="@drawable/rounded"
             android:drawablePadding="@dimen/spacing_8"
+            android:hint="@string/username"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/dark_gray"
             android:padding="10dp"

@@ -134,6 +134,8 @@ class DonasiSayaActivity : AppCompatActivity() {
                     when (result) {
                         is Result.Success -> {
                             dialog.dismiss()
+                            finish()
+                            startActivity(intent)
                             true
                         }
                         is Result.Error -> {

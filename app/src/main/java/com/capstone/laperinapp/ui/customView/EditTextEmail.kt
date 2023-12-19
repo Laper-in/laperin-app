@@ -36,7 +36,6 @@ class EditTextEmail : AppCompatEditText {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        hint = context.getString(R.string.username)
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         background = editTextBackground ?: ContextCompat.getDrawable(context, R.drawable.bg_edit_text)
 
