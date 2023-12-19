@@ -17,7 +17,7 @@ class JWTUtils {
         fun getId(token: String): String {
             val decoded = decoded(token)
             val jsonObj = JSONObject(decoded)
-            return jsonObj.getString("userid")
+            return jsonObj.getString("userId")
         }
 
         fun getUsername(token: String): String {

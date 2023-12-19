@@ -19,9 +19,8 @@ import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
+import com.capstone.laperinapp.data.response.DataDetailUser
 import com.capstone.laperinapp.data.response.DataEditProfile
-import com.capstone.laperinapp.data.response.DataUser
-import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.databinding.ActivityEditProfilBinding
 import com.capstone.laperinapp.helper.JWTUtils
@@ -38,7 +37,6 @@ class EditProfilActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding : ActivityEditProfilBinding
-    private var id: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +45,6 @@ class EditProfilActivity : AppCompatActivity() {
 
         setupToolbar()
         getDataIntent()
-        Log.d(TAG, "idProfile: $id")
 
         binding.btSimpan.setOnClickListener { onClickSimpan() }
     }
@@ -72,7 +69,7 @@ class EditProfilActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.updateUser(id, email, fullname, alamat, telp.toBigInteger()).observe(this) { result ->
+        viewModel.updateUser(email, fullname, alamat, telp.toBigInteger()).observe(this) { result ->
             when(result) {
                 is Result.Loading -> {
                     showLoading(true)
@@ -122,7 +119,6 @@ class EditProfilActivity : AppCompatActivity() {
 
     private fun setupData(data: DataEditProfile?) {
         binding.apply {
-            id = data?.id.toString()
             edEditUsername.setText(data?.username)
             edEditEmail.setText(data?.email)
             edEditFullname.setText(data?.fullname)

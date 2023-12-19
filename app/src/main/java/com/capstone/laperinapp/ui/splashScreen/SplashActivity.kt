@@ -9,6 +9,7 @@ import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import com.capstone.laperinapp.ui.MainActivity
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.helper.ViewModelFactory
@@ -25,7 +26,18 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         setupView()
+        setupTheme()
 
+    }
+
+    private fun setupTheme() {
+        viewModel.getThemeSetting().observe(this) { isDarkMode ->
+            if (isDarkMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
     }
 
     private fun setupView() {

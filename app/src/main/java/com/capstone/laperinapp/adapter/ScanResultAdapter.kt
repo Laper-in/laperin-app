@@ -32,9 +32,7 @@ class ScanResultAdapter : ListAdapter<ScanResult, ScanResultAdapter.ScanResultVi
     override fun onBindViewHolder(holder: ScanResultViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
-        holder.itemView.setOnClickListener {
-            onItemClickCallback.onItemClicked(item, holder)
-        }
+        onItemClickCallback.onItemClicked(item, holder)
     }
 
     interface OnItemClickCallback {

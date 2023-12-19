@@ -1,7 +1,6 @@
 package com.capstone.laperinapp.ui.profile.setting
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
@@ -9,24 +8,21 @@ import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.text.style.TextAppearanceSpan
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
-import androidx.lifecycle.lifecycleScope
 import com.capstone.laperinapp.R
-import com.capstone.laperinapp.data.pref.UserPreference
-import com.capstone.laperinapp.data.pref.dataStore
+import com.capstone.laperinapp.data.response.DataDetailUser
 import com.capstone.laperinapp.data.response.DataEditProfile
-import com.capstone.laperinapp.data.response.DataUser
+import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.ActivitySettingBinding
-import com.capstone.laperinapp.helper.JWTUtils
+import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.login.LoginActivity
 import com.capstone.laperinapp.ui.profile.editProfile.EditProfilActivity
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class SettingActivity : AppCompatActivity() {
 
@@ -35,6 +31,15 @@ class SettingActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+    private var user = DataEditProfile(
+        "",
+        "",
+        "",
+        "",
+        0,
+        ""
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingBinding.inflate(layoutInflater)
@@ -42,16 +47,19 @@ class SettingActivity : AppCompatActivity() {
 
         setupToolbar()
         getData()
-        changeTheme()
+        settingTheme()
         binding.btnLogout.setOnClickListener { onClickLogout() }
         val imageView = findViewById<ImageView>(R.id.btn_edit)
-        val tintColorResId = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            R.color.white
-        } else {
-            R.color.black
-        }
+        val tintColorResId =
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                R.color.white
+            } else {
+                R.color.black
+            }
         val tintColorList = ContextCompat.getColorStateList(this, tintColorResId)
         ImageViewCompat.setImageTintList(imageView, tintColorList)
+
+        binding.btnEdit.setOnClickListener { onClickEdit() }
     }
 
     override fun onResume() {
@@ -59,9 +67,9 @@ class SettingActivity : AppCompatActivity() {
         getData()
     }
 
-    private fun changeTheme() {
-        binding.btnDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
+    private fun settingTheme() {
+        viewModel.getThemeSetting().observe(this) { isDarkMode ->
+            if (isDarkMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 binding.btnDarkMode.isChecked = true
             } else {
@@ -69,24 +77,16 @@ class SettingActivity : AppCompatActivity() {
                 binding.btnDarkMode.isChecked = false
             }
         }
+
+        binding.btnDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveThemeSetting(isChecked)
+        }
     }
 
-    private fun onClickEdit(data: DataUser) {
-
-        val user = DataEditProfile(
-            data.id,
-            data.username,
-            data.email,
-            data.fullname,
-            data.telephone,
-            data.alamat
-        )
-
-        binding.btnEdit.setOnClickListener {
-            val intent = Intent(this, EditProfilActivity::class.java)
-            intent.putExtra(EditProfilActivity.EXTRA_PROFILE, user)
-            startActivity(intent)
-        }
+    private fun onClickEdit() {
+        val intent = Intent(this, EditProfilActivity::class.java)
+        intent.putExtra(EditProfilActivity.EXTRA_PROFILE, user)
+        startActivity(intent)
     }
 
 
@@ -97,7 +97,12 @@ class SettingActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         val title = "Akun"
         val spannableTitle = SpannableString(title)
-        spannableTitle.setSpan(TextAppearanceSpan(this, R.style.textColorDonasi), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableTitle.setSpan(
+            TextAppearanceSpan(this, R.style.textColorDonasi),
+            0,
+            title.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         supportActionBar?.title = spannableTitle
         val backIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
         backIcon?.let {
@@ -108,30 +113,53 @@ class SettingActivity : AppCompatActivity() {
     }
 
     private fun onClickLogout() {
-        viewModel.logout()
+        AlertDialog.Builder(this)
+            .setTitle("Konfirmasi Keluar")
+            .setMessage("Anda yakin ingin keluar?")
+            .setPositiveButton("Ya") { _, _ ->
+                viewModel.logout()
 
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
+            .setNegativeButton("Tidak") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun getData() {
-        viewModel.getDetailUser(getId()).observe(this) { result ->
+        viewModel.getDetailUser().observe(this) { result ->
             when (result) {
-                is com.capstone.laperinapp.helper.Result.Success -> {
+                is Result.Success -> {
                     showLoading(false)
                     setupData(result.data)
-                    onClickEdit(result.data)
+                    getDataUser(result.data.data)
                 }
 
-                is com.capstone.laperinapp.helper.Result.Error -> {
+                is Result.Error -> {
                     showLoading(false)
+                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
 
-                is com.capstone.laperinapp.helper.Result.Loading -> {
+                is Result.Loading -> {
                     showLoading(true)
                 }
             }
         }
+    }
+
+    private fun getDataUser(data: DataDetailUser) {
+        user = DataEditProfile(
+            data.id ?: "",
+            data.username ?: "",
+            data.email ?: "",
+            data.fullname ?: "",
+            data.telephone ?: 0,
+            data.alamat ?: ""
+        )
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -142,25 +170,26 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
-    private fun getId(): String {
-        val pref = UserPreference.getInstance(dataStore)
-        val user = runBlocking { pref.getSession().first() }
-        val token = user.token
-        return JWTUtils.getId(token)
-    }
-
-    private fun setupData(data: DataUser) {
+    private fun setupData(data: UserDetailResponse) {
         binding.apply {
-            tvUsername.text = data.username
-            tvEmail.text = data.email
-            tvFullname.text = data.fullname
-            tvAlamat.text = data.alamat
-            tvNoTelp.text = data.telephone.toString()
+            tvUsername.text = data.data.username
+            tvEmail.text = data.data.email
+            if (data.data.fullname == null) tvFullname.text =
+                getString(R.string.nama_kosong) else tvFullname.text = data.data.fullname
+            if (data.data.alamat == null) tvAlamat.text =
+                getString(R.string.alamat_kosong) else tvAlamat.text = data.data.alamat
+            if (data.data.telephone.toInt() == 0) tvNoTelp.text =
+                getString(R.string.telephone_kosong) else tvNoTelp.text =
+                data.data.telephone.toString()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    companion object {
+        private const val TAG = "SettingActivity"
     }
 }

@@ -59,7 +59,7 @@
             android:layout_marginHorizontal="16dp"
             android:background="@drawable/rounded"
             android:drawablePadding="@dimen/spacing_8"
-            android:hint="@string/masukkan_email"
+            android:hint="@string/masukkan_username"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/dark_gray"
             android:padding="10dp"
@@ -82,10 +82,10 @@
             android:inputType="textPassword"
             android:padding="10dp"
             android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="@+id/edEmail_login"
+            app:layout_constraintEnd_toEndOf="@+id/ed_username_login"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/edEmail_login"
-            app:layout_constraintTop_toBottomOf="@+id/edEmail_login" />
+            app:layout_constraintStart_toStartOf="@+id/ed_username_login"
+            app:layout_constraintTop_toBottomOf="@+id/ed_username_login" />
 
         <ImageView
             android:id="@+id/ic_password_toggle"

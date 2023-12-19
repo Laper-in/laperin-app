@@ -2,14 +2,14 @@ package com.capstone.laperinapp.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.capstone.laperinapp.data.response.RecipeItem
+import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.data.retrofit.ApiService
 
-class RecipesRecomPagingSource(private val apiService: ApiService) : PagingSource<Int, RecipeItem>() {
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RecipeItem> {
+class RecipesRecomPagingSource(private val apiService: ApiService) : PagingSource<Int, DataItemRecipes>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataItemRecipes> {
         return try {
             val position = params.key ?: INITIAL_PAGE_INDEX
-            val response = apiService.getAllRecipes(position, params.loadSize).recipe
+            val response = apiService.getAllRecipes(position, params.loadSize).data
 
             val dataRandom = response.shuffled()
             val slicedData = dataRandom.slice(0 until minOf(dataRandom.size, 5))
@@ -24,7 +24,7 @@ class RecipesRecomPagingSource(private val apiService: ApiService) : PagingSourc
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, RecipeItem>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, DataItemRecipes>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)

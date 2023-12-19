@@ -8,7 +8,6 @@ import okhttp3.RequestBody
 class AddDonationViewModel(private val repository: Repository): ViewModel() {
 
     fun sendDonation(
-        userId: RequestBody,
         username: RequestBody,
         name: RequestBody,
         description: RequestBody,
@@ -17,19 +16,7 @@ class AddDonationViewModel(private val repository: Repository): ViewModel() {
         longitude: RequestBody,
         latitude: RequestBody,
         image: MultipartBody.Part
-    ) = repository.createDonation(userId, username, name, description, category, total, longitude, latitude, image)
-
-    fun sendsDonation(
-        userId: RequestBody,
-        username: RequestBody,
-        name: RequestBody,
-        description: RequestBody,
-        category: RequestBody,
-        total: RequestBody,
-        longitude: RequestBody,
-        latitude: RequestBody,
-        image: MultipartBody.Part
-    ) = repository.addsDonations(userId, username, name, description, category, total, longitude, latitude, image)
+    ) = repository.createDonation(username, name, description, category, total, longitude, latitude, image)
 
     companion object {
         private const val TAG = "AddDonationViewModel"

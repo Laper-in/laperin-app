@@ -105,3 +105,24 @@ fun formatDuration(context: Context,duration: String): String {
         context.getString(R.string.estimasi_menit, formattedMinutes)
     }
 }
+
+fun formatDurationList(context: Context,duration: String): String {
+    val parts = duration.split(":")
+    if (parts.size != 3) {
+        return context.getString(R.string.format_waktu_tidak_valid)
+    }
+
+    val hours = parts[0].toInt()
+    val minutes = parts[1].toInt()
+    val seconds = parts[2].toInt()
+
+    val totalMinutes = hours * 60 + minutes
+    val formattedHours = totalMinutes / 60
+    val formattedMinutes = totalMinutes % 60
+
+    return if (formattedHours > 0) {
+        context.getString(R.string.estimasi_jam, formattedHours)
+    } else {
+        context.getString(R.string.estimasi_menit_2, formattedMinutes)
+    }
+}

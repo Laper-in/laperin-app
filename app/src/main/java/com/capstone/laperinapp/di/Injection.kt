@@ -2,11 +2,11 @@ package com.capstone.laperinapp.di
 
 import android.content.Context
 import com.capstone.laperinapp.data.Repository
-import com.capstone.laperinapp.data.favorite.room.FavoriteRoomDatabase
+import com.capstone.laperinapp.data.room.favorite.room.FavoriteRoomDatabase
+import com.capstone.laperinapp.data.pref.SettingPreferences
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.retrofit.ApiConfig
-import com.capstone.laperinapp.data.room.result.dao.ResultDao
 import com.capstone.laperinapp.data.room.result.database.ScanDatabase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -21,5 +21,9 @@ object Injection {
         val dbResult = ScanDatabase.getDatabase(context)
         val scanDao = dbResult.resultDao()
         return Repository.getInstance(apiService, pref, scanDao, favoriteDao)
+    }
+
+    fun provideSettingPref(context: Context): SettingPreferences {
+        return SettingPreferences.getInstance(context.dataStore)
     }
 }

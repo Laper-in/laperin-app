@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.laperinapp.data.Repository
+import com.capstone.laperinapp.data.pref.SettingPreferences
 import com.capstone.laperinapp.di.Injection
 import com.capstone.laperinapp.ui.detail.DetailViewModel
 import com.capstone.laperinapp.ui.donasi.DonasiViewModel
@@ -19,9 +20,8 @@ import com.capstone.laperinapp.ui.register.RegisterViewModel
 import com.capstone.laperinapp.ui.scan.preview.PreviewViewModel
 import com.capstone.laperinapp.ui.scan.result.ResultViewModel
 import com.capstone.laperinapp.ui.splashScreen.SplashViewModel
-import com.capstone.laperinapp.ui.welcome.WelcomeViewModel
 
-class ViewModelFactory private constructor(private val repository: Repository) :
+class ViewModelFactory private constructor(private val repository: Repository, private val pref: SettingPreferences) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -33,10 +33,7 @@ class ViewModelFactory private constructor(private val repository: Repository) :
                 RegisterViewModel(repository) as T
             }
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
-                SplashViewModel(repository) as T
-            }
-            modelClass.isAssignableFrom(WelcomeViewModel::class.java) -> {
-                WelcomeViewModel(repository) as T
+                SplashViewModel(repository, pref) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(repository) as T
@@ -51,7 +48,7 @@ class ViewModelFactory private constructor(private val repository: Repository) :
                 EditViewModel(repository) as T
             }
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
-                SettingViewModel(repository) as T
+                SettingViewModel(repository, pref) as T
             }
             modelClass.isAssignableFrom(DonasiViewModel::class.java) -> {
                 DonasiViewModel(repository) as T
@@ -79,7 +76,7 @@ class ViewModelFactory private constructor(private val repository: Repository) :
         private var instance: ViewModelFactory? = null
         fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideRepository(context))
+                instance ?: ViewModelFactory(Injection.provideRepository(context), Injection.provideSettingPref(context))
             }.also { instance = it }
 
         fun clearInstance(){

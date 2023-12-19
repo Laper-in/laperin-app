@@ -3,25 +3,26 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_nav_home"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_donasi"
-        android:icon="@drawable/ic_donasi_24"
+        android:icon="@drawable/ic_nav_donasi"
         android:title="@string/donasi" />
 
     <item
-        android:title="@string/scan" />
+        android:title="@string/scan"
+        android:checkable="false"/>
 
     <item
         android:id="@+id/navigation_koleksi"
-        android:icon="@drawable/ic_bookmark_border_24"
+        android:icon="@drawable/ic_nav_koleksi"
         android:title="@string/koleksi" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_person_outline_24"
+        android:icon="@drawable/ic_nav_profile"
         android:title="@string/profil" />
 
 </menu>

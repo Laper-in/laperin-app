@@ -3,10 +3,14 @@ package com.capstone.laperinapp.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.capstone.laperinapp.data.Repository
-import com.capstone.laperinapp.data.favorite.entity.Favorite
+import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.data.response.DataDetailRecipes
+import com.capstone.laperinapp.data.response.DataItemBookmark
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,4 +51,6 @@ class DetailViewModel(
             }
         }
     }
+
+    fun getAllBookmarks() = repository.getAllBookmarks("").cachedIn(viewModelScope)
 }

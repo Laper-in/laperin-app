@@ -2,31 +2,27 @@ package com.capstone.laperinapp.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.capstone.laperinapp.data.favorite.dao.FavoriteDao
-import com.capstone.laperinapp.data.favorite.entity.Favorite
+import com.capstone.laperinapp.data.room.favorite.dao.FavoriteDao
+import com.capstone.laperinapp.data.room.favorite.entity.Favorite
 import com.capstone.laperinapp.data.paging.BookmarksPagingSource
 import com.capstone.laperinapp.data.paging.ClosestDonationsPagingSource
-import com.capstone.laperinapp.data.paging.DonationsPagingSource
+import com.capstone.laperinapp.data.paging.MyCompletedDonationPagingSource
+import com.capstone.laperinapp.data.paging.MyUncompletedDonationPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.paging.RecipesRecomPagingSource
 import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
-import com.capstone.laperinapp.data.response.AddDonationResponse
-import com.capstone.laperinapp.data.response.BookmarksItem
-import com.capstone.laperinapp.data.response.DetailUserResponse
+import com.capstone.laperinapp.data.response.DataItemBookmark
 import com.capstone.laperinapp.data.response.ErrorResponse
-import com.capstone.laperinapp.data.response.ClosestDonationsItem
-import com.capstone.laperinapp.data.response.DataAddDonation
-import com.capstone.laperinapp.data.response.DonationsItem
-import com.capstone.laperinapp.data.response.IngredientItem
-import com.capstone.laperinapp.data.response.RecipeItem
+import com.capstone.laperinapp.data.response.DataItemDonation
+import com.capstone.laperinapp.data.response.DataItemIngredient
+import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
 import com.capstone.laperinapp.data.room.result.dao.ResultDao
@@ -35,9 +31,6 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.math.BigInteger
 
 
@@ -79,10 +72,10 @@ class Repository private constructor(
             emit(Result.Error(e.message.toString()))
         }
     }
-    fun setLogin(email : String, password: String) = liveData{
+    fun setLogin(username : String, password: String) = liveData{
         emit(Result.Loading)
         try {
-            val response = apiService.login(email, password)
+            val response = apiService.login(username, password)
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()!!))
             } else {
@@ -94,7 +87,7 @@ class Repository private constructor(
         }
     }
 
-    fun getAllRecipes(): LiveData<PagingData<RecipeItem>> {
+    fun getAllRecipes(): LiveData<PagingData<DataItemRecipes>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
@@ -105,7 +98,7 @@ class Repository private constructor(
         ).liveData
     }
 
-    fun getAllRecipesRandom(): LiveData<PagingData<RecipeItem>> {
+    fun getAllRecipesRandom(): LiveData<PagingData<DataItemRecipes>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
@@ -131,40 +124,28 @@ class Repository private constructor(
         }
     }
 
-       fun getDetailUser(id :String) = liveData {
+       fun getDetailUser() = liveData {
          emit(Result.Loading)
          try {
-             val response =apiService.getDetailUser(id)
+             val response = apiService.getDetailUser()
              if (response.isSuccessful) {
                  emit(Result.Success(response.body()!!))
+                 Log.d(TAG, "getDetailUser: ${response.body()}")
              } else {
                  val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                 Log.e(TAG, "getDetailUsers: $response", )
                  emit(Result.Error(errorResponse.message.toString()))
              }
          }catch (e:Exception) {
              emit(Result.Error(e.message.toString()))
+             Log.e(TAG, "getDetailUser: ${e.message}", )
          }
      }
 
-    fun editProfile(id:String, fullname: String,picture :String, alamat :String, telephone :BigInteger ) = liveData {
+    fun updateUser(email: String, fullname: String, alamat: String, telephone: BigInteger) = liveData {
         emit(Result.Loading)
         try {
-            val response =apiService.updateDetailUser(id, fullname, picture, alamat, telephone)
-            if (response.isSuccessful) {
-                emit(Result.Success(response.body()!!))
-            } else {
-                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                emit(Result.Error(errorResponse.message.toString()))
-            }
-        }catch (e:Exception) {
-            emit(Result.Error(e.message.toString()))
-        }
-    }
-
-    fun updateUser(id: String, email: String, fullname: String, alamat: String, telephone: BigInteger) = liveData {
-        emit(Result.Loading)
-        try {
-            val response = apiService.updateDetailUser(id, email, fullname, alamat, telephone)
+            val response = apiService.updateDetailUser(email, fullname, alamat, telephone)
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()!!))
             } else {
@@ -176,18 +157,18 @@ class Repository private constructor(
         }
     }
 
-    fun getAllBookmarksById(id: String): LiveData<PagingData<BookmarksItem>> {
+    fun getAllBookmarks(category: String): LiveData<PagingData<DataItemBookmark>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
             pagingSourceFactory = {
-                BookmarksPagingSource(apiService, id)
+                BookmarksPagingSource(apiService, category)
             }
         ).liveData
     }
 
-    fun getClosestDonation(longitude: Double, latitude: Double): LiveData<PagingData<ClosestDonationsItem>> {
+    fun getClosestDonation(longitude: Float, latitude: Float): LiveData<PagingData<DataItemDonation>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
@@ -198,18 +179,47 @@ class Repository private constructor(
         ).liveData
     }
 
-    fun getAllDonations(): LiveData<PagingData<DonationsItem>> {
+    fun getMyUncompletedDonations(): LiveData<PagingData<DataItemDonation>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
             pagingSourceFactory = {
-                DonationsPagingSource(apiService)
+                MyUncompletedDonationPagingSource(apiService)
             }
         ).liveData
     }
 
-    fun getIngredientsByName(name: String): LiveData<PagingData<IngredientItem>> {
+    fun getMyCompletedDonations(): LiveData<PagingData<DataItemDonation>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                MyCompletedDonationPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+    fun deleteDonation(id: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.deleteDonation(id)
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()!!))
+                Log.d(TAG, "deleteDonation: ${response.body()}")
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                emit(Result.Error(errorResponse.message.toString()))
+                Log.e(TAG, "deleteDonation: ${errorResponse.message}", )
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "deleteDonation: $e", )
+        }
+    }
+
+    fun getIngredientsByName(name: String): LiveData<PagingData<DataItemIngredient>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
@@ -221,7 +231,6 @@ class Repository private constructor(
     }
 
     fun createDonation(
-        userId: RequestBody,
         username: RequestBody,
         name: RequestBody,
         description: RequestBody,
@@ -233,7 +242,7 @@ class Repository private constructor(
     ) = liveData{
         emit(Result.Loading)
         try {
-            val response =apiService.addDonation(userId,username, name, description, category, total, image, latitude, longitude)
+            val response = apiService.addDonation(username, name, description, category, total, image, latitude, longitude)
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()!!))
             } else {
@@ -243,54 +252,6 @@ class Repository private constructor(
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
         }
-    }
-
-
-    fun addsDonations(
-        userId: RequestBody,
-        username: RequestBody,
-        name: RequestBody,
-        description: RequestBody,
-        category: RequestBody,
-        total: RequestBody,
-        longitude: RequestBody,
-        latitude: RequestBody,
-        image: MultipartBody.Part
-    ) : LiveData<Result<DataAddDonation>> {
-        val result = MutableLiveData<Result<DataAddDonation>>()
-        result.value = Result.Loading
-
-        val client = apiService.addsDonation(
-            userId,
-            username,
-            name,
-            description,
-            category,
-            total,
-            image,
-            latitude,
-            longitude
-        )
-        client.enqueue(object : Callback<AddDonationResponse> {
-            override fun onResponse(
-                call: Call<AddDonationResponse>,
-                response: Response<AddDonationResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body()!!
-                    result.value = Result.Success(responseBody.data)
-                } else {
-                    result.value = Result.Error(response.message())
-                    Log.e(TAG, "onResponseSuccess: ${response.message()}", )
-                }
-            }
-
-            override fun onFailure(call: Call<AddDonationResponse>, t: Throwable) {
-                result.value = Result.Error(t.message.toString())
-            }
-
-        })
-        return result
     }
 
     fun insertResult(data: ScanResult) {

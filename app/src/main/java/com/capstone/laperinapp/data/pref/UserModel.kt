@@ -1,7 +1,7 @@
 package com.capstone.laperinapp.data.pref
 
 class UserModel(
-    val email: String,
+    val username: String,
     val token: String,
     val isLogin: Boolean = false,
 )

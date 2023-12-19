@@ -39,7 +39,7 @@
 
     <EditText
         android:id="@+id/edEdit_username"
-        style="@style/medium"
+        style="@style/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username"
@@ -48,7 +48,6 @@
         android:cursorVisible="false"
         android:focusable="false"
         android:padding="15dp"
-        android:textColorHint="@color/dark_gray"
         android:layout_marginTop="8dp"
         android:textSize="13sp"
         android:clickable="false"
@@ -71,13 +70,12 @@
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEdit_email"
-        style="@style/medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="text"
         android:padding="15dp"
-        android:textColorHint="@color/dark_gray"
+        style="@style/editText"
         android:textSize="13sp"
         android:layout_marginTop="8dp"
         android:layout_marginHorizontal="16dp"
@@ -99,7 +97,7 @@
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEdit_fullname"
-        style="@style/medium"
+        style="@style/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -126,7 +124,7 @@
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEdit_alamat"
-        style="@style/medium"
+        style="@style/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Alamat"
@@ -153,7 +151,7 @@
 
     <com.capstone.laperinapp.ui.customView.EditText
         android:id="@+id/edEdit_telephone"
-        style="@style/medium"
+        style="@style/editText"
         android:layout_width="match_parent"
         android:layout_height="53dp"
         android:hint="@string/telp_number"

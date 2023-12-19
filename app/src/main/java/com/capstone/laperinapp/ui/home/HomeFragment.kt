@@ -19,8 +19,8 @@ import com.capstone.laperinapp.adapter.PopularRecipesAdapter
 import com.capstone.laperinapp.adapter.RekomendasiRecipesAdapter
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
-import com.capstone.laperinapp.data.response.DataUser
-import com.capstone.laperinapp.data.response.RecipeItem
+import com.capstone.laperinapp.data.response.DataDetailUser
+import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.databinding.FragmentHomeBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.Result
@@ -61,7 +61,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getDataUser()
-        getData()
         setupRVRekomendasi()
         setupRVPopular()
         showDataPopular()
@@ -79,14 +78,16 @@ class HomeFragment : Fragment() {
         val user = runBlocking { pref.getSession().first() }
         val token = user.token
         val id = JWTUtils.getId(token)
+        Log.i(TAG, "getDataUser: $token")
 
-        viewModel.getUser(id).observe(viewLifecycleOwner) {result ->
+        viewModel.getUser().observe(viewLifecycleOwner) {result ->
             when(result){
                 is Result.Success -> {
-                    setupDataUser(result.data)
+                    setupDataUser(result.data.data)
                 }
                 is Result.Error -> {
-                    Log.e(TAG, "getDataUser: ${result.error}", )              }
+                    Log.e(TAG, "getDataUser: ${result.error}", )
+                }
                 is Result.Loading -> {
                     Log.d(TAG, "getDataUser: Loading")
                 }
@@ -94,19 +95,12 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupDataUser(data: DataUser) {
+    private fun setupDataUser(data: DataDetailUser) {
         binding.tvUsername.text = data.username
         Glide.with(requireActivity())
-            .load(data.picture)
+            .load(data.image)
             .circleCrop()
             .into(binding.imgProfile)
-    }
-
-    private fun getData() {
-        val pref = UserPreference.getInstance(requireActivity().dataStore)
-        val user = runBlocking { pref.getSession().first() }
-        val token = user.token
-        binding.tvUsername.text = JWTUtils.getUsername(token)
     }
 
     private fun setupRVRekomendasi() {
@@ -182,7 +176,7 @@ class HomeFragment : Fragment() {
         observeDataPopular()
 
         popularAdapter.setOnClickCallback(object : PopularRecipesAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: RecipeItem) {
+            override fun onItemClicked(data: DataItemRecipes) {
                 showSelectedItem(data)
             }
         })
@@ -207,7 +201,7 @@ class HomeFragment : Fragment() {
 
         rekomendasiAdapter.setOnClickCallback(object :
             RekomendasiRecipesAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: RecipeItem) {
+            override fun onItemClicked(data: DataItemRecipes) {
                 showSelectedItem(data)
             }
         })
@@ -224,7 +218,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun showSelectedItem(data: RecipeItem) {
+    private fun showSelectedItem(data: DataItemRecipes) {
         val intent = Intent(requireActivity(), DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_DATA, data.id)
         startActivity(intent)

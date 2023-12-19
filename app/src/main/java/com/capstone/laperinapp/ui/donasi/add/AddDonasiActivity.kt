@@ -39,6 +39,10 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
         ViewModelFactory.getInstance(this)
     }
 
+    private var latitude: String? = null
+    private var longitude: String? = null
+    private var username: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddDonasiBinding.inflate(layoutInflater)
@@ -57,20 +61,20 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
     }
 
     private fun getData() {
+        val bundle = intent.extras
+        if (bundle != null) {
+            latitude = bundle.getString(EXTRA_LATITUDE)
+            longitude = bundle.getString(EXTRA_LONGITUDE)
+            username = bundle.getString(EXTRA_USERNAME)
+        }
+        Log.d(TAG, "getDatalocation: $latitude, $longitude, $username")
         binding.btnDonasi.setOnClickListener {
-            val pref = UserPreference.getInstance(this.dataStore)
-            val user = runBlocking { pref.getSession().first() }
-            val token = user.token
-            val id = JWTUtils.getId(token)
-            val username = JWTUtils.getUsername(token)
-            val latitude = "123"
-            val longitude = "123"
             val name = binding.edNama.text.toString()
             val description = binding.edDescription.text.toString()
-            val category = "charity"
+            val category = binding.edJenis.text.toString()
             val total = binding.edJumlah.text.toString()
             if (name.length >= 5) {
-                sendData(id, username, name, description, category, total, latitude, longitude)
+                sendData(username, name, description, category, total, latitude, longitude)
             } else {
                 Toast.makeText(this@AddDonasiActivity, "Nama harus lebih dari 5 karakter", Toast.LENGTH_SHORT).show()
             }
@@ -100,7 +104,6 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
     }
 
     private fun sendData(
-        id: String? = null,
         username: String? = null,
         name: String,
         description: String,
@@ -112,7 +115,6 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
 
         lifecycleScope.launch {
             try {
-                val requestBodyUserId = id!!.toRequestBody("text/plain".toMediaType())
                 val requestBodyUsername = username!!.toRequestBody("text/plain".toMediaType())
                 val requestBodyName = name.toRequestBody("text/plain".toMediaType())
                 val requestBodyDescription = description.toRequestBody("text/plain".toMediaType())
@@ -122,7 +124,6 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
                 val requestBodyLongitude = longitude!!.toRequestBody("text/plain".toMediaType())
 
                 viewModel.sendDonation(
-                    requestBodyUserId,
                     requestBodyUsername,
                     requestBodyName,
                     requestBodyDescription,

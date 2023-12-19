@@ -4,15 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.capstone.laperinapp.data.response.DataRecipes
-import com.capstone.laperinapp.data.response.RecipeItem
+import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.databinding.ItemRecipesRekomendasiBinding
 
 class RekomendasiRecipesAdapter() :
-    PagingDataAdapter<RecipeItem, RekomendasiRecipesAdapter.ViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<DataItemRecipes, RekomendasiRecipesAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -21,7 +19,7 @@ class RekomendasiRecipesAdapter() :
     }
 
     class ViewHolder(val binding: ItemRecipesRekomendasiBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: RecipeItem){
+        fun bind(item: DataItemRecipes){
             Glide.with(binding.root.context)
                 .load(item.image)
                 .into(binding.imgItemPhoto)
@@ -49,15 +47,15 @@ class RekomendasiRecipesAdapter() :
     }
 
     interface OnItemClickCallback{
-        fun onItemClicked(data: RecipeItem)
+        fun onItemClicked(data: DataItemRecipes)
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<RecipeItem>() {
-            override fun areItemsTheSame(oldItem: RecipeItem, newItem: RecipeItem): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DataItemRecipes>() {
+            override fun areItemsTheSame(oldItem: DataItemRecipes, newItem: DataItemRecipes): Boolean {
                 return oldItem == newItem
             }
-            override fun areContentsTheSame(oldItem: RecipeItem, newItem: RecipeItem): Boolean {
+            override fun areContentsTheSame(oldItem: DataItemRecipes, newItem: DataItemRecipes): Boolean {
                 return oldItem == newItem
             }
         }

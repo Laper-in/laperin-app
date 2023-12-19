@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.ScanResultAdapter
 import com.capstone.laperinapp.adapter.SearchAdapter
+import com.capstone.laperinapp.data.response.DataItemIngredient
 import com.capstone.laperinapp.data.response.IngredientItem
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.capstone.laperinapp.databinding.ActivityResultBinding
@@ -50,7 +51,7 @@ class ResultActivity : AppCompatActivity() {
         getResult()
 
         binding.btnScan.setOnClickListener { onClickScan() }
-        viewModel.searchStringLiveData.value = "a"
+        viewModel.searchStringLiveData.value = ""
         binding.searchBar.addTextChangedListener { text ->
             viewModel.searchStringLiveData.value = text.toString()
         }
@@ -127,21 +128,21 @@ class ResultActivity : AppCompatActivity() {
         binding.rvIngredients.adapter = searchAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         binding.rvIngredients.layoutManager = linearLayoutManager
-        val decorationItem = DividerItemDecoration(this, linearLayoutManager.orientation)
-        binding.rvIngredients.addItemDecoration(decorationItem)
 
         searchAdapter.setOnClickCallback(object : SearchAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: IngredientItem, holder: SearchAdapter.MyViewHolder) {
-                AlertDialog.Builder(this@ResultActivity)
-                    .setTitle("Tambahkan ke list")
-                    .setMessage("Ingin menambahkan ${data.name} ke list?")
-                    .setPositiveButton("Tambahkan") { dialog, _ ->
-                        viewModel.insertIngredient(ScanResult(0, data.name))
-                    }
-                    .setNegativeButton("Batal") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .show()
+            override fun onItemClicked(data: DataItemIngredient, holder: SearchAdapter.MyViewHolder) {
+                holder.binding.btnAdd.setOnClickListener {
+                    AlertDialog.Builder(this@ResultActivity)
+                        .setTitle("Tambahkan ke list")
+                        .setMessage("Ingin menambahkan ${data.name} ke list?")
+                        .setPositiveButton("Tambahkan") { dialog, _ ->
+                            viewModel.insertIngredient(ScanResult(0, data.name))
+                        }
+                        .setNegativeButton("Batal") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
             }
         })
     }

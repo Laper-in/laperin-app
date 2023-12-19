@@ -1,26 +1,23 @@
 package com.capstone.laperinapp.data.retrofit
 
-import com.capstone.laperinapp.data.response.AddDonationResponse
+import androidx.room.Delete
 import com.capstone.laperinapp.data.response.BookmarkResponse
-import com.capstone.laperinapp.data.response.DataRecipes
-import com.capstone.laperinapp.data.response.DataUser
 import com.capstone.laperinapp.data.response.ClosestDonationsResponses
-import com.capstone.laperinapp.data.response.DataIngredient
-import com.capstone.laperinapp.data.response.DetailRecipesResponses
-import com.capstone.laperinapp.data.response.DetailUserResponse
 import com.capstone.laperinapp.data.response.DonationsResponses
-import com.capstone.laperinapp.data.response.EditProfileResponse
-import com.capstone.laperinapp.data.response.IngredientItem
-import com.capstone.laperinapp.data.response.IngredientsItem
 import com.capstone.laperinapp.data.response.IngredientsResponse
-import com.capstone.laperinapp.data.response.LoginResponse
-import com.capstone.laperinapp.data.response.RecipeResponses
-import com.capstone.laperinapp.data.response.RegisterResponse
+import com.capstone.laperinapp.data.response.RecipeResponse
 import com.capstone.laperinapp.data.response.SearchIngredientResultResponse
+import com.capstone.laperinapp.data.response.AuthResponse
+import com.capstone.laperinapp.data.response.CreateDonationResponse
+import com.capstone.laperinapp.data.response.DonationResponse
+import com.capstone.laperinapp.data.response.IngredientResponse
+import com.capstone.laperinapp.data.response.RecipeDetailResponse
+import com.capstone.laperinapp.data.response.UserDetailResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -37,9 +34,9 @@ interface ApiService {
     @FormUrlEncoded
     @POST("users/signin")
     suspend fun login(
-        @Field("email") email: String,
+        @Field("username") username: String,
         @Field("password") password: String
-    ): Response<LoginResponse>
+    ): Response<AuthResponse>
 
     @FormUrlEncoded
     @POST("users/signup")
@@ -47,72 +44,57 @@ interface ApiService {
         @Field("username") username: String,
         @Field("email") email: String,
         @Field("password") password: String,
-    ): Response<RegisterResponse>
+    ): Response<AuthResponse>
 
-    @GET("users/{id}")
+    @GET("users/id")
     suspend fun getDetailUser(
-        @Path("id") id: String
-    ): Response<DataUser>
+    ): Response<UserDetailResponse>
 
     @FormUrlEncoded
-    @PATCH("users/{id}")
+    @PATCH("users/id")
     suspend fun updateDetailUser(
-        @Path("id") id: String,
         @Field("email") email: String,
         @Field("fullname") fullname: String,
         @Field("alamat") alamat: String,
         @Field("telephone") telephone: BigInteger
-    ):  Response<DetailUserResponse>
+    ):  Response<com.capstone.laperinapp.data.response.UpdateResponse>
 
     @GET("recipes")
     suspend fun getAllRecipes(
         @Query("page") page: Int,
         @Query("pageSize") size: Int
-    ): RecipeResponses
+    ): RecipeResponse
 
     @GET("recipes/{id}")
     suspend fun getDetailRecipes(
         @Path("id") id: String
-    ): Response<DetailRecipesResponses>
+    ): Response<RecipeDetailResponse>
 
-    @GET("bookmarks/{id}")
+    @GET("bookmarks/search")
     suspend fun getBookmarks(
-        @Path("id") id: String,
+        @Query("category") category: String,
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): BookmarkResponse
   
-    @GET("donations/closest")
+    @GET("donations/closest/{lon}/{lat}")
     suspend fun getAllClosestDonation(
-        @Query("lon") lon: Double,
-        @Query("lat") lat: Double,
+        @Path("lon") lon: Float,
+        @Path("lat") lat: Float,
         @Query("page") page: Int,
         @Query("pageSize") size: Int
-    ): ClosestDonationsResponses
+    ): DonationResponse
 
-    @GET("donations")
-    suspend fun getAllDonation(
-        @Query("page") page: Int,
-        @Query("pageSize") size: Int
-    ): DonationsResponses
-
-    @GET("ingredients")
-    suspend fun getIngredient(
-        @Query("page") page: Int,
-        @Query("pageSize") size: Int
-    ): IngredientsResponse
-
-    @GET("ingredients/search/name")
+    @GET("ingredients/search")
     suspend fun getIngredientsByName(
         @Query("q") name: String,
         @Query("page") page: Int,
         @Query("pageSize") size: Int
-    ): SearchIngredientResultResponse
+    ): IngredientResponse
 
     @Multipart
     @POST("donations")
     suspend fun addDonation(
-        @Part("idUser") id: RequestBody,
         @Part("username") username: RequestBody,
         @Part("name") name: RequestBody,
         @Part("description") description: RequestBody,
@@ -121,19 +103,16 @@ interface ApiService {
         @Part image: MultipartBody.Part,
         @Part("lat") latitude: RequestBody,
         @Part("lon") longitude: RequestBody
-    ): Response<AddDonationResponse>
+    ): Response<DonationResponse>
 
-    @Multipart
-    @POST("donations")
-    fun addsDonation(
-        @Part("idUser") id: RequestBody,
-        @Part("username") username: RequestBody,
-        @Part("name") name: RequestBody,
-        @Part("description") description: RequestBody,
-        @Part("category") category: RequestBody,
-        @Part("total") total: RequestBody,
-        @Part image: MultipartBody.Part,
-        @Part("lat") latitude: RequestBody,
-        @Part("lon") longitude: RequestBody
-    ): Call<AddDonationResponse>
+    @GET("donations/user")
+    suspend fun getDonationByUser(
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): DonationResponse
+
+    @DELETE("donations/{id}")
+    suspend fun deleteDonation(
+        @Path("id") id: String
+    ): Response<CreateDonationResponse>
 }

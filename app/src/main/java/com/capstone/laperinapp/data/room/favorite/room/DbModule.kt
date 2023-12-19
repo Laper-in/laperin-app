@@ -1,4 +1,4 @@
-package com.capstone.laperinapp.data.favorite.room
+package com.capstone.laperinapp.data.room.favorite.room
 
 import android.content.Context
 import androidx.room.Room

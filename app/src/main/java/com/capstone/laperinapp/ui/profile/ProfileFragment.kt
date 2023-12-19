@@ -11,16 +11,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.capstone.laperinapp.helper.Result
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
+import com.capstone.laperinapp.adapter.BookmarkProfileAdapter
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
-import com.capstone.laperinapp.data.response.DataUser
-import com.capstone.laperinapp.data.response.DetailUserResponse
+import com.capstone.laperinapp.data.response.DataItemBookmark
+import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.FragmentProfileBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
-import com.capstone.laperinapp.ui.profile.editProfile.EditProfilActivity
+import com.capstone.laperinapp.ui.detail.DetailActivity
 import com.capstone.laperinapp.ui.login.LoginActivity
 import com.capstone.laperinapp.ui.profile.setting.SettingActivity
 import kotlinx.coroutines.flow.first
@@ -34,6 +36,7 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private lateinit var adapter: BookmarkProfileAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,19 +51,41 @@ class ProfileFragment : Fragment() {
 
         getData()
         setupToolbar()
+        setupRV()
+    }
+
+    private fun setupRV() {
+        adapter = BookmarkProfileAdapter()
+        binding.rvKoleksi.adapter = adapter
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.rvKoleksi.layoutManager = layoutManager
+
+        viewModel.getAllBookmark("").observe(viewLifecycleOwner) {
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
+
+        adapter.setOnClickCallback(object : BookmarkProfileAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: DataItemBookmark) {
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_DATA, data.recipe.id)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun setupToolbar() {
         binding.appBar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId){
+            when (menuItem.itemId) {
                 R.id.menu_edit_profile -> {
                     onClickSetting()
                     true
                 }
+
                 R.id.menu_logout -> {
                     onClickLogout()
                     true
                 }
+
                 else -> false
             }
         }
@@ -72,10 +97,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun onClickLogout() {
-        val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle("Konfirmasi Keluar")
-        alertDialogBuilder.setMessage("Anda yakin ingin keluar?")
-        alertDialogBuilder.setPositiveButton("Ya") { _, _ ->
+        AlertDialog.Builder(requireContext())
+        .setTitle("Konfirmasi Keluar")
+        .setMessage("Anda yakin ingin keluar?")
+        .setPositiveButton("Ya") { _, _ ->
             viewModel.logout()
 
             val intent = Intent(requireContext(), LoginActivity::class.java)
@@ -83,56 +108,55 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
             requireActivity().finish()
         }
-        alertDialogBuilder.setNegativeButton("Tidak") { dialog, _ ->
+        .setNegativeButton("Tidak") { dialog, _ ->
             dialog.dismiss()
         }
-        alertDialogBuilder.create().show()
+        .show()
     }
-    
+
     private fun getData() {
         val pref = UserPreference.getInstance(requireActivity().dataStore)
         val user = runBlocking { pref.getSession().first() }
         val token = user.token
         val id = JWTUtils.getId(token)
         Log.i(TAG, "id: $id")
-        setupDataUser(id)
+        setupDataUser()
     }
 
-    private  fun setupDataUser(id :String?)  {
-        if (id != null) {
-            viewModel.getUser(id).observe(viewLifecycleOwner) { result ->
-                when (result) {
-                    is Result.Success -> {
-                        showLoading(false)
-                        dataUser(result.data)
-                        Log.i(TAG, "setupDataUser: ${result.data}")
-                    }
-                    is Result.Error -> {
-                        showLoading(false)
-                        Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
-                        Log.e(TAG, "setupDataUser: ${result.error}", )
-                    }
+    private fun setupDataUser() {
+        viewModel.getUser().observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Result.Success -> {
+                    showLoading(false)
+                    dataUser(result.data)
+                    Log.i(TAG, "setupDataUser: ${result.data}")
+                }
 
-                    is Result.Loading -> {
-                        showLoading(true)
-                    }
+                is Result.Error -> {
+                    showLoading(false)
+                    Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "setupDataUser: ${result.error}")
+                }
+
+                is Result.Loading -> {
+                    showLoading(true)
                 }
             }
         }
     }
 
-    private fun dataUser(data : DataUser) {
-        binding.tvUsernameProfil.text = data.fullname
-        if (data.alamat == null) {
+    private fun dataUser(data: UserDetailResponse) {
+        binding.tvUsernameProfil.text = data.data.username
+        if (data.data.alamat == null) {
             binding.tvAlamat.text = getString(R.string.alamat_kosong)
         } else {
-            binding.tvAlamat.text = data.alamat
+            binding.tvAlamat.text = data.data.alamat
         }
         Glide.with(requireContext())
-            .load(data.picture)
+            .load(data.data.image)
             .circleCrop()
             .into(binding.imgUser)
-        if (data.isPro){
+        if (data.data.isPro) {
             binding.badge.visibility = View.VISIBLE
         } else {
             binding.badge.visibility = View.GONE
@@ -165,6 +189,7 @@ class ProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     companion object {
         private const val TAG = "ProfileFragment"
         const val EXTRA_EMAIL = "extra_email"

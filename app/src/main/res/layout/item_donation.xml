@@ -23,22 +23,24 @@
 
         <TextView
             android:id="@+id/tv_item_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Nama"
-            android:textSize="16sp"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="5dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout7"
             app:layout_constraintStart_toEndOf="@+id/iv_item_photo"
             app:layout_constraintTop_toTopOf="@+id/iv_item_photo" />
 
         <TextView
-            android:id="@+id/tv_item_description"
+            android:id="@+id/tv_item_nama_pengirim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginBottom="4dp"
-            android:text="Nama Pengirim"
             app:layout_constraintBottom_toTopOf="@+id/tv_item_count"
             app:layout_constraintStart_toEndOf="@+id/iv_item_photo"/>
 
@@ -48,18 +50,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="4dp"
-            android:text="Jumlah :"
             android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_item_photo"
             app:layout_constraintStart_toEndOf="@+id/iv_item_photo"/>
 
         <LinearLayout
+            android:id="@+id/linearLayout7"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginEnd="12dp"
             android:background="@drawable/bg_distance"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -67,16 +69,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_location_24"/>
+                android:src="@drawable/ic_location_24" />
 
             <TextView
                 android:id="@+id/tv_item_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="500m"
                 android:textColor="@color/primary"
                 android:textSize="12sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 

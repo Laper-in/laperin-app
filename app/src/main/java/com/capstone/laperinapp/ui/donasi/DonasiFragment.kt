@@ -19,14 +19,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.laperinapp.adapter.ClosestDonationAdapter
-import com.capstone.laperinapp.adapter.DonationAdapter
 import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
-import com.capstone.laperinapp.data.response.ClosestDonationsItem
-import com.capstone.laperinapp.data.response.DonationsItem
+import com.capstone.laperinapp.data.response.DataItemDonation
 import com.capstone.laperinapp.databinding.FragmentDonasiBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
@@ -57,8 +56,8 @@ class DonasiFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
-    private var userLatitude: Double = 0.0
-    private var userLongitude: Double = 0.0
+    private var userLatitude: Float = 0F
+    private var userLongitude: Float = 0F
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -132,13 +131,15 @@ class DonasiFragment : Fragment() {
         locationCallback = object : LocationCallback(){
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations){
-                    sendData(location.longitude, location.latitude)
+                    sendData(location.longitude.toFloat(), location.latitude.toFloat())
+                    userLongitude = location.longitude.toFloat()
+                    userLatitude = location.latitude.toFloat()
                 }
             }
         }
     }
 
-    private fun sendData(longitude: Double, latitude: Double) {
+    private fun sendData(longitude: Float, latitude: Float) {
         viewModel.lonLatLiveData.value = longitude to latitude
     }
 
@@ -165,10 +166,13 @@ class DonasiFragment : Fragment() {
         val id = JWTUtils.getId(token)
         val username = JWTUtils.getUsername(token)
         val intent = Intent(requireActivity(), AddDonasiActivity::class.java)
-        intent.putExtra(AddDonasiActivity.EXTRA_ID, id)
-        intent.putExtra(AddDonasiActivity.EXTRA_USERNAME, username)
-        intent.putExtra(AddDonasiActivity.EXTRA_LATITUDE, userLatitude)
-        intent.putExtra(AddDonasiActivity.EXTRA_LONGITUDE, userLongitude)
+        val bundle = Bundle()
+        bundle.putString(AddDonasiActivity.EXTRA_ID, id)
+        bundle.putString(AddDonasiActivity.EXTRA_USERNAME, username)
+        bundle.putString(AddDonasiActivity.EXTRA_LATITUDE, userLatitude.toString())
+        bundle.putString(AddDonasiActivity.EXTRA_LONGITUDE, userLongitude.toString())
+        intent.putExtras(bundle)
+        Log.d(TAG, "moveToAddDonation: $userLatitude, $userLongitude, $username")
         startActivity(intent)
     }
 
@@ -203,9 +207,9 @@ class DonasiFragment : Fragment() {
         ) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
-                    setupDataClosest(location.longitude, location.latitude)
-                    userLatitude = location.latitude
-                    userLongitude = location.longitude
+                    setupDataClosest()
+                    userLatitude = location.latitude.toFloat()
+                    userLongitude = location.longitude.toFloat()
                 } else {
                     Toast.makeText(requireContext(), "Lokasi tidak ditemukan, Coba lagi", Toast.LENGTH_SHORT).show()
                 }
@@ -220,7 +224,7 @@ class DonasiFragment : Fragment() {
         }
     }
 
-    private fun setupDataClosest(longitude: Double, latitude: Double) {
+    private fun setupDataClosest() {
         val adapter = ClosestDonationAdapter()
         binding.rvClosest.adapter = adapter.withLoadStateFooter(
             footer = LoadingStateAdapter { adapter.retry() }
@@ -233,12 +237,20 @@ class DonasiFragment : Fragment() {
         }
 
         adapter.setOnClickCallback(object : ClosestDonationAdapter.OnItemClickCallback{
-            override fun onItemClicked(data: ClosestDonationsItem) {
+            override fun onItemClicked(data: DataItemDonation) {
                 val intent = Intent(requireActivity(), DetailDonationActivity::class.java)
                 intent.putExtra(DetailDonationActivity.EXTRA_DATA, data)
                 startActivity(intent)
             }
         })
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.Loading) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
     }
 
     override fun onResume() {
