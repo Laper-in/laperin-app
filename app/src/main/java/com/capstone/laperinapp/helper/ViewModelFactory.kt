@@ -19,6 +19,7 @@ import com.capstone.laperinapp.ui.profile.ProfileViewModel
 import com.capstone.laperinapp.ui.profile.setting.SettingViewModel
 import com.capstone.laperinapp.ui.register.RegisterViewModel
 import com.capstone.laperinapp.ui.scan.preview.PreviewViewModel
+import com.capstone.laperinapp.ui.scan.recommendation.RecommendationViewModel
 import com.capstone.laperinapp.ui.scan.result.ResultViewModel
 import com.capstone.laperinapp.ui.splashScreen.SplashViewModel
 
@@ -71,6 +72,9 @@ class ViewModelFactory private constructor(private val repository: Repository, p
             }
             modelClass.isAssignableFrom(SearchRecipesViewModel::class.java) -> {
                 SearchRecipesViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(RecommendationViewModel::class.java) -> {
+                RecommendationViewModel(repository) as T
             }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

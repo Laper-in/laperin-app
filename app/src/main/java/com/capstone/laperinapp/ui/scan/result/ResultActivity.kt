@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.ui.scan.result
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
@@ -23,6 +24,7 @@ import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.capstone.laperinapp.databinding.ActivityResultBinding
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.ModalBottomSheetDialog
+import com.capstone.laperinapp.ui.scan.recommendation.RecommendationActivity
 
 class ResultActivity : AppCompatActivity() {
 
@@ -57,6 +59,17 @@ class ResultActivity : AppCompatActivity() {
             }
 
         })
+
+        binding.btnCariResep.setOnClickListener { onClickSearch() }
+    }
+
+    private fun onClickSearch() {
+        if (binding.tvEmptyList.visibility == View.VISIBLE) {
+            Toast.makeText(this, "Anda belum menambahkan bahan", Toast.LENGTH_SHORT).show()
+        } else {
+            val intent = Intent(this, RecommendationActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupToolbar() {
@@ -138,31 +151,26 @@ class ResultActivity : AppCompatActivity() {
                 holder: SearchAdapter.MyViewHolder
             ) {
                 holder.binding.btnAdd.setOnClickListener {
-                    AlertDialog.Builder(this@ResultActivity)
-                        .setTitle("Tambahkan ke list")
-                        .setMessage("Ingin menambahkan ${data.name} ke list?")
-                        .setPositiveButton("Tambahkan") { dialog, _ ->
-                            var isResultExist = false
-                            for (i in result.indices) {
-                                isResultExist = result[i].name == data.name
+                    viewModel.containsIngredient(data.name).observe(this@ResultActivity) {isExisting ->
+                        AlertDialog.Builder(this@ResultActivity)
+                            .setTitle("Tambahkan ke list")
+                            .setMessage("Ingin menambahkan ${data.name} ke list?")
+                            .setPositiveButton("Tambahkan") { dialog, _ ->
+                                if (isExisting) {
+                                    Toast.makeText(
+                                        this@ResultActivity,
+                                        "Bahan sudah ada di list",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    viewModel.insertIngredient(ScanResult(0, data.name))
+                                }
                             }
-
-                            if (!isResultExist) {
-                                viewModel.insertIngredient(ScanResult(0, data.name))
-                            } else {
-                                Toast.makeText(
-                                    this@ResultActivity,
-                                    "Anda sudah menambahkan bahan ini",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-
+                            .setNegativeButton("Batal") { dialog, _ ->
+                                dialog.dismiss()
                             }
-                        }
-                        .setNegativeButton("Batal") { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        .show()
+                            .show()
+                    }
                 }
             }
         })

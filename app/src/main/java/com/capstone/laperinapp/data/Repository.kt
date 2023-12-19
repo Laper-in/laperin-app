@@ -15,6 +15,7 @@ import com.capstone.laperinapp.data.paging.MyCompletedDonationPagingSource
 import com.capstone.laperinapp.data.paging.MyUncompletedDonationPagingSource
 import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.paging.RecipesRecomPagingSource
+import com.capstone.laperinapp.data.paging.RecommendationPagingSource
 import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
 import com.capstone.laperinapp.data.paging.SearchRecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
@@ -117,6 +118,17 @@ class Repository private constructor(
             ),
             pagingSourceFactory = {
                 SearchRecipesPagingSource(apiService, name)
+            }
+        ).liveData
+    }
+
+    fun getRecommendation(name: String): LiveData<PagingData<DataItemRecipes>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                RecommendationPagingSource(apiService, name)
             }
         ).liveData
     }
@@ -272,6 +284,14 @@ class Repository private constructor(
 
     fun getAllResult(): LiveData<List<ScanResult>> {
         return scanDao.getAllResult()
+    }
+
+    fun getAllResultContainsName(name: String): Int {
+        return scanDao.getAllResultContainsName(name)
+    }
+
+    fun getAllResultName(): LiveData<List<String>> {
+        return scanDao.getAllResultName()
     }
 
     fun deleteAllResult() {
