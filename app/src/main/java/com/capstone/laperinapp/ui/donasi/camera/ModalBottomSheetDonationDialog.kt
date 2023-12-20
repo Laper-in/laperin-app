@@ -82,10 +82,10 @@ class ModalBottomSheetDonationDialog : BottomSheetDialogFragment() {
             if (data != null) {
                 val uri = data.getStringExtra(AddDonasiActivity.EXTRA_ADD)
                 onImageSelectedListener?.onImageSelected(Uri.parse(uri))
+                dismiss()
             }
         }
     }
-
 
     private fun startGallery(){
         launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))

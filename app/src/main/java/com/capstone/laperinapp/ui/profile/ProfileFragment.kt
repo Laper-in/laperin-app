@@ -56,6 +56,8 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
     private val binding get() = _binding!!
     private lateinit var adapter: BookmarkProfileAdapter
     private var selectedImageUri: Uri? = null
+    private var buttonSheetPicture: ButtonSheetPicture? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,14 +86,13 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
             currentImageUri = uri
             updateImageUser()
             showImage(uri)
+            buttonSheetPicture?.dismiss()
         }
         alertDialogBuilder.setNegativeButton("Batal") { dialog, _ ->
             dialog.dismiss()
         }
         alertDialogBuilder.show()
     }
-
-
 
     private fun updateImageUser() {
             viewModel.updateImageUser(createImageRequestBody()).observe(viewLifecycleOwner) { result ->
@@ -135,9 +136,9 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
         if (!allPermisionGranted()) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
         } else {
-            val modal = ButtonSheetPicture()
-            modal.show(childFragmentManager, ButtonSheetPicture.TAG)
-            modal.setOnImageSelectedListener(this)
+            buttonSheetPicture = ButtonSheetPicture()
+            buttonSheetPicture?.setOnImageSelectedListener(this)
+            buttonSheetPicture?.show(childFragmentManager, ButtonSheetPicture.TAG)
         }
     }
 
@@ -298,6 +299,7 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
     companion object {
         private const val TAG = "ProfileFragment"
         const val EXTRA_EMAIL = "extra_email"
+        const val EXTRA_PROFILE = "ProfileFragment"
         private const val REQUIRED_PERMISSIONS = Manifest.permission.CAMERA
     }
 

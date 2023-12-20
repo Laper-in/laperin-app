@@ -1,5 +1,6 @@
 package com.capstone.laperinapp.ui.profile.editProfile.picture
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
@@ -11,11 +12,13 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.capstone.laperinapp.databinding.LayoutBottomsheetBinding
+import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
 import com.capstone.laperinapp.ui.donasi.add.OnImageSelectedListener
+import com.capstone.laperinapp.ui.donasi.camera.CameraDonationActivity
 import com.capstone.laperinapp.ui.donasi.camera.ModalBottomSheetDonationDialog
+import com.capstone.laperinapp.ui.profile.ProfileFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-
 
 
 class ButtonSheetPicture : BottomSheetDialogFragment() {
@@ -58,9 +61,7 @@ class ButtonSheetPicture : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnCamera.setOnClickListener {
-            val intent = Intent(requireContext(), CameraPictureActivity::class.java)
-            startActivity(intent)
-            dismiss()
+          startCamera()
         }
 
         binding.btnGalery.setOnClickListener {
@@ -68,8 +69,26 @@ class ButtonSheetPicture : BottomSheetDialogFragment() {
         }
     }
 
+    private fun startCamera() {
+        val intent = Intent(requireContext(), CameraPictureActivity::class.java)
+        launcherCamera.launch(intent)
+    }
+
     private fun startGallery(){
         launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    private val launcherCamera = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            if (data != null) {
+                val uri = data.getStringExtra(ProfileFragment.EXTRA_PROFILE)
+                onImageSelectedListener?.onImageSelected(Uri.parse(uri))
+                dismiss()
+            }
+        }
     }
 
 
