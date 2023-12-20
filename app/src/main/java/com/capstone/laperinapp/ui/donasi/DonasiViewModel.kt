@@ -26,4 +26,5 @@ class DonasiViewModel(private val repository: Repository) : ViewModel() {
 
     fun getClosestDonation() = donationResults
 
+    fun getUser() = repository.getDetailUser()
 }

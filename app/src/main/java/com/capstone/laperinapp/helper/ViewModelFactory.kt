@@ -14,6 +14,7 @@ import com.capstone.laperinapp.ui.donasi.saya.DonasiSayaViewModel
 import com.capstone.laperinapp.ui.koleksi.KoleksiViewModel
 import com.capstone.laperinapp.ui.profile.editProfile.EditViewModel
 import com.capstone.laperinapp.ui.home.HomeViewModel
+import com.capstone.laperinapp.ui.home.all_recipes.AllRecipesViewModel
 import com.capstone.laperinapp.ui.home.search.SearchRecipesViewModel
 import com.capstone.laperinapp.ui.login.LoginViewModel
 import com.capstone.laperinapp.ui.profile.ProfileViewModel
@@ -23,7 +24,6 @@ import com.capstone.laperinapp.ui.scan.preview.PreviewViewModel
 import com.capstone.laperinapp.ui.scan.recommendation.RecommendationViewModel
 import com.capstone.laperinapp.ui.scan.result.ResultViewModel
 import com.capstone.laperinapp.ui.splashScreen.SplashViewModel
-import com.capstone.laperinapp.ui.welcome.WelcomeViewModel
 
 class ViewModelFactory private constructor(private val repository: Repository, private val pref: SettingPreferences) :
     ViewModelProvider.NewInstanceFactory() {
@@ -81,8 +81,8 @@ class ViewModelFactory private constructor(private val repository: Repository, p
             modelClass.isAssignableFrom(DetailDonationViewModel::class.java) -> {
                 DetailDonationViewModel(repository) as T
             }
-            modelClass.isAssignableFrom(WelcomeViewModel::class.java) -> {
-                WelcomeViewModel(repository) as T
+            modelClass.isAssignableFrom(AllRecipesViewModel::class.java) -> {
+                AllRecipesViewModel(repository) as T
             }
              else ->    throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

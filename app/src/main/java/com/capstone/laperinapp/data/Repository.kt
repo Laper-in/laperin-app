@@ -6,6 +6,7 @@ import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.paging.liveData
 import com.capstone.laperinapp.data.room.favorite.dao.FavoriteDao
 import com.capstone.laperinapp.data.room.favorite.entity.Favorite
@@ -17,6 +18,7 @@ import com.capstone.laperinapp.data.paging.RecipesPagingSource
 import com.capstone.laperinapp.data.paging.RecipesRecomPagingSource
 import com.capstone.laperinapp.data.paging.RecommendationPagingSource
 import com.capstone.laperinapp.data.paging.SearchIngredientPagingSource
+import com.capstone.laperinapp.data.paging.SearchRecipesByCategoryPagingSource
 import com.capstone.laperinapp.data.paging.SearchRecipesPagingSource
 import com.capstone.laperinapp.data.pref.UserModel
 import com.capstone.laperinapp.data.pref.UserPreference
@@ -118,6 +120,17 @@ class Repository private constructor(
             ),
             pagingSourceFactory = {
                 SearchRecipesPagingSource(apiService, name)
+            }
+        ).liveData
+    }
+
+    fun getRecipesByCategory(name: String): LiveData<PagingData<DataItemRecipes>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                SearchRecipesByCategoryPagingSource(apiService, name)
             }
         ).liveData
     }

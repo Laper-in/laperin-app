@@ -1,18 +1,22 @@
 package com.capstone.laperinapp.ui.donasi.detail
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.response.DataItemDonation
+import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.ActivityDetailDonationBinding
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.helper.meterToKilometer
+
 
 class DetailDonationActivity : AppCompatActivity() {
 
@@ -22,10 +26,14 @@ class DetailDonationActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+    private var isMe = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailDonationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        isMe = intent.getBooleanExtra(EXTRA_SPECIAL, false)
 
         configToolbar()
         getData()
@@ -42,7 +50,7 @@ class DetailDonationActivity : AppCompatActivity() {
                 is Result.Success -> {
                     binding.progressBar.visibility = android.view.View.GONE
                     setupData(result.data)
-
+                    getDataUser(result.data)
                 }
 
                 is Result.Error -> {
@@ -70,35 +78,49 @@ class DetailDonationActivity : AppCompatActivity() {
         binding.tvDeskripsi.text = data.description
         binding.tvItemJenis.text = "Jenis : ${data.category}"
         binding.tvItemJumlah.text = "Jumlah : ${data.total}"
+    }
 
-        val isMe = intent.getBooleanExtra(EXTRA_SPECIAL, false)
+    private fun getDataUser(data: DataItemDonation) {
+        viewModel.getUser().observe(this) { result ->
+            when (result) {
+                is Result.Success -> {
+                    if (isMe){
+                        binding.linearLayout7.visibility = android.view.View.GONE
+                        binding.btnSelesaiDiambil.setOnClickListener {
+                            onClickSelesai(data)
+                        }
+                    } else {
+                        binding.btnSelesaiDiambil.text = "Ambil Barang"
+                        binding.btnSelesaiDiambil.setOnClickListener {
+                            onClickAmbil(data, result.data)
+                        }
+                    }
+                }
 
-        if (isMe){
-            binding.linearLayout7.visibility = android.view.View.GONE
-            binding.btnSelesaiDiambil.setOnClickListener {
-                onClickSelesai(data)
-            }
-        } else {
-            binding.btnSelesaiDiambil.setOnClickListener {
-                onClickAmbil(data)
+                else -> false
             }
         }
     }
 
-    private fun onClickAmbil(data: DataItemDonation) {
-        val phone = "+6289520075152"
-        val message = "Kokomtol"
+    private fun onClickAmbil(data: DataItemDonation, dataUser: UserDetailResponse) {
+        val phone = dataUser.data.telephone
+        Log.d(TAG, "onClickAmbil: $phone")
+        val message = "Halo, ${dataUser.data.username}\nSaya ingin mengambil ${data.name}. Apakah item ini masih tersedia ?"
 
-        val uri = Uri.parse("smsto:$phone")
-
-        val whatsappIntent = Intent(Intent.ACTION_SENDTO, uri)
-        whatsappIntent.setPackage("com.whatsapp")
-        whatsappIntent.putExtra("sms_body", message)
-
-        if (whatsappIntent.resolveActivity(packageManager) != null) {
-            startActivity(whatsappIntent)
-        } else {
-            Toast.makeText(this, "WhatsApp tidak terinstal", Toast.LENGTH_SHORT).show()
+        val url = "https://api.whatsapp.com/send?phone=62$phone&text=$message"
+        try {
+            val pm: PackageManager = packageManager
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(
+                this,
+                "Whatsapp app not installed in your phone",
+                Toast.LENGTH_SHORT
+            ).show()
+            e.printStackTrace()
         }
     }
 
@@ -134,5 +156,6 @@ class DetailDonationActivity : AppCompatActivity() {
         const val EXTRA_DATA = "extra_data"
         const val EXTRA_DISTANCE = "extra_distance"
         const val EXTRA_SPECIAL = "extra_special"
+        const val TAG = "DetailDonationActivity"
     }
 }

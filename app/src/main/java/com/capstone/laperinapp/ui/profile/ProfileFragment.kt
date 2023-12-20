@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat
 import com.capstone.laperinapp.helper.Result
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
@@ -38,6 +40,7 @@ import com.capstone.laperinapp.ui.login.LoginActivity
 import com.capstone.laperinapp.ui.profile.editProfile.EditProfilActivity
 import com.capstone.laperinapp.ui.profile.editProfile.picture.ButtonSheetPicture
 import com.capstone.laperinapp.ui.profile.setting.SettingActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
@@ -50,6 +53,9 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
 
     private val viewModel by viewModels<ProfileViewModel> {
         ViewModelFactory.getInstance(requireActivity())
+    }
+    private val navController by lazy {
+        findNavController()
     }
     private var currentImageUri: Uri? = null
     private var _binding: FragmentProfileBinding? = null
@@ -158,9 +164,14 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
         }
     }
     private fun onClickFavorite() {
-        val botNav = activity?.findNavController(R.id.nav_host_fragment_activity_main2)
-        botNav?.navigate(R.id.navigation_koleksi)
-        onDestroyView()
+        val itemId = R.id.navigation_koleksi
+
+        val mainBottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+
+        val menu = mainBottomNavigationView?.menu
+
+        val menuItem = menu?.findItem(itemId)
+        NavigationUI.onNavDestinationSelected(menuItem!!, navController)
     }
 
     private fun setupRV() {
@@ -258,6 +269,7 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
 
     private fun dataUser(data: UserDetailResponse) {
         binding.tvUsernameProfil.text = data.data.username
+        binding.tvAlamat.text = data.data.alamat
         Glide.with(requireContext())
             .load(data.data.image)
             .circleCrop()

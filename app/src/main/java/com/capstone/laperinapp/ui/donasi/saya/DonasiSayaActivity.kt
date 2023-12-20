@@ -118,9 +118,9 @@ class DonasiSayaActivity : AppCompatActivity() {
 
         uncompletedAdapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                binding.progressBarUncompleted.visibility = android.view.View.VISIBLE
+                binding.progressBarUncompleted.visibility = View.VISIBLE
             } else {
-                binding.progressBarUncompleted.visibility = android.view.View.GONE
+                binding.progressBarUncompleted.visibility = View.GONE
             }
         }
     }

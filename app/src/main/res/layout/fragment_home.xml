@@ -267,6 +267,7 @@
             app:layout_constraintTop_toBottomOf="@+id/rv_rekomendasi" />
 
         <TextView
+            android:id="@+id/btn_lihat_semua"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/lihat_semua"

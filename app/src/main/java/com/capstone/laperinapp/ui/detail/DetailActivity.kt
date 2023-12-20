@@ -46,7 +46,6 @@ class DetailActivity : AppCompatActivity() {
             binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.primary))
         }
 
-        viewModel.searchStringLiveData.value = ""
     }
 
     private fun setupCategory(category: String) {

@@ -60,6 +60,7 @@
 
     <style name="navbar.dark">
         <item name="backgroundTint">@color/black_300</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
     </style>
 
     <style name="backDetail">
@@ -80,5 +81,9 @@
     <style name="textColorHome">
         <item name="android:fontFamily">@font/poppins_light</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="textColorHomeDescription">
+        <item name="android:textColor">@color/light_gray_1</item>
     </style>
 </resources>

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -28,8 +30,10 @@ import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.detail.DetailActivity
+import com.capstone.laperinapp.ui.home.all_recipes.AllRecipesActivity
 import com.capstone.laperinapp.ui.home.search.SearchRecipesActivity
 import com.capstone.laperinapp.ui.scan.result.ResultActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.lang.ref.WeakReference
@@ -44,6 +48,10 @@ class HomeFragment : Fragment() {
 
     private val viewModel by viewModels<HomeViewModel> {
         ViewModelFactory.getInstance(requireActivity())
+    }
+
+    private val navController by lazy {
+        findNavController()
     }
 
     private val popularAdapter = PopularRecipesAdapter()
@@ -72,12 +80,22 @@ class HomeFragment : Fragment() {
 
         binding.btnCariin.setOnClickListener { onClickCariin() }
         binding.btnDonasiin.setOnClickListener { onClickDonasiin() }
+        binding.btnLihatSemua.setOnClickListener { onClickLihatSemua() }
+    }
+
+    private fun onClickLihatSemua() {
+        startActivity(Intent(requireActivity(), AllRecipesActivity::class.java))
     }
 
     private fun onClickDonasiin() {
-        val botNav = activity?.findNavController(R.id.nav_host_fragment_activity_main2)
-        botNav?.navigate(R.id.navigation_donasi)
-        onDestroyView()
+        val itemId = R.id.navigation_donasi
+
+        val mainBottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+
+        val menu = mainBottomNavigationView?.menu
+
+        val menuItem = menu?.findItem(itemId)
+        NavigationUI.onNavDestinationSelected(menuItem!!, navController)
     }
 
     private fun setupSearch() {

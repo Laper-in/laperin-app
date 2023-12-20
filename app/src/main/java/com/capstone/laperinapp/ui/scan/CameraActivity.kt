@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.OrientationEventListener
 import android.view.Surface
+import android.view.View
 import android.view.WindowInsets
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -15,6 +18,8 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ReportFragment.Companion.reportFragment
+import com.capstone.laperinapp.R
 import com.capstone.laperinapp.databinding.ActivityCameraBinding
 import com.capstone.laperinapp.helper.createCustomTempFile
 import com.capstone.laperinapp.ui.scan.preview.PreviewActivity
@@ -60,6 +65,28 @@ class CameraActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.captureImage.setOnClickListener { takePicture() }
+        animation()
+    }
+
+    private fun animation() {
+        val animation = AnimationUtils.loadAnimation(this@CameraActivity, R.anim.animation_scan).apply {
+            setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    binding.bar.visibility = View.GONE
+                }
+
+                override fun onAnimationRepeat(animation: Animation?) {
+
+                }
+
+            })
+        }
+
+        binding.bar.startAnimation(animation)
     }
 
     private fun takePicture() {

@@ -8,4 +8,6 @@ class DetailDonationViewModel(private val repository: Repository): ViewModel() {
     fun getDetailDonation(idDonation: String) = repository.getDetailDonation(idDonation)
 
     fun selesaikanDonasi(id: String) = repository.deleteDonation(id)
+
+    fun getUser() = repository.getDetailUser()
 }

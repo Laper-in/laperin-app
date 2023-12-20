@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.location.LocationManagerCompat.getCurrentLocation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.paging.LoadState
@@ -26,8 +27,10 @@ import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.DataItemDonation
+import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.FragmentDonasiBinding
 import com.capstone.laperinapp.helper.JWTUtils
+import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
 import com.capstone.laperinapp.ui.donasi.detail.DetailDonationActivity
@@ -52,7 +55,7 @@ class DonasiFragment : Fragment() {
     private val viewModel by viewModels<DonasiViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
-    
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
@@ -73,7 +76,7 @@ class DonasiFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        
+
 //        getCurrentLocation()
         createLocationRequest()
         createLocationCallback()
@@ -94,8 +97,13 @@ class DonasiFragment : Fragment() {
                 RESULT_OK -> {
                     Log.i(TAG, "onActivityResult: All location settings are satisfied.")
                 }
+
                 RESULT_CANCELED -> {
-                    Toast.makeText(requireActivity(), "Anda harus mengaktifkan GPS", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireActivity(),
+                        "Anda harus mengaktifkan GPS",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -103,11 +111,10 @@ class DonasiFragment : Fragment() {
     @Suppress("DEPRECATION")
     private fun createLocationRequest() {
         locationRequest = LocationRequest.create().apply {
-            interval = TimeUnit.MINUTES.toMillis(5)
+            interval = TimeUnit.MINUTES.toMillis(1)
             fastestInterval = TimeUnit.SECONDS.toMillis(1)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
-
         val builder = LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)
         val client = LocationServices.getSettingsClient(requireActivity())
@@ -128,13 +135,15 @@ class DonasiFragment : Fragment() {
             }
     }
 
-    private fun createLocationCallback(){
-        locationCallback = object : LocationCallback(){
+    private fun createLocationCallback() {
+        locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                for (location in locationResult.locations){
-                    sendData(location.longitude.toFloat(), location.latitude.toFloat())
-                    userLongitude = location.longitude.toFloat()
-                    userLatitude = location.latitude.toFloat()
+                for (location in locationResult.locations) {
+                    if (location != null){
+                        sendData(location.longitude.toFloat(), location.latitude.toFloat())
+                        userLongitude = location.longitude.toFloat()
+                        userLatitude = location.latitude.toFloat()
+                    }
                 }
             }
         }
@@ -144,37 +153,57 @@ class DonasiFragment : Fragment() {
         viewModel.lonLatLiveData.value = longitude to latitude
     }
 
-    private fun startLocationUpdates(){
+    private fun startLocationUpdates() {
         try {
             fusedLocationClient.requestLocationUpdates(
                 locationRequest,
                 locationCallback,
                 Looper.getMainLooper()
             )
-        } catch (e: SecurityException){
-            Log.e(TAG, "Error: ${e.message}", )
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Error: ${e.message}")
         }
     }
 
-    private fun stopLocationUpdates(){
+    private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     private fun moveToAddDonation() {
-        val pref = UserPreference.getInstance(requireActivity().dataStore)
-        val user = runBlocking { pref.getSession().first() }
-        val token = user.token
-        val id = JWTUtils.getId(token)
-        val username = JWTUtils.getUsername(token)
-        val intent = Intent(requireActivity(), AddDonasiActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(AddDonasiActivity.EXTRA_ID, id)
-        bundle.putString(AddDonasiActivity.EXTRA_USERNAME, username)
-        bundle.putString(AddDonasiActivity.EXTRA_LATITUDE, userLatitude.toString())
-        bundle.putString(AddDonasiActivity.EXTRA_LONGITUDE, userLongitude.toString())
-        intent.putExtras(bundle)
-        Log.d(TAG, "moveToAddDonation: $userLatitude, $userLongitude, $username")
-        startActivity(intent)
+        viewModel.getUser().observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Result.Success -> {
+                    setupDataUser(result.data)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun setupDataUser(data: UserDetailResponse) {
+        if (data.data.telephone != 0L || !data.data.telephone.equals("0")){
+            val pref = UserPreference.getInstance(requireActivity().dataStore)
+            val user = runBlocking { pref.getSession().first() }
+            val token = user.token
+            val id = JWTUtils.getId(token)
+            val username = JWTUtils.getUsername(token)
+            val intent = Intent(requireActivity(), AddDonasiActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString(AddDonasiActivity.EXTRA_ID, id)
+            bundle.putString(AddDonasiActivity.EXTRA_USERNAME, username)
+            bundle.putString(AddDonasiActivity.EXTRA_LATITUDE, userLatitude.toString())
+            bundle.putString(AddDonasiActivity.EXTRA_LONGITUDE, userLongitude.toString())
+            intent.putExtras(bundle)
+            Log.d(TAG, "moveToAddDonation: $userLatitude, $userLongitude, $username")
+            startActivity(intent)
+        } else {
+            Toast.makeText(
+                requireActivity(),
+                "Anda belum mengisi nomor telepon",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private val requestPermissionLauncher =
@@ -185,22 +214,24 @@ class DonasiFragment : Fragment() {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true -> {
                     getCurrentLocation()
                 }
+
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true -> {
                     getCurrentLocation()
                 }
+
                 else -> {
                     // Permission denied
                 }
             }
         }
-    
+
     private fun checkPermission(permissions: String): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
             permissions
         ) == PackageManager.PERMISSION_GRANTED
     }
-    
+
     private fun getCurrentLocation() {
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -212,7 +243,11 @@ class DonasiFragment : Fragment() {
                     userLatitude = location.latitude.toFloat()
                     userLongitude = location.longitude.toFloat()
                 } else {
-                    Toast.makeText(requireContext(), "Lokasi tidak ditemukan, Coba lagi", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Lokasi tidak ditemukan, Coba lagi",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         } else {
@@ -233,11 +268,11 @@ class DonasiFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.rvClosest.layoutManager = layoutManager
 
-        viewModel.getClosestDonation().observe(viewLifecycleOwner){ result ->
+        viewModel.getClosestDonation().observe(viewLifecycleOwner) { result ->
             adapter.submitData(viewLifecycleOwner.lifecycle, result)
         }
 
-        adapter.setOnClickCallback(object : ClosestDonationAdapter.OnItemClickCallback{
+        adapter.setOnClickCallback(object : ClosestDonationAdapter.OnItemClickCallback {
             override fun onItemClicked(data: DataItemDonation) {
                 val intent = Intent(requireActivity(), DetailDonationActivity::class.java)
                 intent.putExtra(DetailDonationActivity.EXTRA_DATA, data.idDonation)
@@ -270,7 +305,7 @@ class DonasiFragment : Fragment() {
         _binding = null
     }
 
-    companion object{
+    companion object {
         private const val TAG = "DonasiFragment"
     }
 }

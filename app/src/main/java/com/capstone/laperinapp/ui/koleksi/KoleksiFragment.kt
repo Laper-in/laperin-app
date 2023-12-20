@@ -51,13 +51,7 @@ class KoleksiFragment : Fragment() {
     @Suppress("DEPRECATION")
     private fun setupCategory() {
         val chipGroup: ChipGroup = binding.chipCategory
-        val chipCategory = listOf(
-            "All",
-            "Pedas",
-            "Kuah",
-            "Gurih",
-            "Manis"
-        )
+        val chipCategory = resources.getStringArray(R.array.category_name)
 
         for (category in chipCategory) {
             val chip = Chip(requireContext())

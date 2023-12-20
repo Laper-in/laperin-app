@@ -52,16 +52,6 @@ class DetailViewModel(
         }
     }
 
-    val searchStringLiveData = MutableLiveData<String>().apply { value = "" }
-
-    private val searchResults: LiveData<PagingData<DataItemBookmark>> = searchStringLiveData.switchMap { query ->
-        if (query == "") {
-            repository.getAllBookmarks("").cachedIn(viewModelScope)
-        }else {
-            repository.getAllBookmarks(query).cachedIn(viewModelScope)
-        }
-    }
-
     fun getAllBookmarks() = repository.getAllBookmark()
 
     fun addBookmark(idRecipe: String) = repository.insertBookmark(idRecipe)

@@ -90,11 +90,14 @@
     <string name="empty_completed">Anda belum menyelesaikan donasi.</string>
 
     <string-array name="category_name">
-        <item>Surabaya</item>
-        <item>Medan</item>
-        <item>Malang</item>
-        <item>Denpasar</item>
-        <item>Jogja</item>
+        <item>All</item>
+        <item>Manis</item>
+        <item>Pedas</item>
+        <item>Kuah</item>
+        <item>Gurih</item>
+        <item>Gurih</item>
+        <item>Gurih</item>
+        <item>Gurih</item>
     </string-array>
 
     <integer-array name="category_icon">

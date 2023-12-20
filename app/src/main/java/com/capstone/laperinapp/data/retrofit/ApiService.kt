@@ -85,6 +85,13 @@ interface ApiService {
         @Query("pageSize") size: Int
     ): RecipeResponse
 
+    @GET("recipes/search/category")
+    suspend fun getRecipesByCategory(
+        @Query("q") name: String,
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int
+    ): RecipeResponse
+
     @GET("recipes/search/ingredient")
     suspend fun getRecommendation(
         @Query("q") name: String,

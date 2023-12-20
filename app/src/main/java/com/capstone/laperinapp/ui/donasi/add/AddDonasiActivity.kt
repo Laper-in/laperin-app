@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
+import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.ActivityAddDonasiBinding
 import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.ViewModelFactory
