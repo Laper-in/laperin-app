@@ -124,7 +124,7 @@ class DetailActivity : AppCompatActivity() {
                     } else {
                         binding.btFavorite.setImageResource(R.drawable.ic_bookmark_border_24)
                     }
-                    setupFavorite(list, data)
+                    setupFavorite(list, data, recipesFavorit)
                 }
                 else -> false
             }
@@ -132,7 +132,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupFavorite(dataBookmark: List<DataItemAllBookmark>, data: DataItemRecipes) {
+    private fun setupFavorite(
+        dataBookmark: List<DataItemAllBookmark>,
+        data: DataItemRecipes,
+        recipesFavorit: Favorite
+    ) {
         val list = dataBookmark.find { it.bookmark.idRecipe == data.id }
         val idBookmark = list?.bookmark?.idBookmark
         binding.btFavorite.setOnClickListener {
@@ -142,6 +146,7 @@ class DetailActivity : AppCompatActivity() {
                         is Result.Success -> {
                             Toast.makeText(this, "${data.name} dihapus dari favorit", Toast.LENGTH_SHORT).show()
                             getData(data.id)
+                            viewModel.deleteFavorite(recipesFavorit)
                         }
                         is Result.Error -> {
                             Log.e(TAG, "onClickFavorite: ${result.error}", )
@@ -157,6 +162,7 @@ class DetailActivity : AppCompatActivity() {
                         is Result.Success -> {
                             Toast.makeText(this, "${data.name} ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
                             getData(data.id)
+                            viewModel.insertFavorite(recipesFavorit)
                         }
                         is Result.Error -> {
                             Log.e(TAG, "onClickFavorite: ${result.error}", )

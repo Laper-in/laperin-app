@@ -1,5 +1,7 @@
 package com.capstone.laperinapp.ui.donasi.detail
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -73,12 +75,30 @@ class DetailDonationActivity : AppCompatActivity() {
 
         if (isMe){
             binding.linearLayout7.visibility = android.view.View.GONE
-            binding.btnSelesaiDiambil.visibility = android.view.View.VISIBLE
             binding.btnSelesaiDiambil.setOnClickListener {
                 onClickSelesai(data)
             }
         } else {
-            binding.btnSelesaiDiambil.visibility = android.view.View.GONE
+            binding.btnSelesaiDiambil.setOnClickListener {
+                onClickAmbil(data)
+            }
+        }
+    }
+
+    private fun onClickAmbil(data: DataItemDonation) {
+        val phone = "+6289520075152"
+        val message = "Kokomtol"
+
+        val uri = Uri.parse("smsto:$phone")
+
+        val whatsappIntent = Intent(Intent.ACTION_SENDTO, uri)
+        whatsappIntent.setPackage("com.whatsapp")
+        whatsappIntent.putExtra("sms_body", message)
+
+        if (whatsappIntent.resolveActivity(packageManager) != null) {
+            startActivity(whatsappIntent)
+        } else {
+            Toast.makeText(this, "WhatsApp tidak terinstal", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -86,8 +106,8 @@ class DetailDonationActivity : AppCompatActivity() {
         viewModel.selesaikanDonasi(data.idDonation).observe(this) { result ->
             when (result) {
                 is Result.Success -> {
-                    binding.btnSelesaiDiambil.isEnabled = false
-                    binding.btnSelesaiDiambil.text = "Selesai"
+                    Toast.makeText(this, "Donasi selesai diambil", Toast.LENGTH_SHORT).show()
+                    finish()
                     true
                 }
                 else -> false
