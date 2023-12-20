@@ -87,6 +87,7 @@ class ButtonSheetPicture : BottomSheetDialogFragment() {
             if (data != null) {
                 val uri = data.getStringExtra(ProfileFragment.EXTRA_PROFILE)
                 onImageSelectedListener?.onImageSelected(Uri.parse(uri))
+                dismiss()
             }
         }
     }

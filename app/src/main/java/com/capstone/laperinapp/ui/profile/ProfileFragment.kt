@@ -86,7 +86,7 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
             currentImageUri = uri
             updateImageUser()
             showImage(uri)
-            buttonSheetPicture?.dismiss() // Menutup ButtonSheetPicture setelah memilih gambar
+            buttonSheetPicture?.dismiss()
         }
         alertDialogBuilder.setNegativeButton("Batal") { dialog, _ ->
             dialog.dismiss()
