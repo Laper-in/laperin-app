@@ -89,7 +89,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-
     private fun observeRegistrationResult(username: String, email: String, password: String) {
         viewModel.registerUser(username, email, password).observe(this) { result ->
             when (result) {
