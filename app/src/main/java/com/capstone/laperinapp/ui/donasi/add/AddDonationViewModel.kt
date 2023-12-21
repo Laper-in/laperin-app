@@ -15,8 +15,12 @@ class AddDonationViewModel(private val repository: Repository): ViewModel() {
         total: RequestBody,
         longitude: RequestBody,
         latitude: RequestBody,
-        image: MultipartBody.Part
-    ) = repository.createDonation(username, name, description, category, total, longitude, latitude, image)
+        image: MultipartBody.Part,
+        userImage: RequestBody,
+        telephone: RequestBody
+    ) = repository.createDonation(username, name, description, category, total, longitude, latitude, image, userImage, telephone)
+
+    fun getUser() = repository.getDetailUser()
 
     companion object {
         private const val TAG = "AddDonationViewModel"

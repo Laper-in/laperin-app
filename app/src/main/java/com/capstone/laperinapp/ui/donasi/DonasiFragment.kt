@@ -182,7 +182,8 @@ class DonasiFragment : Fragment() {
     }
 
     private fun setupDataUser(data: UserDetailResponse) {
-        if (data.data.telephone != 0L || !data.data.telephone.equals("0")){
+        Log.i(TAG, "setupDataUser: ${data.data.telephone}")
+        if (data.data.telephone.toString() != "0"){
             val pref = UserPreference.getInstance(requireActivity().dataStore)
             val user = runBlocking { pref.getSession().first() }
             val token = user.token
@@ -286,8 +287,10 @@ class DonasiFragment : Fragment() {
                 binding.progressBar.visibility = View.VISIBLE
             } else if (loadState.refresh is LoadState.NotLoading) {
                 if (adapter.itemCount == 0) {
+                    binding.progressBar.visibility = View.GONE
                     binding.tvEmptyList.visibility = View.VISIBLE
                 } else {
+                    binding.progressBar.visibility = View.GONE
                     binding.tvEmptyList.visibility = View.GONE
                 }
             } else {

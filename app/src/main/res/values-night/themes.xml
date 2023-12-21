@@ -40,7 +40,7 @@
 
     <style name="textColorEditText">
         <item name="android:fontFamily">@font/poppins_light</item>
-        <item name="android:textColor">@color/orange</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="textColor">

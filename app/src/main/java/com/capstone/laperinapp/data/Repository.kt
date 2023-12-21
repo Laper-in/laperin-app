@@ -328,11 +328,13 @@ class Repository private constructor(
         total: RequestBody,
         longitude: RequestBody,
         latitude: RequestBody,
-        image: MultipartBody.Part
+        image: MultipartBody.Part,
+        userImage: RequestBody,
+        telephone: RequestBody
     ) = liveData{
         emit(Result.Loading)
         try {
-            val response = apiService.addDonation(username, name, description, category, total, image, latitude, longitude)
+            val response = apiService.addDonation(username, name, description, category, total, image, latitude, longitude, userImage, telephone )
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()!!))
             } else {

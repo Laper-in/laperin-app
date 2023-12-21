@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
 import com.capstone.laperinapp.data.pref.UserPreference
 import com.capstone.laperinapp.data.pref.dataStore
@@ -69,15 +70,30 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
             username = bundle.getString(EXTRA_USERNAME)
         }
         Log.d(TAG, "getDatalocation: $latitude, $longitude, $username")
-        binding.btnDonasi.setOnClickListener {
-            val name = binding.edNama.text.toString()
-            val description = binding.edDescription.text.toString()
-            val category = binding.edJenis.text.toString()
-            val total = binding.edJumlah.text.toString()
-            if (name.length >= 5) {
-                sendData(username, name, description, category, total, latitude, longitude)
-            } else {
-                Toast.makeText(this@AddDonasiActivity, "Nama harus lebih dari 5 karakter", Toast.LENGTH_SHORT).show()
+        viewModel.getUser().observe(this) { result ->
+            when (result) {
+                is Result.Success -> {
+                    binding.btnDonasi.setOnClickListener {
+                        val name = binding.edNama.text.toString()
+                        val description = binding.edDescription.text.toString()
+                        val category = binding.edJenis.text.toString()
+                        val total = binding.edJumlah.text.toString()
+                        val userImage = result.data.data.image
+                        val telephone = result.data.data.telephone.toString()
+                        if (name.length >= 5) {
+                            sendData(username, name, description, category, total, latitude, longitude, userImage, telephone)
+                        } else {
+                            Toast.makeText(this@AddDonasiActivity, "Nama harus lebih dari 5 karakter", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    Glide.with(this@AddDonasiActivity)
+                        .load(result.data.data.image)
+                        .circleCrop()
+                        .into(binding.imgUser)
+                    binding.tvUsernameProfil.text = result.data.data.fullname
+                }
+                else -> false
             }
         }
     }
@@ -111,7 +127,9 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
         category: String,
         total: String,
         latitude: String? = null,
-        longitude: String? = null
+        longitude: String? = null,
+        imageUser: String? = null,
+        telephone: String? = null
     ) {
 
         lifecycleScope.launch {
@@ -123,6 +141,8 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
                 val requestBodyTotal = total.toRequestBody("text/plain".toMediaType())
                 val requestBodyLatitude = latitude!!.toRequestBody("text/plain".toMediaType())
                 val requestBodyLongitude = longitude!!.toRequestBody("text/plain".toMediaType())
+                val requestBodyImageUser = imageUser!!.toRequestBody("text/plain".toMediaType())
+                val requestBodyTelephone = telephone!!.toRequestBody("text/plain".toMediaType())
 
                 viewModel.sendDonation(
                     requestBodyUsername,
@@ -132,7 +152,9 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
                     requestBodyTotal,
                     requestBodyLongitude,
                     requestBodyLatitude,
-                    createImageRequestBody()
+                    createImageRequestBody(),
+                    requestBodyImageUser,
+                    requestBodyTelephone
                 ).observe(this@AddDonasiActivity) { result ->
                     when (result) {
                         is Result.Loading -> {

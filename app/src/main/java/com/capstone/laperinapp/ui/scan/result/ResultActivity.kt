@@ -74,7 +74,7 @@ class ResultActivity : AppCompatActivity() {
 
                     if (binding.tvEmptyList.visibility == View.VISIBLE) {
                         Toast.makeText(this, "Anda belum menambahkan bahan", Toast.LENGTH_SHORT).show()
-                    } else if (adapter.itemCount >= 5) {
+                    } else if (adapter.itemCount >= 2) {
                         val intent = Intent(this, RecommendationActivity::class.java)
                         intent.putExtra(RecommendationActivity.EXTRA_RESULT, formatedResult)
                         startActivity(intent)

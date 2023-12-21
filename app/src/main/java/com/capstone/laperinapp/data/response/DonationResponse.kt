@@ -47,6 +47,9 @@ data class DataItemDonation(
     @field:SerializedName("deletedBy")
     val deletedBy: String,
 
+    @field:SerializedName("fullname")
+    val fullname: String,
+
     @field:SerializedName("idUser")
     val idUser: String,
 
@@ -67,6 +70,12 @@ data class DataItemDonation(
 
     @field:SerializedName("lat")
     val lat: Double,
+
+    @field:SerializedName("telephone")
+    val telephone: Long,
+
+    @field:SerializedName("imageUsr")
+    val userImage: String,
 
     @field:SerializedName("username")
     val username: String,

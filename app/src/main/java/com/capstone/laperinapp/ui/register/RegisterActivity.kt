@@ -167,4 +167,9 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
+    }
 }

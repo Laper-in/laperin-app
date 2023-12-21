@@ -136,7 +136,9 @@ interface ApiService {
         @Part("total") total: RequestBody,
         @Part image: MultipartBody.Part,
         @Part("lat") latitude: RequestBody,
-        @Part("lon") longitude: RequestBody
+        @Part("lon") longitude: RequestBody,
+        @Part("imageUsr") userImage: RequestBody,
+        @Part("telephone") telephone: RequestBody
     ): Response<DonationResponse>
 
     @GET("donations/user")
