@@ -19,7 +19,8 @@ class ScanResultAdapter : ListAdapter<ScanResult, ScanResultAdapter.ScanResultVi
     class ScanResultViewHolder(val binding: ItemResultBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScanResult) {
             with(binding) {
-                tvName.text = item.name
+                val formatedText = item.name.replace("\n", "")
+                tvName.text = formatedText
             }
         }
     }

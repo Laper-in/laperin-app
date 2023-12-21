@@ -31,6 +31,7 @@ android {
         debug {
             buildConfigField("String", "BASE_URL", "\"https://laperin-service.et.r.appspot.com/\"")
             buildConfigField("String", "BASE_URL_TESTING", "\"https://backend-dot-laperin-services.et.r.appspot.com/\"")
+            buildConfigField("String", "BASE_URL_INGREDIENTS", "\"https://python-dot-laperin-services.et.r.appspot.com/\"")
         }
     }
     compileOptions {

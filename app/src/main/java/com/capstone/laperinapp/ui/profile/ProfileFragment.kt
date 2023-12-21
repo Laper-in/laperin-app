@@ -19,6 +19,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.paging.LoadState
+import androidx.paging.PagingSource
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.laperinapp.R
@@ -191,6 +193,16 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
                 startActivity(intent)
             }
         })
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.NotLoading) {
+                if (adapter.itemCount == 0){
+                    showEmpty(isEmpty = true)
+                } else {
+                    showEmpty(isEmpty = false)
+                }
+            }
+        }
     }
 
     private fun setupToolbar() {

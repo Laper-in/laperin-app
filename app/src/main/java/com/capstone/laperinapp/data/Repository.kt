@@ -29,6 +29,7 @@ import com.capstone.laperinapp.data.response.DataItemIngredient
 import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.data.retrofit.ApiService
+import com.capstone.laperinapp.data.retrofit.ingredient.ApiServiceIngredient
 import com.capstone.laperinapp.data.room.result.dao.ResultDao
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.google.gson.Gson
@@ -42,7 +43,8 @@ class Repository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference,
     private val scanDao: ResultDao,
-    private val favoriteDao: FavoriteDao
+    private val favoriteDao: FavoriteDao,
+    private val apiServiceIngredient: ApiServiceIngredient
 ){
 
     suspend fun saveSession(user: UserModel) {
@@ -398,6 +400,23 @@ class Repository private constructor(
             Log.e(TAG, "deleteBookmark: ${e.message}",)
         }
     }
+    fun searchResultScan(name: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiServiceIngredient.searchScan(name)
+            if (response.isSuccessful){
+                emit(Result.Success(response.body()!!))
+                Log.d(TAG, "searchResultScan: $response")
+            } else {
+                val errorResponse = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                emit(Result.Error(errorResponse.message.toString()))
+                Log.e(TAG, "searchResultScan: $response", )
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "searchResultScans: ${e.message}", )
+        }
+    }
 
     fun insertResult(data: ScanResult) {
         scanDao.insert(data)
@@ -448,10 +467,11 @@ class Repository private constructor(
             apiService: ApiService,
             userPreference: UserPreference,
             scanDao: ResultDao,
-            favoriteDao: FavoriteDao
+            favoriteDao: FavoriteDao,
+            apiServiceIngredient: ApiServiceIngredient
         ): Repository =
             instance ?: synchronized(this){
-                instance ?: Repository(apiService, userPreference, scanDao, favoriteDao)
+                instance ?: Repository(apiService, userPreference, scanDao, favoriteDao, apiServiceIngredient)
             }.also { instance = it }
 
         fun clearInstance(){

@@ -73,15 +73,11 @@ class DonasiSayaActivity : AppCompatActivity() {
         })
 
         completedAdapter.addLoadStateListener { loadState ->
-            if (loadState.refresh is LoadState.Loading) {
-                binding.progressBarCompleted.visibility = View.VISIBLE
-            } else {
-                binding.progressBarCompleted.visibility = View.GONE
-
-                if (completedAdapter.itemCount != 0) {
-                    binding.emptyCompleted.visibility = View.GONE
-                } else {
+            if (loadState.refresh is LoadState.NotLoading) {
+                if (completedAdapter.itemCount == 0){
                     binding.emptyCompleted.visibility = View.VISIBLE
+                } else {
+                    binding.emptyCompleted.visibility = View.GONE
                 }
             }
         }
@@ -117,10 +113,12 @@ class DonasiSayaActivity : AppCompatActivity() {
         })
 
         uncompletedAdapter.addLoadStateListener { loadState ->
-            if (loadState.refresh is LoadState.Loading) {
-                binding.progressBarUncompleted.visibility = View.VISIBLE
-            } else {
-                binding.progressBarUncompleted.visibility = View.GONE
+            if (loadState.refresh is LoadState.NotLoading) {
+                if (uncompletedAdapter.itemCount == 0) {
+                    binding.emptyUncompleted.visibility = View.VISIBLE
+                } else {
+                    binding.emptyUncompleted.visibility = View.GONE
+                }
             }
         }
     }

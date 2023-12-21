@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/img_detail"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="270dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00000000"
+        android:paddingHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -48,7 +49,7 @@
         style="@style/backDetail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="170dp"
         android:background="@drawable/bg_detail_recipes"
         android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"

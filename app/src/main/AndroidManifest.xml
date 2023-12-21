@@ -29,42 +29,51 @@
         tools:targetApi="31">
         <activity
             android:name=".ui.home.all_recipes.AllRecipesActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.profile.editProfile.picture.CameraPictureActivity"
             android:exported="false" />
         <activity
             android:name=".ui.scan.recommendation.RecommendationActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.home.search.SearchRecipesActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.donasi.saya.DonasiSayaActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.donasi.camera.PreviewDonationActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.donasi.camera.CameraDonationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.donasi.add.AddDonasiActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.detail.VideoActivity"
             android:exported="false" />
         <activity
             android:name=".ui.profile.setting.SettingActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.profile.editProfile.EditProfilActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.profile.editProfile.picture.EditPictureActivity"
             android:exported="false" />
         <activity
             android:name=".ui.scan.search.SearchIngredientActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.profile.editProfile.picture.CameraPictureActivity"
@@ -74,12 +83,15 @@
             android:exported="false" />
         <activity
             android:name=".ui.edit.EditProfile"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.donasi.detail.DetailDonationActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.scan.result.ResultActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
         <activity
@@ -90,9 +102,11 @@
             android:exported="false" />
         <activity
             android:name=".ui.detail.DetailActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:label="@string/title_activity_main2" />
         <activity
@@ -106,12 +120,15 @@
         </activity>
         <activity
             android:name=".ui.welcome.WelcomeActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".ui.register.RegisterActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".ui.login.LoginActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
     </application>
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.capstone.laperinapp.R
@@ -109,16 +110,29 @@ class KoleksiFragment : Fragment() {
                 }
             }
         })
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.NotLoading){
+                if (adapter.itemCount == 0){
+                    showEmpty(isEmpty = true)
+                } else {
+                    showEmpty(isEmpty = false)
+                }
+            }
+        }
     }
 
     private fun getData() {
         viewModel.getAllBookmarks().observe(viewLifecycleOwner) {result ->
-            if (result != null) {
-                adapter.submitData(viewLifecycleOwner.lifecycle, result)
-                binding.tvEmpty.visibility = View.GONE
-            } else {
-                binding.tvEmpty.visibility = View.VISIBLE
-            }
+            adapter.submitData(viewLifecycleOwner.lifecycle, result)
+        }
+    }
+
+    private fun showEmpty(isEmpty: Boolean){
+        if (isEmpty){
+            binding.tvEmpty.visibility = View.VISIBLE
+        } else {
+            binding.tvEmpty.visibility = View.GONE
         }
     }
 

@@ -29,8 +29,9 @@ class SearchAdapter :
                 .into(binding.imgItem)
             val name = item.name
             val capitalized = name.substring(0, 1).toUpperCase() + name.substring(1)
+            val formatedText = capitalized.replace("\n", "")
             binding.apply {
-                tvName.text = capitalized
+                tvName.text = formatedText
             }
         }
 

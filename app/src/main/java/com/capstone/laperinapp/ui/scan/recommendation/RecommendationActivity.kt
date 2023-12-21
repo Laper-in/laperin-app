@@ -41,11 +41,8 @@ class RecommendationActivity : AppCompatActivity() {
     }
 
     private fun setupData() {
-        viewModel.getAllResult().observe(this) {
-            val result = it.joinToString(",")
-            Log.i(TAG, "setupData: $result")
-            viewModel.searchLiveData.value = result
-        }
+        val result = intent.getStringExtra(EXTRA_RESULT)
+        viewModel.searchLiveData.value = result
     }
 
     private fun setupRV() {
@@ -89,6 +86,7 @@ class RecommendationActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_DATA = "extra_data"
+        const val EXTRA_RESULT = "extra_result"
         const val TAG = "RecommendationActivity"
     }
 }

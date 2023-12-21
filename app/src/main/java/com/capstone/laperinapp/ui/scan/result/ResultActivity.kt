@@ -7,6 +7,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.text.style.TextAppearanceSpan
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -22,6 +23,7 @@ import com.capstone.laperinapp.adapter.SearchAdapter
 import com.capstone.laperinapp.data.response.DataItemIngredient
 import com.capstone.laperinapp.data.room.result.entity.ScanResult
 import com.capstone.laperinapp.databinding.ActivityResultBinding
+import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.MainActivity
 import com.capstone.laperinapp.ui.ModalBottomSheetDialog
@@ -65,11 +67,26 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun onClickSearch() {
-        if (binding.tvEmptyList.visibility == View.VISIBLE) {
-            Toast.makeText(this, "Anda belum menambahkan bahan", Toast.LENGTH_SHORT).show()
-        } else {
-            val intent = Intent(this, RecommendationActivity::class.java)
-            startActivity(intent)
+        viewModel.searchResult().observe(this@ResultActivity) { result ->
+            when(result) {
+                is Result.Success -> {
+                    val formatedResult = result.data.recommendedRecipes.joinToString(",")
+
+                    if (binding.tvEmptyList.visibility == View.VISIBLE) {
+                        Toast.makeText(this, "Anda belum menambahkan bahan", Toast.LENGTH_SHORT).show()
+                    } else if (adapter.itemCount >= 5) {
+                        val intent = Intent(this, RecommendationActivity::class.java)
+                        intent.putExtra(RecommendationActivity.EXTRA_RESULT, formatedResult)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "Minimal memilih 5 item", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is Result.Error -> {
+                    Log.e(TAG, "setupScan: ${result.error}", )
+                }
+                else -> false
+            }
         }
     }
 
@@ -152,35 +169,42 @@ class ResultActivity : AppCompatActivity() {
                 holder: SearchAdapter.MyViewHolder
             ) {
                 holder.binding.btnAdd.setOnClickListener {
-                    viewModel.containsIngredient(data.name).observe(this@ResultActivity) {isExisting ->
-                        AlertDialog.Builder(this@ResultActivity)
-                            .setTitle("Tambahkan ke list")
-                            .setMessage("Ingin menambahkan ${data.name} ke list?")
-                            .setPositiveButton("Tambahkan") { dialog, _ ->
-                                if (isExisting) {
-                                    Toast.makeText(
-                                        this@ResultActivity,
-                                        "${data.name} sudah ada",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } else {
-                                    viewModel.insertIngredient(ScanResult(0, data.name))
-                                    Toast.makeText(
-                                        this@ResultActivity,
-                                        "${data.name} berhasil ditambahkan",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                    viewModel.containsIngredient(data.name)
+                        .observe(this@ResultActivity) { isExisting ->
+                            AlertDialog.Builder(this@ResultActivity)
+                                .setTitle("Tambahkan ke list")
+                                .setMessage("Ingin menambahkan ${data.name} ke list?")
+                                .setPositiveButton("Tambahkan") { dialog, _ ->
+                                    if (isExisting) {
+                                        Toast.makeText(
+                                            this@ResultActivity,
+                                            "${data.name} sudah ada",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        viewModel.insertIngredient(ScanResult(0, data.name))
+                                        Toast.makeText(
+                                            this@ResultActivity,
+                                            "${data.name} berhasil ditambahkan",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+                                    }
                                 }
-                            }
-                            .setNegativeButton("Batal") { dialog, _ ->
-                                dialog.dismiss()
-                            }
-                            .show()
-                    }
+                                .setNegativeButton("Batal") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .show()
+                        }
                 }
             }
         })
+
+        viewModel.getAllResultName().observe(this@ResultActivity) {
+            val resultScan = it.joinToString("=")
+            Log.i(RecommendationActivity.TAG, "setupScan: $resultScan")
+            viewModel.searchResultLiveData.value = resultScan
+        }
     }
 
     private fun alertDialog() {
@@ -206,5 +230,6 @@ class ResultActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_RESULT = "extra_result"
+        const val TAG = "ResultActivitiy"
     }
 }

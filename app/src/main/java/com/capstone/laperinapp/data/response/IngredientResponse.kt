@@ -38,3 +38,10 @@ data class DataItemIngredient(
 	@field:SerializedName("updatedAt")
 	val updatedAt: String
 ) : Parcelable
+
+@Parcelize
+data class ResponseSearchIngredient(
+
+	@field:SerializedName("recommended_recipes")
+	val recommendedRecipes: List<String>
+) : Parcelable

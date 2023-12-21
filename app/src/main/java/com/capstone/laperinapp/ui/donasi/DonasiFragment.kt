@@ -284,9 +284,17 @@ class DonasiFragment : Fragment() {
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
                 binding.progressBar.visibility = View.VISIBLE
+            } else if (loadState.refresh is LoadState.NotLoading) {
+                if (adapter.itemCount == 0) {
+                    binding.tvEmptyList.visibility = View.VISIBLE
+                } else {
+                    binding.tvEmptyList.visibility = View.GONE
+                }
             } else {
                 binding.progressBar.visibility = View.GONE
             }
+
+
         }
     }
 
