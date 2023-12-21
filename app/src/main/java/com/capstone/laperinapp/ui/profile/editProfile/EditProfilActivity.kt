@@ -56,17 +56,16 @@ class EditProfilActivity : AppCompatActivity() {
         val telephone = binding.edEditTelephone.text.toString().trim()
         val formatedTelephone = formatTelpNumber(telephone)
         val digitOnly = formatedTelephone.replace("[^0-9]".toRegex(), "")
-        val telp: Long
-        if (formatedTelephone == "Tidak Valid"){
-            Toast.makeText(this, "Nomor telepon tidak valid", Toast.LENGTH_SHORT).show()
+        if(digitOnly.length < 10 || digitOnly.length > 14) {
+            Toast.makeText(this, "Nomor telepon harus antara 10 dan 14 angka", Toast.LENGTH_SHORT).show()
             return
-        } else {
-            try {
-                telp = digitOnly.toLong()
-            } catch (e: Exception) {
-                Toast.makeText(this, "Masih String", Toast.LENGTH_SHORT).show()
-                return
-            }
+        }
+        val telp: Long
+        try {
+            telp = digitOnly.toLong()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Masih String", Toast.LENGTH_SHORT).show()
+            return
         }
 
         viewModel.updateUser(email, fullname, alamat, telp.toBigInteger()).observe(this) { result ->
