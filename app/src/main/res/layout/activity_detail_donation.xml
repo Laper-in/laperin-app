@@ -70,82 +70,159 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout7"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout6"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/bg_distance"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="5dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp"
+            android:background="@drawable/border_rectangle_light_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_location_24" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
             <TextView
-                android:id="@+id/tv_item_distance"
+                android:id="@+id/tv_title_pengirim"
+                style="@style/textColorDetailDonation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:textColor="@color/primary"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:text="@string/pengirim"
+                android:textColor="@color/orange"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/layout_user"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toStartOf="@+id/tv_title_pengirim"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_pengirim">
+
+                <View
+                    android:id="@+id/btn_add_image_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_photo_home" />
+
+                <ImageView
+                    android:id="@+id/img_user"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/avatar" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_name_pengirim"
+                style="@style/textColorDetailRecipes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/pengirim"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_user"
+                app:layout_constraintStart_toEndOf="@+id/layout_user"
+                app:layout_constraintTop_toTopOf="@+id/layout_user" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_distance"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_name_pengirim"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_name_pengirim">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_gps" />
+
+                <TextView
+                    android:id="@+id/tv_item_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/orange"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_item_tanggal"
+            style="@style/textColorDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:text="@string/tanggal"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_detail"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_detail" />
 
         <TextView
             android:id="@+id/tv_item_jumlah"
             style="@style/textColorDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:justificationMode="inter_word"
             android:text="@string/jumlah"
             android:textSize="14sp"
+            android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+            app:layout_constraintStart_toStartOf="@+id/tv_item_tanggal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_tanggal" />
 
         <TextView
-            android:id="@+id/tv_item_jenis"
-            style="@style/textColorDetail"
-            android:layout_width="0dp"
+            android:id="@+id/tv_title_detail"
+            style="@style/textColorDetailRecipes"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:justificationMode="inter_word"
-            android:text="@string/tanggal"
+            android:layout_marginTop="16dp"
+            android:text="@string/pengirim"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout7"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_jumlah" />
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
         <TextView
             android:id="@+id/tv_deskripsi_title"
             style="@style/textColorDetailRecipes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/deskripsi"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_jenis" />
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_item_jumlah"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_jumlah" />
 
         <TextView
             android:id="@+id/tv_deskripsi"
             style="@style/textColorDetail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
+            android:justificationMode="inter_word"
             android:text="@string/deskripsi"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_item_jumlah"
+            app:layout_constraintStart_toStartOf="@+id/tv_deskripsi_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_deskripsi_title" />
 
         <androidx.appcompat.widget.AppCompatButton

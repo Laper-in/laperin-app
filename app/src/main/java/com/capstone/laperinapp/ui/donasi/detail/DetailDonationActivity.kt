@@ -15,6 +15,7 @@ import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.ActivityDetailDonationBinding
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.helper.formatTanggal
 import com.capstone.laperinapp.helper.meterToKilometer
 
 
@@ -76,8 +77,10 @@ class DetailDonationActivity : AppCompatActivity() {
 
         binding.tvTitle.text = data.name
         binding.tvDeskripsi.text = data.description
-        binding.tvItemJenis.text = "Jenis : ${data.category}"
+        binding.tvNamePengirim.text = data.fullname
         binding.tvItemJumlah.text = "Jumlah : ${data.total}"
+        binding.tvItemTanggal.text = "Waktu : ${formatTanggal(data.createdAt)}"
+        Log.d(TAG, "setupData: ${data.telephone}")
     }
 
     private fun getDataUser(data: DataItemDonation) {
@@ -103,11 +106,11 @@ class DetailDonationActivity : AppCompatActivity() {
     }
 
     private fun onClickAmbil(data: DataItemDonation, dataUser: UserDetailResponse) {
-        val phone = dataUser.data.telephone
+        val phone = data.telephone
         Log.d(TAG, "onClickAmbil: $phone")
-        val message = "Halo, ${dataUser.data.username}\nSaya ingin mengambil ${data.name}. Apakah item ini masih tersedia ?"
+        val message = "Halo, ${data.fullname}\nSaya ingin mengambil ${data.name}. Apakah item ini masih tersedia ?"
 
-        val url = "https://api.whatsapp.com/send?phone=62$phone&text=$message"
+        val url = "https://api.whatsapp.com/send?phone=$phone&text=$message"
         try {
             val pm: PackageManager = packageManager
             pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)

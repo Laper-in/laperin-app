@@ -65,7 +65,7 @@
     <string name="donasi_saya">Donasi Saya</string>
     <string name="buat_donasi">Buat Donasi</string>
     <string name="judul">Judul</string>
-    <string name="jumlah">Jumlah</string>
+    <string name="jumlah">Jumlah :</string>
     <string name="jenis_bahan_makanan">Jenis bahan/makanan</string>
     <string name="unggah">Unggah</string>
     <string name="tambahkan_foto">Tambahkan foto</string>
@@ -91,7 +91,8 @@
     <string name="empty_donasi">Tidak ada donasi disekitar anda</string>
     <string name="title_detail_donasi">Detail Donasi</string>
     <string name="lokasi">Lokasi</string>
-    <string name="tanggal">Tanggal</string>
+    <string name="tanggal">Tanggal :</string>
+    <string name="pengirim">Pengirim</string>
 
     <string-array name="category_name">
         <item>All</item>
