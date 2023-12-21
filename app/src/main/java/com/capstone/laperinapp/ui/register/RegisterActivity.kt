@@ -67,27 +67,37 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun onClickRegister() {
-        val username = binding.edUsername.text.toString()
+
+        val username = binding.edUsername.text.toString().trim()
         val email = binding.edEmailRegister.text.toString()
-        val password = binding.edPasswordRegister.text.toString()
+        val password = binding.edPasswordRegister.text.toString().trim()
         val ulangPassword = binding.edUlangPassword.text.toString()
 
-        if (ulangPassword == password) {
-            if (isPasswordValid()) {
-                observeRegistrationResult(username, email, password)
-            } else {
-                Toast.makeText(this, "Password tidak memenuhi kriteria", Toast.LENGTH_SHORT).show()
-            }
+        if (username.contains(" ")) {
+
+            Toast.makeText(this, "Username tidak boleh mengandung spasi", Toast.LENGTH_SHORT).show()
+        } else if(password.contains(" ")) {
+
+            Toast.makeText(this, "Password tidak boleh mengandung spasi", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Password tidak cocok", Toast.LENGTH_SHORT).show()
+            if (ulangPassword == password) {
+                if (isPasswordValid()) {
+                    observeRegistrationResult(username, email, password)
+                } else {
+                    Toast.makeText(this, "Password tidak memenuhi kriteria", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Password Tidak Sama", Toast.LENGTH_SHORT).show()
+
+            }
         }
     }
+
 
     private fun isPasswordValid(): Boolean {
         val password = binding.edPasswordRegister.text.toString()
         return password.length > 5
     }
-
 
 
     private fun observeRegistrationResult(username: String, email: String, password: String) {

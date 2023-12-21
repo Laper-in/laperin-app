@@ -47,15 +47,21 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onClickLogin() {
-        val username = binding.edEmailLogin.text.toString()
-        val password = binding.edPasswordLogin.text.toString()
-
-        if (isPasswordValid(password)) {
-            observeLoginResult(username, password)
+        val username = binding.edEmailLogin.text.toString().trim()
+        val password = binding.edPasswordLogin.text.toString().trim()
+        if(username.contains(" ")) {
+            Toast.makeText(this, "Username tidak boleh mengandung spasi", Toast.LENGTH_SHORT).show()
+        } else if(password.contains(" ")) {
+            Toast.makeText(this, "Password tidak boleh mengandung spasi", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Password harus memiliki panjang minimal 6 karakter", Toast.LENGTH_SHORT).show()
+            if (isPasswordValid(password)) {
+                observeLoginResult(username, password)
+            } else {
+                Toast.makeText(this, "Password harus memiliki panjang minimal 6 karakter", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
     private fun isPasswordValid(password: String): Boolean {
         return password.length >= 5
