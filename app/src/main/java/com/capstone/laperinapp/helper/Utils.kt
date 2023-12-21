@@ -11,8 +11,11 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
+import java.util.TimeZone
 
 private const val MAXIMAL_SIZE = 2000000
 private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
@@ -124,5 +127,31 @@ fun formatDurationList(context: Context,duration: String): String {
         context.getString(R.string.estimasi_jam, formattedHours)
     } else {
         context.getString(R.string.estimasi_menit_2, formattedMinutes)
+    }
+}
+
+fun formatTanggal(inputDate: String): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+    try {
+        val date = inputFormat.parse(inputDate)
+        val now = Calendar.getInstance().time
+        val diffMillis = now.time - date.time
+
+        val seconds = diffMillis / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = hours / 24
+
+        return when {
+            days >= 1 -> SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(date)
+            hours >= 1 -> "$hours jam yang lalu"
+            minutes >= 1 -> "$minutes menit yang lalu"
+            else -> "Baru saja"
+        }
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        return ""
     }
 }

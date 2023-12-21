@@ -24,6 +24,10 @@
         <item name="android:textColor">@color/black_200</item>
     </style>
 
+    <style name="textColorDetailDonation">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
     <style name="textColorDetailRecipesTitle">
         <item name="android:fontFamily">@font/poppins_bold</item>
         <item name="android:textColor">@color/black_200</item>

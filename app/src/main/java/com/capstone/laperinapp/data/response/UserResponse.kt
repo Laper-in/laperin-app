@@ -53,7 +53,7 @@ data class DataDetailUser(
 	val role: String,
 
 	@field:SerializedName("updatedBy")
-	val updatedBy: Int,
+	val updatedBy: String,
 
 	@field:SerializedName("telephone")
 	val telephone: Long,
