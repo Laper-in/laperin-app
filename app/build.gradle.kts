@@ -93,6 +93,7 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("androidx.exifinterface:exifinterface:1.3.6")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     //Maps
     implementation("com.google.android.gms:play-services-location:21.0.1")

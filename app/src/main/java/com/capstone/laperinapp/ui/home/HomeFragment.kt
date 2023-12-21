@@ -225,6 +225,7 @@ class HomeFragment : Fragment() {
     private fun observeDataPopular() {
         popularAdapter.addLoadStateListener { loadState ->
             showLoading(loadState.refresh is LoadState.Loading)
+            showLoading(loadState.refresh is LoadState.Error)
         }
     }
 
@@ -245,15 +246,34 @@ class HomeFragment : Fragment() {
                 showSelectedItem(data)
             }
         })
+
+        rekomendasiAdapter.addLoadStateListener { loadState ->
+            showLoading(loadState.refresh is LoadState.Loading)
+            showLoading(loadState.refresh is LoadState.Error)
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
         val binding = _binding
         if (binding != null) {
             if (isLoading) {
-                binding.progressBar.visibility = View.VISIBLE
+                binding.emptyRecommendation.startShimmer()
+                binding.emptyRecommendation.visibility = View.VISIBLE
+                binding.placeholderPopuler.startShimmer()
+                binding.placeholderPopuler.visibility = View.VISIBLE
+                binding.placeholderPopuler2.startShimmer()
+                binding.placeholderPopuler2.visibility = View.VISIBLE
+                binding.placeholderUsername.startShimmer()
+                binding.placeholderUsername.visibility = View.VISIBLE
             } else {
-                binding.progressBar.visibility = View.GONE
+                binding.emptyRecommendation.stopShimmer()
+                binding.emptyRecommendation.visibility = View.INVISIBLE
+                binding.placeholderPopuler.stopShimmer()
+                binding.placeholderPopuler.visibility = View.GONE
+                binding.placeholderPopuler2.stopShimmer()
+                binding.placeholderPopuler2.visibility = View.GONE
+                binding.placeholderUsername.stopShimmer()
+                binding.placeholderUsername.visibility = View.GONE
             }
         }
     }

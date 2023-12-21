@@ -17,6 +17,7 @@ import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.helper.formatTanggal
 import com.capstone.laperinapp.helper.meterToKilometer
+import com.capstone.laperinapp.ui.preview.PreviewImageActivity
 
 
 class DetailDonationActivity : AppCompatActivity() {
@@ -52,6 +53,7 @@ class DetailDonationActivity : AppCompatActivity() {
                     binding.progressBar.visibility = android.view.View.GONE
                     setupData(result.data)
                     getDataUser(result.data)
+                    onClickDetail(result.data)
                 }
 
                 is Result.Error -> {
@@ -59,6 +61,15 @@ class DetailDonationActivity : AppCompatActivity() {
                     Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    private fun onClickDetail(data: DataItemDonation) {
+        binding.imgDetail.setOnClickListener {
+            val intent = Intent(this, PreviewImageActivity::class.java)
+            intent.putExtra(PreviewImageActivity.EXTRA_IMAGE, data.image)
+            intent.putExtra(PreviewImageActivity.EXTRA_TITLE, data.name)
+            startActivity(intent)
         }
     }
 

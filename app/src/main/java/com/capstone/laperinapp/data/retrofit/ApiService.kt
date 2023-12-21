@@ -14,6 +14,7 @@ import com.capstone.laperinapp.data.response.DetailDonationResponse
 import com.capstone.laperinapp.data.response.DonationResponse
 import com.capstone.laperinapp.data.response.IngredientResponse
 import com.capstone.laperinapp.data.response.RecipeDetailResponse
+import com.capstone.laperinapp.data.response.ResponseCategory
 import com.capstone.laperinapp.data.response.UpdateResponse
 import com.capstone.laperinapp.data.response.UserDetailResponse
 import okhttp3.MultipartBody
@@ -110,6 +111,10 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("pageSize") size: Int
     ): BookmarkResponse
+
+    @GET("bookmarks")
+    suspend fun getCategory(
+    ): Response<ResponseCategory>
   
     @GET("donations/closest/{lon}/{lat}")
     suspend fun getAllClosestDonation(

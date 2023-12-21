@@ -139,7 +139,7 @@ class DonasiFragment : Fragment() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
-                    if (location != null){
+                    if (location != null) {
                         sendData(location.longitude.toFloat(), location.latitude.toFloat())
                         userLongitude = location.longitude.toFloat()
                         userLatitude = location.latitude.toFloat()
@@ -176,6 +176,7 @@ class DonasiFragment : Fragment() {
                     setupDataUser(result.data)
                     true
                 }
+
                 else -> false
             }
         }
@@ -183,7 +184,7 @@ class DonasiFragment : Fragment() {
 
     private fun setupDataUser(data: UserDetailResponse) {
         Log.i(TAG, "setupDataUser: ${data.data.telephone}")
-        if (data.data.telephone.toString() != "0"){
+        if (data.data.telephone.toString() != "0") {
             val pref = UserPreference.getInstance(requireActivity().dataStore)
             val user = runBlocking { pref.getSession().first() }
             val token = user.token
@@ -283,21 +284,45 @@ class DonasiFragment : Fragment() {
         })
 
         adapter.addLoadStateListener { loadState ->
-            if (loadState.refresh is LoadState.Loading) {
-                binding.progressBar.visibility = View.VISIBLE
-            } else if (loadState.refresh is LoadState.NotLoading) {
+            if (loadState.source.refresh is LoadState.Loading) {
+                showLoading(true)
+                binding.tvEmptyList.visibility = View.GONE
+            } else {
+                showLoading(false)
                 if (adapter.itemCount == 0) {
-                    binding.progressBar.visibility = View.GONE
                     binding.tvEmptyList.visibility = View.VISIBLE
                 } else {
-                    binding.progressBar.visibility = View.GONE
                     binding.tvEmptyList.visibility = View.GONE
                 }
-            } else {
-                binding.progressBar.visibility = View.GONE
+                val errorState = when {
+                    loadState.source.refresh is LoadState.Error -> {
+                        loadState.source.refresh as LoadState.Error
+                    }
+
+                    loadState.source.prepend is LoadState.Error -> {
+                        loadState.source.prepend as LoadState.Error
+                    }
+
+                    loadState.source.append is LoadState.Error -> {
+                        loadState.source.append as LoadState.Error
+                    }
+
+                    else -> null
+                }
+                errorState?.let {
+                    showLoading(true)
+                }
             }
+        }
+    }
 
-
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.loadingLayout.startShimmer()
+            binding.loadingLayout.visibility = View.VISIBLE
+        } else {
+            binding.loadingLayout.stopShimmer()
+            binding.loadingLayout.visibility = View.GONE
         }
     }
 

@@ -10,7 +10,7 @@
         android:layout_width="100dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background"
+        android:background="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +20,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="50dp"
+        android:background="@color/light_gray_2"
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="16sp"
@@ -31,19 +32,21 @@
 
     <TextView
         android:id="@+id/tv_item_nama_pengirim"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginBottom="4dp"
+        android:background="@color/light_gray_2"
         app:layout_constraintBottom_toTopOf="@+id/tv_item_count"
         app:layout_constraintStart_toEndOf="@+id/iv_item_photo" />
 
     <TextView
         android:id="@+id/tv_item_count"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
+        android:background="@color/light_gray_2"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_item_photo"
         app:layout_constraintStart_toEndOf="@+id/iv_item_photo" />
@@ -52,25 +55,12 @@
         android:id="@+id/linearLayout7"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/bg_distance"
+        android:background="@color/dark_gray"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/ic_gps" />
-
-        <TextView
-            android:id="@+id/tv_item_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/orange"
-            android:textSize="12sp"
-            android:textStyle="bold" />
 
     </LinearLayout>
 

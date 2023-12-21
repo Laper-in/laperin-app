@@ -20,6 +20,7 @@ import com.capstone.laperinapp.databinding.ActivityDetailBinding
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.helper.formatDuration
+import com.capstone.laperinapp.ui.preview.PreviewImageActivity
 
 class DetailActivity : AppCompatActivity() {
 
@@ -80,6 +81,7 @@ class DetailActivity : AppCompatActivity() {
                         onClickFavorite(result.data)
                         onClickVideo(result.data.video)
                         setupCategory(result.data.category)
+                        onClickImage(result.data)
                     }
                     is Result.Error -> {
                         showLoading(false)
@@ -90,6 +92,15 @@ class DetailActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun onClickImage(data: DataItemRecipes) {
+        binding.imgDetail.setOnClickListener {
+            val intent = Intent(this, PreviewImageActivity::class.java)
+            intent.putExtra(PreviewImageActivity.EXTRA_IMAGE, data.image)
+            intent.putExtra(PreviewImageActivity.EXTRA_TITLE, data.name)
+            startActivity(intent)
         }
     }
 

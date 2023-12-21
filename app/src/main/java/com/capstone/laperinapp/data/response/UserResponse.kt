@@ -14,7 +14,11 @@ data class AuthResponse(
 	val message: String,
 
 	@field:SerializedName("accessToken")
-	val accessToken: String
+	val accessToken: String,
+
+    @field:SerializedName("error")
+    val error: String
+
 ) : Parcelable
 
 @Parcelize

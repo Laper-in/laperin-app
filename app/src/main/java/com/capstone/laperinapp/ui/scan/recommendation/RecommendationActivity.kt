@@ -8,8 +8,10 @@ import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.text.style.TextAppearanceSpan
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.laperinapp.R
@@ -60,6 +62,16 @@ class RecommendationActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.NotLoading) {
+                if (adapter.itemCount == 0) {
+                    binding.tvEmptyList.visibility = View.VISIBLE
+                } else {
+                    binding.tvEmptyList.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun setupToolbar() {

@@ -21,7 +21,7 @@
             <View
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:background="@drawable/bg_photo_home"/>
+                android:background="@drawable/bg_photo_home" />
 
             <ImageView
                 android:id="@+id/img_profile"
@@ -44,9 +44,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                style="@style/textColorHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/textColorHome"
                 android:text="@string/hello" />
 
             <LinearLayout
@@ -56,31 +56,49 @@
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-                <TextView
-                    android:id="@+id/tv_username"
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    style="@style/textColorHome.bold"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content">
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/placeholder_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="60dp"
+                            android:background="@color/light_gray_2"
+                            android:layout_height="wrap_content"/>
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <TextView
+                        android:id="@+id/tv_username"
+                        style="@style/textColorHome.bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/orange"
                     android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/orange"
                     android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
+                        android:layout_marginHorizontal="4dp"
                         android:text="@string/badge"
-                        android:textSize="11sp"
-                        android:layout_marginHorizontal="4dp"/>
+                        android:textColor="@color/white"
+                        android:textSize="11sp" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -92,9 +110,9 @@
             android:id="@+id/searchBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_gray_1"
             android:hint="@string/cari_resep"
             android:textColorHint="@color/dark_gray"
-            android:backgroundTint="@color/light_gray_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
@@ -142,8 +160,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -159,12 +177,12 @@
                 </RelativeLayout>
 
                 <TextView
+                    style="@style/textColorHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:text="@string/masakin"
-                    android:textStyle="bold"
-                    style="@style/textColorHome"
-                    android:layout_marginTop="6dp"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -172,8 +190,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/btn_donasiin"
@@ -190,12 +208,12 @@
                 </RelativeLayout>
 
                 <TextView
+                    style="@style/textColorHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:text="@string/donasiin"
-                    android:textStyle="bold"
-                    style="@style/textColorHome"
-                    android:layout_marginTop="6dp"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -203,8 +221,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/btn_cariin"
@@ -221,12 +239,12 @@
                 </RelativeLayout>
 
                 <TextView
+                    style="@style/textColorHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:text="@string/cariin"
-                    android:textStyle="bold"
-                    style="@style/textColorHome"
-                    android:layout_marginTop="6dp"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -234,16 +252,31 @@
 
         <TextView
             android:id="@+id/tv_title_rekomendasi"
+            style="@style/textColorHome.bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/resep_rekomendasi"
             android:textSize="16sp"
-            style="@style/textColorHome.bold"
             android:textStyle="bold"
-            android:layout_marginHorizontal="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/empty_recommendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:clickable="false"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_rekomendasi" >
+
+            <include layout="@layout/item_recipes_rekomendasi_placeholder" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_rekomendasi"
@@ -256,23 +289,52 @@
 
         <TextView
             android:id="@+id/tv_title_populer"
+            style="@style/textColorHome.bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/resep_populer"
             android:textSize="16sp"
-            style="@style/textColorHome.bold"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/tv_title_rekomendasi"
-            app:layout_constraintTop_toBottomOf="@+id/rv_rekomendasi" />
+            app:layout_constraintTop_toBottomOf="@+id/empty_recommendation" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/placeholder_populer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_populer">
+
+            <include layout="@layout/item_bookmark_profile_placeholder" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/placeholder_populer_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_populer">
+
+            <include layout="@layout/item_bookmark_profile_placeholder" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <TextView
             android:id="@+id/btn_lihat_semua"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:text="@string/lihat_semua"
             android:textColor="@color/orange"
-            android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_title_populer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_title_populer" />
@@ -281,8 +343,8 @@
             android:id="@+id/rv_popular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_populer" />

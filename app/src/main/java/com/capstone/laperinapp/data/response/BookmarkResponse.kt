@@ -112,3 +112,11 @@ data class DataItemAllBookmark(
 	@field:SerializedName("bookmark")
 	val bookmark: Bookmark
 ) : Parcelable
+
+@Parcelize
+data class ResponseCategory(
+
+	@field:SerializedName("data")
+	val data: String
+
+) : Parcelable

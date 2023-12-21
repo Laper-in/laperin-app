@@ -25,4 +25,6 @@ class KoleksiViewModel(private val repository :Repository) : ViewModel() {
 
     fun getAllBookmarks() = searchResults
 
+    fun getCategory() = repository.getCategoryByBookmark()
+
 }

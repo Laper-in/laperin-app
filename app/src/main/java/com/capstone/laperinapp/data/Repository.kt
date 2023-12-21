@@ -402,6 +402,26 @@ class Repository private constructor(
             Log.e(TAG, "deleteBookmark: ${e.message}",)
         }
     }
+
+    fun getCategoryByBookmark() = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getCategory()
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()?.data!!))
+                Log.d(TAG, "getCategoryByBookmark: ${response.body()}")
+            } else {
+                val errorResponse =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                Log.e(TAG, "getCategoryByBookmark: $response",)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "getCategoryByBookmark: ${e.message}",)
+        }
+    }
+
     fun searchResultScan(name: String) = liveData {
         emit(Result.Loading)
         try {

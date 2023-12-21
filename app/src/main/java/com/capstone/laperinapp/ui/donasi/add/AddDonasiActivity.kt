@@ -83,7 +83,7 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
                         if (name.length >= 5) {
                             sendData(username, name, description, category, total, latitude, longitude, userImage, telephone)
                         } else {
-                            Toast.makeText(this@AddDonasiActivity, "Nama harus lebih dari 5 karakter", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AddDonasiActivity, "Judul harus lebih dari 5 karakter", Toast.LENGTH_SHORT).show()
                         }
                     }
 
