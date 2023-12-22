@@ -81,7 +81,7 @@ class EditProfilActivity : AppCompatActivity() {
                 }
                 is Result.Error -> {
                     showLoading(false)
-                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Gagal memperbarui data", Toast.LENGTH_SHORT).show()
                 }
 
             }

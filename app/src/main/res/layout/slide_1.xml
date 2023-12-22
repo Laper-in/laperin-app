@@ -29,7 +29,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lorem Ipsum"
+            android:text="Selamat Datang"
             android:textSize="24sp"
             android:textColor="@color/orange"
             android:textStyle="bold"
@@ -41,7 +41,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam sit amet aliquet ultricies, nisl nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. "
+            android:text="Masak jadi lebih mudah dan praktis dengan Laper.in. Cari menu kesukaan dan lihat tutorial untuk masak!"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:textAlignment="center"

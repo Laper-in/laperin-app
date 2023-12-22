@@ -143,7 +143,7 @@ class SettingActivity : AppCompatActivity() {
 
                 is Result.Error -> {
                     showLoading(false)
-                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Gagal memuat data", Toast.LENGTH_SHORT).show()
                 }
 
                 is Result.Loading -> {

@@ -117,7 +117,7 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
                     }
                     is Result.Error -> {
                         showLoading(false)
-                        Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Gagal memuat data", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -268,8 +268,7 @@ class ProfileFragment : Fragment(), ButtonSheetPicture.OnImageSelectedListener {
 
                 is Result.Error -> {
                     showLoading(false)
-                    Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
-                    Log.e(TAG, "setupDataUser: ${result.error}")
+                    Toast.makeText(requireContext(), "Gagal memuat data", Toast.LENGTH_SHORT).show()
                 }
 
                 is Result.Loading -> {

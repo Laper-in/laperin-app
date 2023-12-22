@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -81,6 +82,12 @@ class HomeFragment : Fragment() {
         binding.btnCariin.setOnClickListener { onClickCariin() }
         binding.btnDonasiin.setOnClickListener { onClickDonasiin() }
         binding.btnLihatSemua.setOnClickListener { onClickLihatSemua() }
+        binding.btnMasakin.setOnClickListener {
+            Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+        binding.btnTanyain.setOnClickListener {
+            Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun onClickLihatSemua() {

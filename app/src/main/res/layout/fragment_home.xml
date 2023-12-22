@@ -134,6 +134,7 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
+                    android:id="@+id/btn_tanyain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_category_orange"
@@ -164,6 +165,7 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
+                    android:id="@+id/btn_masakin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_category_blue"
