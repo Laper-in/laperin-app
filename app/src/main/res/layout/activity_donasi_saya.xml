@@ -64,19 +64,12 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingVertical="40dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/empty_uncompleted" />
-
-                <TextView
-                    android:id="@+id/buat_donasi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/buat_donasi"
-                    android:textColor="@color/orange" />
 
             </LinearLayout>
 

@@ -114,12 +114,12 @@
             android:id="@+id/tv_empty_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/empty_donasi"
             android:paddingVertical="90dp"
+            android:text="@string/empty_donasi"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/loading_layout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

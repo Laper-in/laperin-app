@@ -16,6 +16,7 @@ import com.capstone.laperinapp.adapter.AllRecipesAdapter
 import com.capstone.laperinapp.adapter.StaggeredItemDecoration
 import com.capstone.laperinapp.data.response.DataItemRecipes
 import com.capstone.laperinapp.databinding.ActivityAllRecipesBinding
+import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
 import com.capstone.laperinapp.ui.detail.DetailActivity
 import com.google.android.material.chip.Chip
@@ -66,45 +67,53 @@ class AllRecipesActivity : AppCompatActivity() {
     }
 
     private fun setupCategory() {
-        val chipGroup: ChipGroup = binding.chipCategory
-        val chipCategory = resources.getStringArray(R.array.category_name)
+        viewModel.getAllCategory().observe(this){ result ->
+            when (result) {
+                is Result.Success -> {
+                    val chipGroup: ChipGroup = binding.chipCategory
+                    val chipCategory = listOf("All") + result.data.split(", ")
 
-        for (category in chipCategory) {
-            val chip = Chip(this)
-            chip.shapeAppearanceModel = chip.shapeAppearanceModel
-                .toBuilder()
-                .setAllCorners(CornerFamily.ROUNDED, 50f)
-                .build()
-            chip.text = category
-            chip.isCheckable = true
-            if (category == "All") {
-                chip.isChecked = true
-                chip.setTextColor(ContextCompat.getColorStateList(this, R.color.orange))
-                chip.chipBackgroundColor = resources.getColorStateList(R.color.light_orange)
-                viewModel.searchLiveData.value = category
-            }
+                    for (category in chipCategory) {
+                        val chip = Chip(this)
+                        chip.shapeAppearanceModel = chip.shapeAppearanceModel
+                            .toBuilder()
+                            .setAllCorners(CornerFamily.ROUNDED, 50f)
+                            .build()
+                        chip.text = category
+                        chip.isCheckable = true
+                        if (category == "All") {
+                            chip.isChecked = true
+                            chip.setTextColor(ContextCompat.getColorStateList(this, R.color.orange))
+                            chip.chipBackgroundColor = resources.getColorStateList(R.color.light_orange)
+                            viewModel.searchLiveData.value = category
+                        }
 
-            chip.setOnCheckedChangeListener() { buttonView, isChecked ->
-                if (isChecked) {
-                    buttonView.setTextColor(
-                        ContextCompat.getColorStateList(
-                            this,
-                            R.color.orange
-                        )
-                    )
-                    chip.chipBackgroundColor = resources.getColorStateList(R.color.light_orange)
-                    viewModel.searchLiveData.value = category
-                } else {
-                    buttonView.setTextColor(
-                        ContextCompat.getColorStateList(
-                            this,
-                            R.color.black
-                        )
-                    )
-                    chip.chipBackgroundColor = resources.getColorStateList(R.color.transparent)
+                        chip.setOnCheckedChangeListener() { buttonView, isChecked ->
+                            if (isChecked) {
+                                buttonView.setTextColor(
+                                    ContextCompat.getColorStateList(
+                                        this,
+                                        R.color.orange
+                                    )
+                                )
+                                chip.chipBackgroundColor = resources.getColorStateList(R.color.light_orange)
+                                viewModel.searchLiveData.value = category
+                            } else {
+                                buttonView.setTextColor(
+                                    ContextCompat.getColorStateList(
+                                        this,
+                                        R.color.black
+                                    )
+                                )
+                                chip.chipBackgroundColor = resources.getColorStateList(R.color.transparent)
+                            }
+                        }
+                        chipGroup.addView(chip)
+                    }
                 }
+
+                else -> false
             }
-            chipGroup.addView(chip)
         }
     }
 

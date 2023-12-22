@@ -112,8 +112,12 @@ interface ApiService {
         @Query("pageSize") size: Int
     ): BookmarkResponse
 
-    @GET("bookmarks")
+    @GET("bookmarks/category")
     suspend fun getCategory(
+    ): Response<ResponseCategory>
+
+    @GET("recipes/sort/category")
+    suspend fun getAllCategory(
     ): Response<ResponseCategory>
   
     @GET("donations/closest/{lon}/{lat}")

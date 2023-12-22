@@ -7,6 +7,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.text.style.TextAppearanceSpan
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -18,12 +19,19 @@ import com.capstone.laperinapp.R
 import com.capstone.laperinapp.adapter.CompletedDonationAdapter
 import com.capstone.laperinapp.adapter.LoadingStateAdapter
 import com.capstone.laperinapp.adapter.UncompletedDonationAdapter
+import com.capstone.laperinapp.data.pref.UserPreference
+import com.capstone.laperinapp.data.pref.dataStore
 import com.capstone.laperinapp.data.response.DataItemDonation
+import com.capstone.laperinapp.data.response.UserDetailResponse
 import com.capstone.laperinapp.databinding.ActivityDonasiSayaBinding
+import com.capstone.laperinapp.helper.JWTUtils
 import com.capstone.laperinapp.helper.Result
 import com.capstone.laperinapp.helper.ViewModelFactory
+import com.capstone.laperinapp.ui.donasi.DonasiFragment
 import com.capstone.laperinapp.ui.donasi.add.AddDonasiActivity
 import com.capstone.laperinapp.ui.donasi.detail.DetailDonationActivity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.internal.notifyAll
 
 class DonasiSayaActivity : AppCompatActivity() {
@@ -45,6 +53,7 @@ class DonasiSayaActivity : AppCompatActivity() {
 
         setupRVUncompleted()
         setupRVCompleted()
+
     }
 
     private fun setupRVCompleted() {

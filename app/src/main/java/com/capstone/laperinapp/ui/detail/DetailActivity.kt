@@ -44,7 +44,7 @@ class DetailActivity : AppCompatActivity() {
         getData(id)
 
         viewModel.findFavorite(id ?: "") {
-            binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.primary))
+            binding.btFavorite.setColorFilter(ContextCompat.getColor(this, R.color.white))
         }
 
     }

@@ -422,6 +422,25 @@ class Repository private constructor(
         }
     }
 
+    fun getAllCategory() = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getAllCategory()
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()?.data!!))
+                Log.d(TAG, "getAllCategory: ${response.body()}")
+            } else {
+                val errorResponse =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                Log.e(TAG, "getAllCategorys: $response",)
+                emit(Result.Error(errorResponse.message.toString()))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+            Log.e(TAG, "getAllCategoryss: ${e.message}",)
+        }
+    }
+
     fun searchResultScan(name: String) = liveData {
         emit(Result.Loading)
         try {

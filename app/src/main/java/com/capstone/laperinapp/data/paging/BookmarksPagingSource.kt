@@ -18,14 +18,16 @@ class BookmarksPagingSource(private val apiService: ApiService, private val cate
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataItemBookmark> {
         return try {
             val position = params.key ?: STARTING_PAGE_INDEX
-            val response = apiService.getBookmarks(category, position, params.loadSize).data
+            val response = apiService.getBookmarks(category, position, params.loadSize)
 
-            Log.d(TAG, "load: $response")
+            Log.d(TAG, "loadTotal: ${response.totalCount}")
+
+            val responseData = response.data
 
             LoadResult.Page(
-                data = response,
+                data = responseData,
                 prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if (response.isEmpty()) null else position + 1
+                nextKey = if (responseData.isEmpty()) null else position + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

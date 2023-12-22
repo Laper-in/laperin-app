@@ -23,4 +23,6 @@ class AllRecipesViewModel(private val repository: Repository): ViewModel() {
     }
 
     fun getAllRecipesByCategory() = resultSearchLiveData
+
+    fun getAllCategory() = repository.getAllCategory()
 }

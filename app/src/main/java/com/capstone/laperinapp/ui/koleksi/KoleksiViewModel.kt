@@ -18,7 +18,9 @@ class KoleksiViewModel(private val repository :Repository) : ViewModel() {
     private val searchResults: LiveData<PagingData<DataItemBookmark>> = searchStringLiveData.switchMap { query ->
         if (query == "All") {
             repository.getAllBookmarks("").cachedIn(viewModelScope)
-        }else {
+        }else if (query == ""){
+            repository.getAllBookmarks("").cachedIn(viewModelScope)
+        } else {
             repository.getAllBookmarks(query).cachedIn(viewModelScope)
         }
     }

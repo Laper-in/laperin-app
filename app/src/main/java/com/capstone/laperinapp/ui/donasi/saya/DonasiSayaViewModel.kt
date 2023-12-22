@@ -12,4 +12,6 @@ class DonasiSayaViewModel(private val repository: Repository): ViewModel() {
     fun myCompletedDonations() = repository.getMyCompletedDonations().cachedIn(viewModelScope)
 
     fun selesaikanDonasi(id: String) = repository.deleteDonation(id)
+
+    fun getUser() = repository.getDetailUser()
 }

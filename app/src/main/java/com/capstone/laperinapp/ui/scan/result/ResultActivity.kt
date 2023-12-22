@@ -63,31 +63,7 @@ class ResultActivity : AppCompatActivity() {
 
         })
 
-        binding.btnCariResep.setOnClickListener { onClickSearch() }
-    }
-
-    private fun onClickSearch() {
-        viewModel.searchResult().observe(this@ResultActivity) { result ->
-            when(result) {
-                is Result.Success -> {
-                    val formatedResult = result.data.recommendedRecipes.joinToString(",")
-
-                    if (binding.tvEmptyList.visibility == View.VISIBLE) {
-                        Toast.makeText(this, "Anda belum menambahkan bahan", Toast.LENGTH_SHORT).show()
-                    } else if (adapter.itemCount >= 2) {
-                        val intent = Intent(this, RecommendationActivity::class.java)
-                        intent.putExtra(RecommendationActivity.EXTRA_RESULT, formatedResult)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this, "Minimal memilih 5 item", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                is Result.Error -> {
-                    Log.e(TAG, "setupScan: ${result.error}", )
-                }
-                else -> false
-            }
-        }
+        onClickSearch()
     }
 
     private fun setupToolbar() {
@@ -199,11 +175,44 @@ class ResultActivity : AppCompatActivity() {
                 }
             }
         })
+    }
 
+    private fun onClickSearch() {
         viewModel.getAllResultName().observe(this@ResultActivity) {
             val resultScan = it.joinToString("=")
             Log.i(RecommendationActivity.TAG, "setupScan: $resultScan")
             viewModel.searchResultLiveData.value = resultScan
+        }
+        binding.btnCariResep.setOnClickListener {
+            viewModel.searchResult().observe(this@ResultActivity) { result ->
+                when (result) {
+                    is Result.Success -> {
+                        val formatedResult = result.data.recommendedRecipes.joinToString(",")
+
+                        if (binding.tvEmptyList.visibility == View.VISIBLE) {
+                            Toast.makeText(this, "Anda belum menambahkan bahan", Toast.LENGTH_SHORT)
+                                .show()
+                        } else if (adapter.itemCount >= 2) {
+                            val intent = Intent(this, RecommendationActivity::class.java)
+                            intent.putExtra(RecommendationActivity.EXTRA_RESULT, formatedResult)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this, "Minimal memilih 2 item", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    is Result.Error -> {
+                        Log.e(TAG, "setupScan: ${result.error}")
+                    }
+
+                    is Result.Loading -> {
+                        binding.btnCariResep.text = "Memuat..."
+                        binding.btnCariResep.isEnabled = false
+                    }
+
+                    else -> false
+                }
+            }
         }
     }
 
@@ -225,6 +234,12 @@ class ResultActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         alertDialog()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onResume() {
+        binding.btnCariResep.text = "Cari Resep"
+        binding.btnCariResep.isEnabled = true
+        super.onResume()
     }
 
 
