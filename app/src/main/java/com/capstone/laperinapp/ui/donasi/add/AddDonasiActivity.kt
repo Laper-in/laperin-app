@@ -9,6 +9,8 @@ import android.text.style.ImageSpan
 import android.text.style.TextAppearanceSpan
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -44,6 +46,7 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
     private var latitude: String? = null
     private var longitude: String? = null
     private var username: String? = null
+    private var category: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +58,29 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
         binding.btnImage.setOnClickListener { openModal() }
         binding.btnRemoveImage.setOnClickListener { showImage(null) }
 
+        setupSpinner()
         setupToolbar()
+    }
+
+    private fun setupSpinner() {
+        val listCategory = resources.getStringArray(R.array.category_name)
+        val categoryAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listCategory)
+        val spinner = binding.spnJenis
+        spinner.adapter = categoryAdapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                category = listCategory[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
     }
 
     override fun onImageSelected(uri: Uri) {
@@ -76,7 +101,7 @@ class AddDonasiActivity : AppCompatActivity(), OnImageSelectedListener {
                     binding.btnDonasi.setOnClickListener {
                         val name = binding.edNama.text.toString()
                         val description = binding.edDescription.text.toString()
-                        val category = binding.edJenis.text.toString()
+                        val category = category!!
                         val total = binding.edJumlah.text.toString()
                         val userImage = result.data.data.image
                         val telephone = result.data.data.telephone.toString()

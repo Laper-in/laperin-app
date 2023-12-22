@@ -25,7 +25,6 @@ class RekomendasiRecipesAdapter() :
                 .into(binding.imgItemPhoto)
             binding.apply {
                 tvItemName.text = item.name
-                tvItemCategory.text = item.category
             }
         }
 

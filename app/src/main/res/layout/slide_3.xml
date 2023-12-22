@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="Lorem Ipsum"
             android:textSize="24sp"
-            android:textColor="#49B38D"
+            android:textColor="@color/orange"
             android:textStyle="bold"
             android:layout_marginTop="44dp"
             app:layout_constraintEnd_toEndOf="parent"

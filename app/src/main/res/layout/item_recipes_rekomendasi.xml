@@ -42,14 +42,6 @@
                 android:ellipsize="end"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_item_category"
-                android:text="Kategori"
-                android:textColor="@color/white"
-                android:textSize="12sp"/>
-
         </LinearLayout>
 
     </RelativeLayout>

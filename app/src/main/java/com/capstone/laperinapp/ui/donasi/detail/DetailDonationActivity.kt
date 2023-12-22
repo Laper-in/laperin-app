@@ -91,6 +91,7 @@ class DetailDonationActivity : AppCompatActivity() {
         binding.tvNamePengirim.text = data.fullname
         binding.tvItemJumlah.text = "Jumlah : ${data.total}"
         binding.tvItemTanggal.text = "Waktu : ${formatTanggal(data.createdAt)}"
+        binding.tvItemJenis.text = "Jenis : ${data.category}"
         Log.d(TAG, "setupData: ${data.telephone}")
     }
 

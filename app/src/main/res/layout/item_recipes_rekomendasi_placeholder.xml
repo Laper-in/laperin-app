@@ -36,14 +36,6 @@
                 android:ellipsize="end"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_item_category"
-                android:layout_marginTop="4dp"
-                android:background="@color/light_gray_2"
-                android:textSize="12sp"/>
-
         </LinearLayout>
 
     </RelativeLayout>

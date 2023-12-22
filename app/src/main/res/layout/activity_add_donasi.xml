@@ -212,18 +212,15 @@
                 app:layout_constraintStart_toStartOf="@+id/ed_nama"
                 app:layout_constraintTop_toBottomOf="@+id/ed_description" />
 
-            <com.capstone.laperinapp.ui.customView.EditText
-                android:id="@+id/ed_jenis"
-                style="@style/editText"
+            <Spinner
+                android:id="@+id/spn_jenis"
                 android:layout_width="0dp"
                 android:layout_height="53dp"
+                android:background="@drawable/bg_spinner"
                 android:layout_marginTop="16dp"
-                android:hint="@string/jenis_bahan_makanan"
-                android:inputType="text"
-                android:padding="15dp"
-                android:textSize="13sp"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="@+id/ed_nama"
-                app:layout_constraintStart_toStartOf="@+id/ed_nama"
+                app:layout_constraintStart_toStartOf="@+id/ed_jumlah"
                 app:layout_constraintTop_toBottomOf="@+id/ed_jumlah" />
 
             <TextView
@@ -232,20 +229,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/lokasi"
                 android:textSize="16sp"
-                android:layout_marginTop="24dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ed_jenis" />
+                app:layout_constraintTop_toBottomOf="@+id/spn_jenis" />
 
             <LinearLayout
                 android:id="@+id/linearLayout8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="16dp"
+                android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="@+id/ed_jenis"
+                app:layout_constraintStart_toStartOf="@+id/spn_jenis"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_lokasi">
 
                 <ImageView

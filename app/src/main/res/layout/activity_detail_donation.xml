@@ -187,6 +187,19 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_item_tanggal" />
 
         <TextView
+            android:id="@+id/tv_item_jenis"
+            style="@style/textColorDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:text="@string/jenis"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_item_tanggal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_jumlah" />
+
+        <TextView
             android:id="@+id/tv_title_detail"
             style="@style/textColorDetailRecipes"
             android:layout_width="wrap_content"
@@ -210,7 +223,7 @@
             android:textStyle="bold"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/tv_item_jumlah"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_jumlah" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_jenis" />
 
         <TextView
             android:id="@+id/tv_deskripsi"
